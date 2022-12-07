@@ -86,19 +86,71 @@ workflow TRANSCRIPTCORRAL {
     )
     ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
 
-    //
-    // MODULE: Run FastQC
-    //
-    FASTQC (
-        INPUT_CHECK.out.reads
-    )
-    ch_versions = ch_versions.mix(FASTQC.out.versions.first())
+    // //
+    // // MODULE: Run FastQC
+    // //
+    // FASTQC (
+    //     INPUT_CHECK.out.reads
+    // )
+    // ch_versions = ch_versions.mix(FASTQC.out.versions.first())
 
-    CUSTOM_DUMPSOFTWAREVERSIONS (
-        ch_versions.unique{ it.text }.collectFile(name: 'collated_versions.yml')
-    )
+    // CUSTOM_DUMPSOFTWAREVERSIONS (
+    //     ch_versions.unique{ it.text }.collectFile(name: 'collated_versions.yml')
+    // )
 
     ch_reads=INPUT_CHECK.out.reads
+
+    //
+    // SUBWORKFLOW: Read QC, extract UMI and trim adapters
+    //
+    FASTQC_UMITOOLS_TRIMGALORE (
+        ch_reads,
+        params.skip_fastqc || params.skip_qc,
+        params.with_umi,
+        params.skip_umi_extract,
+        params.skip_trimming,
+        params.umi_discard_read
+    )
+    ch_versions = ch_versions.mix(FASTQC_UMITOOLS_TRIMGALORE.out.versions)
+
+    //
+    // Filter channels to get samples that passed minimum trimmed read count
+    //
+    ch_fail_trimming_multiqc = Channel.empty()
+    ch_filtered_reads = FASTQC_UMITOOLS_TRIMGALORE.out.reads
+    if (!params.skip_trimming) {
+        ch_filtered_reads
+            .join(FASTQC_UMITOOLS_TRIMGALORE.out.trim_log)
+            .map {
+                meta, reads, trim_log ->
+                    if (!meta.single_end) {
+                        trim_log = trim_log[-1]
+                    }
+                    num_reads = WorkflowRnaseq.getTrimGaloreReadsAfterFiltering(trim_log)
+                    [ meta, reads, num_reads ]
+            }
+            .set { ch_num_trimmed_reads  }
+
+        ch_num_trimmed_reads
+            .map { meta, reads, num_reads -> if (num_reads > params.min_trimmed_reads) [ meta, reads ] }
+            .set { ch_filtered_reads }
+
+        ch_num_trimmed_reads
+            .map {
+                meta, reads, num_reads ->
+                if (num_reads <= params.min_trimmed_reads) {
+                    return [ "$meta.id\t$num_reads" ]
+                }
+            }
+            .set { ch_num_trimmed_reads }
+
+        MULTIQC_TSV_FAIL_TRIMMED (
+            ch_num_trimmed_reads.collect(),
+            ["Sample", "Reads after trimming"],
+            'fail_trimmed_samples'
+        )
+        .set { ch_fail_trimming_multiqc }
+    }
 
     //
     // MODULE: Sortmerna: Remove ribosomal RNA reads
@@ -108,11 +160,11 @@ workflow TRANSCRIPTCORRAL {
         ch_sortmerna_fastas = Channel.from(ch_ribo_db.readLines()).map { row -> file(row, checkIfExists: true) }.collect()
 
         SORTMERNA (
-            ch_reads,
+            ch_filtered_reads,
             ch_sortmerna_fastas
         )
         .reads
-        .set { ch_reads }
+        .set { ch_filtered_reads }
 
         ch_sortmerna_multiqc = SORTMERNA.out.log
         ch_versions = ch_versions.mix(SORTMERNA.out.versions.first())
@@ -145,7 +197,7 @@ workflow TRANSCRIPTCORRAL {
     // MODULE: Spades
     //
     // Need to add elements for the 'pacbio' and 'nanopore' inputs in the tuple.
-    ch_spades_input=ch_reads
+    ch_spades_input=ch_filtered_reads
         .map { [ it[0], it[1], [], [] ] }
 
     SPADES_SC (
