@@ -22,6 +22,7 @@ if (params.remove_ribo_rna) {
     ch_ribo_db = file(params.ribo_database_manifest, checkIfExists: true)
     if (ch_ribo_db.isEmpty()) {exit 1, "File provided with --ribo_database_manifest is empty: ${ch_ribo_db.getName()}!"}
 }
+//TODO: Not sure if this warning is functioning correctly.
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -114,7 +115,6 @@ workflow TRANSCRIPTCORRAL {
         ch_sortmerna_multiqc = SORTMERNA.out.log
         ch_versions = ch_versions.mix(SORTMERNA.out.versions.first())
     }
-
 
     //
     // MODULE: MultiQC
