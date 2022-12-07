@@ -39,6 +39,13 @@
                         "installed_by": [
                             "modules"
                         ]
+                    },
+                    "trimgalore": {
+                        "branch": "master",
+                        "git_sha": "b51a69e30973c71950225c817ad07a3337d22c40",
+                        "installed_by": [
+                            "modules"
+                        ]
                     }
                 }
             }
