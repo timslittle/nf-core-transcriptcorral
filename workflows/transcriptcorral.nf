@@ -52,7 +52,8 @@ include { FASTQC                      } from '../modules/nf-core/fastqc/main'
 include { MULTIQC                     } from '../modules/nf-core/multiqc/main'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
 
-include { SPADES                      } from '../modules/nf-core/spades/main'
+include { SPADES as SPADES_SC         } from '../modules/nf-core/spades/main'
+include { SPADES as SPADES_RNA         } from '../modules/nf-core/spades/main'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -62,6 +63,12 @@ include { SPADES                      } from '../modules/nf-core/spades/main'
 
 // Info required for completion email and summary
 def multiqc_report = []
+
+process printTest{
+    """
+    echo "Hello"
+    """
+}
 
 workflow TRANSCRIPTCORRAL {
 
@@ -113,11 +120,18 @@ workflow TRANSCRIPTCORRAL {
     //
     // MODULE: Spades
     //
-    SPADES (
-        INPUT_CHECK.out.reads,
-        Channel.empty(),
-        Channel.empty()
+
+    // Need to add elements for the 'pacbio' and 'nanopore' inputs in the tuple.
+    ch_spades_input=INPUT_CHECK.out.reads
+        .map { [ it[0], it[1], [], [] ] }
+
+    SPADES_SC (
+        ch_spades_input,
+        [],
+        []
     )
+
+    printTest()
 
 }
 
