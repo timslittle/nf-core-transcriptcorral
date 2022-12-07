@@ -109,6 +109,16 @@ workflow TRANSCRIPTCORRAL {
         ch_multiqc_logo.toList()
     )
     multiqc_report = MULTIQC.out.report.toList()
+
+    //
+    // MODULE: Spades
+    //
+    SPADES (
+        INPUT_CHECK.out.reads,
+        Channel.empty(),
+        Channel.empty()
+    )
+
 }
 
 /*
