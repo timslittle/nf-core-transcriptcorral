@@ -17,6 +17,12 @@ for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true
 // Check mandatory parameters
 if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
 
+// Check that rRNA databases exist for sortmerna
+if (params.remove_ribo_rna) {
+    ch_ribo_db = file(params.ribo_database_manifest, checkIfExists: true)
+    if (ch_ribo_db.isEmpty()) {exit 1, "File provided with --ribo_database_manifest is empty: ${ch_ribo_db.getName()}!"}
+}
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     CONFIG FILES
@@ -53,7 +59,8 @@ include { MULTIQC                     } from '../modules/nf-core/multiqc/main'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
 
 include { SPADES as SPADES_SC         } from '../modules/nf-core/spades/main'
-include { SPADES as SPADES_RNA         } from '../modules/nf-core/spades/main'
+include { SPADES as SPADES_RNA        } from '../modules/nf-core/spades/main'
+include { SORTMERNA                   } from '../modules/nf-core/sortmerna/main' 
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -63,12 +70,6 @@ include { SPADES as SPADES_RNA         } from '../modules/nf-core/spades/main'
 
 // Info required for completion email and summary
 def multiqc_report = []
-
-process printTest{
-    """
-    echo "Hello"
-    """
-}
 
 workflow TRANSCRIPTCORRAL {
 
@@ -93,6 +94,27 @@ workflow TRANSCRIPTCORRAL {
     CUSTOM_DUMPSOFTWAREVERSIONS (
         ch_versions.unique{ it.text }.collectFile(name: 'collated_versions.yml')
     )
+
+    ch_reads=INPUT_CHECK.out.reads
+
+    //
+    // MODULE: Sortmerna: Remove ribosomal RNA reads
+    //
+    ch_sortmerna_multiqc = Channel.empty()
+    if (params.remove_ribo_rna) {
+        ch_sortmerna_fastas = Channel.from(ch_ribo_db.readLines()).map { row -> file(row, checkIfExists: true) }.collect()
+
+        SORTMERNA (
+            ch_reads,
+            ch_sortmerna_fastas
+        )
+        .reads
+        .set { ch_reads }
+
+        ch_sortmerna_multiqc = SORTMERNA.out.log
+        ch_versions = ch_versions.mix(SORTMERNA.out.versions.first())
+    }
+
 
     //
     // MODULE: MultiQC
@@ -120,9 +142,8 @@ workflow TRANSCRIPTCORRAL {
     //
     // MODULE: Spades
     //
-
     // Need to add elements for the 'pacbio' and 'nanopore' inputs in the tuple.
-    ch_spades_input=INPUT_CHECK.out.reads
+    ch_spades_input=ch_reads
         .map { [ it[0], it[1], [], [] ] }
 
     SPADES_SC (
@@ -130,9 +151,6 @@ workflow TRANSCRIPTCORRAL {
         [],
         []
     )
-
-    printTest()
-
 }
 
 /*
