@@ -184,8 +184,24 @@ workflow TRANSCRIPTCORRAL {
         [],
         []
     )
-
     ch_versions = ch_versions.mix(SPADES_SC.out.versions)
+
+    //
+    // Combine assemblies
+    //
+
+    ch_assembly=SPADES_SC.out.scaffolds
+
+    //
+    // MODULE: BUSCO
+    // 
+
+    BUSCO (
+        ch_assembly,
+        params.busco_lineage,
+        params.busco_lineages_path,
+        params.busco_config_file
+    )
 
     //
     // MODULE: Pipeline reporting
