@@ -99,10 +99,6 @@ workflow TRANSCRIPTCORRAL {
     // )
     // ch_versions = ch_versions.mix(FASTQC.out.versions.first())
 
-    // CUSTOM_DUMPSOFTWAREVERSIONS (
-    //     ch_versions.unique{ it.text }.collectFile(name: 'collated_versions.yml')
-    // )
-
     ch_reads=INPUT_CHECK.out.reads
 
     //
@@ -131,7 +127,7 @@ workflow TRANSCRIPTCORRAL {
                     if (!meta.single_end) {
                         trim_log = trim_log[-1]
                     }
-                    num_reads = WorkflowRnaseq.getTrimGaloreReadsAfterFiltering(trim_log)
+                    num_reads = WorkflowTranscriptcorral.getTrimGaloreReadsAfterFiltering(trim_log)
                     [ meta, reads, num_reads ]
             }
             .set { ch_num_trimmed_reads  }
@@ -176,6 +172,27 @@ workflow TRANSCRIPTCORRAL {
     }
 
     //
+    // MODULE: Spades
+    //
+    // Need to add elements for the 'pacbio' and 'nanopore' inputs in the tuple.
+    ch_spades_input=ch_filtered_reads
+        .map { [ it[0], it[1], [], [] ] }
+
+    SPADES_SC (
+        ch_spades_input,
+        [],
+        []
+    )
+
+    //
+    // MODULE: Pipeline reporting
+    //
+
+    CUSTOM_DUMPSOFTWAREVERSIONS (
+        ch_versions.unique{ it.text }.collectFile(name: 'collated_versions.yml')
+    )
+
+    //
     // MODULE: MultiQC
     //
     workflow_summary    = WorkflowTranscriptcorral.paramsSummaryMultiqc(workflow, summary_params)
@@ -188,7 +205,9 @@ workflow TRANSCRIPTCORRAL {
     ch_multiqc_files = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
     ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml'))
     ch_multiqc_files = ch_multiqc_files.mix(CUSTOM_DUMPSOFTWAREVERSIONS.out.mqc_yml.collect())
-    ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.collect{it[1]}.ifEmpty([]))
+    ch_multiqc_files = ch_multiqc_files.mix(FASTQC_UMITOOLS_TRIMGALORE.out.fastqc_zip.collect{it[1]}.ifEmpty([]))
+    ch_multiqc_files = ch_multiqc_files.mix(FASTQC_UMITOOLS_TRIMGALORE.out.trim_zip.collect{it[1]}.ifEmpty([]))
+    ch_multiqc_files = ch_multiqc_files.mix(FASTQC_UMITOOLS_TRIMGALORE.out.trim_log.collect{it[1]}.ifEmpty([]))
 
     MULTIQC (
         ch_multiqc_files.collect(),
@@ -197,19 +216,6 @@ workflow TRANSCRIPTCORRAL {
         ch_multiqc_logo.toList()
     )
     multiqc_report = MULTIQC.out.report.toList()
-
-    //
-    // MODULE: Spades
-    //
-    // Need to add elements for the 'pacbio' and 'nanopore' inputs in the tuple.
-    ch_spades_input=ch_filtered_reads
-        .map { [ it[0], it[1], [], [] ] }
-
-    SPADES_SC (
-        ch_spades_input,
-        [],
-        []
-    )
 }
 
 /*

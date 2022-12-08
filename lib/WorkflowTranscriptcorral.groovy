@@ -46,6 +46,21 @@ class WorkflowTranscriptcorral {
         return yaml_file_text
     }
 
+    //
+    // Function that parses TrimGalore log output file to get total number of reads after trimming
+    //
+    public static Integer getTrimGaloreReadsAfterFiltering(log_file) {
+        def total_reads = 0
+        def filtered_reads = 0
+        log_file.eachLine { line ->
+            def total_reads_matcher = line =~ /([\d\.]+)\ssequences processed in total/
+            def filtered_reads_matcher = line =~ /shorter than the length cutoff[^:]+:\s([\d\.]+)/
+            if (total_reads_matcher) total_reads = total_reads_matcher[0][1].toFloat()
+            if (filtered_reads_matcher) filtered_reads = filtered_reads_matcher[0][1].toFloat()
+        }
+        return total_reads - filtered_reads
+    }
+
     public static String methodsDescriptionText(run_workflow, mqc_methods_yaml) {
         // Convert  to a named map so can be used as with familar NXF ${workflow} variable syntax in the MultiQC YML file
         def meta = [:]
