@@ -184,6 +184,8 @@ workflow TRANSCRIPTCORRAL {
         []
     )
 
+    ch_versions = ch_versions.mix(SPADES_SC.out.versions)
+
     //
     // MODULE: Pipeline reporting
     //
