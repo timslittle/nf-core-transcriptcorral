@@ -68,7 +68,8 @@ include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoft
 include { SPADES as SPADES_SC         } from '../modules/nf-core/spades/main'
 include { SPADES as SPADES_RNA        } from '../modules/nf-core/spades/main'
 include { SORTMERNA                   } from '../modules/nf-core/sortmerna/main'
-include { TRIMGALORE                  } from '../modules/nf-core/trimgalore/main'   
+include { TRIMGALORE                  } from '../modules/nf-core/trimgalore/main'
+include { BUSCO                       } from '../modules/nf-core/busco/main' 
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
