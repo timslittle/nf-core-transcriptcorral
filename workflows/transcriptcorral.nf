@@ -157,6 +157,26 @@ workflow TRANSCRIPTCORRAL {
     }
 
     //
+    // MODULE: HISAT2_BUILD of the genomes to remove
+    //
+
+    // TODO: Make it so that a named list of genomes could be provided.
+    if (params.filter_genome){
+        ch_filter_genome = Channel.file(params.filter_genome, checkIfExists: true)
+
+        HISAT2_BUILD(ch_filter_genome)
+
+        HISAT2_ALIGN(
+            ch_filtered_reads,
+            HISAT2_BUILD.out,
+            []
+        )
+        .out
+        .fastq
+        .set { ch_filtered_reads }
+    }
+
+    //
     // MODULE: Sortmerna: Remove ribosomal RNA reads
     //
     ch_sortmerna_multiqc = Channel.empty()
