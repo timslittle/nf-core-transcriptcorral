@@ -70,6 +70,8 @@ include { SPADES as SPADES_RNA        } from '../modules/nf-core/spades/main'
 include { SORTMERNA                   } from '../modules/nf-core/sortmerna/main'
 include { TRIMGALORE                  } from '../modules/nf-core/trimgalore/main'
 include { BUSCO                       } from '../modules/nf-core/busco/main' 
+include { HISAT2_BUILD                } from '../modules/nf-core/hisat2/build/main' 
+include { HISAT2_ALIGN                } from '../modules/nf-core/hisat2/align/main'     
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
