@@ -163,6 +163,7 @@ workflow TRANSCRIPTCORRAL {
     // TODO: Make it so that a named list of genomes could be provided.
     if (params.filter_genome){
         params.save_unaligned = true
+        params.hisat2_build_memory = 10.GB
         ch_filter_genome = Channel.fromPath(params.filter_genome, checkIfExists: true)
 
         HISAT2_BUILD(
