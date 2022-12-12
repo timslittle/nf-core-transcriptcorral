@@ -71,7 +71,7 @@ include { SORTMERNA                   } from '../modules/nf-core/sortmerna/main'
 include { TRIMGALORE                  } from '../modules/nf-core/trimgalore/main'
 include { BUSCO                       } from '../modules/nf-core/busco/main' 
 include { HISAT2_BUILD                } from '../modules/nf-core/hisat2/build/main' 
-include { HISAT2_ALIGN                } from '../modules/nf-core/hisat2/align/main'     
+include { HISAT2_ALIGN                } from '../modules/nf-core/hisat2/align/main'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -162,16 +162,20 @@ workflow TRANSCRIPTCORRAL {
 
     // TODO: Make it so that a named list of genomes could be provided.
     if (params.filter_genome){
-        ch_filter_genome = Channel.file(params.filter_genome, checkIfExists: true)
+        params.save_unaligned = true
+        ch_filter_genome = Channel.fromPath(params.filter_genome, checkIfExists: true)
 
-        HISAT2_BUILD(ch_filter_genome)
+        HISAT2_BUILD(
+            ch_filter_genome,
+            [],
+            []
+        )
 
         HISAT2_ALIGN(
             ch_filtered_reads,
-            HISAT2_BUILD.out,
+            HISAT2_BUILD.out.index,
             []
         )
-        .out
         .fastq
         .set { ch_filtered_reads }
     }
