@@ -33,6 +33,10 @@ process HISAT2_ALIGN {
     } else if (meta.strandedness == 'reverse') {
         strandedness = meta.single_end ? '--rna-strandness R' : '--rna-strandness RF'
     }
+
+    // Change to normal module code: splice site arguments
+    def splicesites = splicesites ? "--known-splicesite-infile ${splicesites}" : ''
+    
     def seq_center = params.seq_center ? "--rg-id ${prefix} --rg SM:$prefix --rg CN:${params.seq_center.replaceAll('\\s','_')}" : "--rg-id ${prefix} --rg SM:$prefix"
     if (meta.single_end) {
         def unaligned = params.save_unaligned ? "--un-gz ${prefix}.unmapped.fastq.gz" : ''
@@ -42,7 +46,7 @@ process HISAT2_ALIGN {
             -x \$INDEX \\
             -U $reads \\
             $strandedness \\
-            --known-splicesite-infile $splicesites \\
+            $splicesites \\
             --summary-file ${prefix}.hisat2.summary.log \\
             --threads $task.cpus \\
             $seq_center \\
@@ -65,6 +69,7 @@ process HISAT2_ALIGN {
             -1 ${reads[0]} \\
             -2 ${reads[1]} \\
             $strandedness \\
+            $splicesites \\
             --summary-file ${prefix}.hisat2.summary.log \\
             --threads $task.cpus \\
             $seq_center \\
@@ -73,7 +78,6 @@ process HISAT2_ALIGN {
             --no-discordant \\
             $args \\
             | samtools view -bS -F 4 -F 8 -F 256 - > ${prefix}.bam
-            # --known-splicesite-infile $splicesites \\
 
         if [ -f ${prefix}.unmapped.fastq.1.gz ]; then
             mv ${prefix}.unmapped.fastq.1.gz ${prefix}.unmapped_1.fastq.gz
