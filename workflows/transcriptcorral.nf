@@ -200,7 +200,7 @@ workflow TRANSCRIPTCORRAL {
     //
     // MODULE: Spades
     //
-    // Need to add elements for the 'pacbio' and 'nanopore' inputs in the tuple.
+    // TODO: Need to add elements for the 'pacbio' and 'nanopore' inputs in the tuple.
     ch_spades_input=ch_filtered_reads
         .map { [ it[0], it[1], [], [] ] }
 

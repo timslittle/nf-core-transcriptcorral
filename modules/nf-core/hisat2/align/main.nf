@@ -14,7 +14,7 @@ process HISAT2_ALIGN {
     path  splicesites
 
     output:
-    tuple val(meta), path("*.bam")                   , emit: bam
+    tuple val(meta), path("*.bam"), optional:true    , emit: bam
     tuple val(meta), path("*.log")                   , emit: summary
     tuple val(meta), path("*fastq.gz"), optional:true, emit: fastq
     path  "versions.yml"                             , emit: versions
@@ -65,16 +65,15 @@ process HISAT2_ALIGN {
             -1 ${reads[0]} \\
             -2 ${reads[1]} \\
             $strandedness \\
-            # --known-splicesite-infile $splicesites \\
             --summary-file ${prefix}.hisat2.summary.log \\
             --threads $task.cpus \\
             $seq_center \\
             $unaligned \\
             --no-mixed \\
-            --no-discordant 
-            #\\
-            #$args \\
-            #| samtools view -bS -F 4 -F 8 -F 256 - > ${prefix}.bam
+            --no-discordant \\
+            $args \\
+            | samtools view -bS -F 4 -F 8 -F 256 - > ${prefix}.bam
+            # --known-splicesite-infile $splicesites \\
 
         if [ -f ${prefix}.unmapped.fastq.1.gz ]; then
             mv ${prefix}.unmapped.fastq.1.gz ${prefix}.unmapped_1.fastq.gz
