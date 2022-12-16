@@ -65,6 +65,7 @@ include { FASTQC                      } from '../modules/nf-core/fastqc/main'
 include { MULTIQC                     } from '../modules/nf-core/multiqc/main'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
 
+include { CAT_FASTQ                   } from '../modules/nf-core/cat/fastq/main'   
 include { SPADES as SPADES_SC         } from '../modules/nf-core/spades/main'
 include { SPADES as SPADES_RNA        } from '../modules/nf-core/spades/main'
 include { SORTMERNA                   } from '../modules/nf-core/sortmerna/main'
@@ -89,26 +90,45 @@ workflow TRANSCRIPTCORRAL {
     //
     // SUBWORKFLOW: Read in samplesheet, validate and stage input files
     //
+
+    // Read in files and combine into individual channels the samples needing concatenating (based on sample prefix in the first column)
     INPUT_CHECK (
         ch_input
     )
+    .reads
+    .map {
+        meta, fastq ->
+            def meta_clone = meta.clone()
+            meta_clone.id = meta_clone.id.split('_')[0..-2].join('_')
+            [ meta_clone, fastq ]
+    }
+    .groupTuple(by: [0])
+    .branch {
+        meta, fastq ->
+            single  : fastq.size() == 1
+                return [ meta, fastq.flatten() ]
+            multiple: fastq.size() > 1
+                return [ meta, fastq.flatten() ]
+    }
+    .set { ch_fastq }
     ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
 
-    // //
-    // // MODULE: Run FastQC
-    // //
-    // FASTQC (
-    //     INPUT_CHECK.out.reads
-    // )
-    // ch_versions = ch_versions.mix(FASTQC.out.versions.first())
-
-    ch_reads=INPUT_CHECK.out.reads
+    //
+    // MODULE: Concatenate FastQ files from same sample if required
+    //
+    CAT_FASTQ (
+        ch_fastq.multiple
+    )
+    .reads
+    .mix(ch_fastq.single)
+    .set { ch_cat_fastq }
+    ch_versions = ch_versions.mix(CAT_FASTQ.out.versions.first().ifEmpty(null))
 
     //
     // SUBWORKFLOW: Read QC, extract UMI and trim adapters
     //
     FASTQC_UMITOOLS_TRIMGALORE (
-        ch_reads,
+        ch_cat_fastq,
         params.skip_fastqc || params.skip_qc,
         params.with_umi,
         params.skip_umi_extract,
