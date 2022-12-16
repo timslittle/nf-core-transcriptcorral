@@ -233,16 +233,23 @@ workflow TRANSCRIPTCORRAL {
     )
     ch_versions = ch_versions.mix(SPADES_SC.out.versions)
 
+    TRINITY(
+        ch_filtered_reads
+    )
+    ch_versions = ch_versions.mix(TRINITY.out.versions)
+
     //
     // Combine assemblies
     //
 
-    ch_assembly=SPADES_SC.out.scaffolds
+    SPADES_SC.out.scaffolds
+        .mix(TRINITY.out.transcript_fasta)
+        .set(ch_assembly)
 
     //
     // MODULE: BUSCO
     // 
-
+// TODO: Is BUSCO not waiting for Trinity to finish?
     BUSCO (
         ch_assembly,
         params.busco_lineage,
