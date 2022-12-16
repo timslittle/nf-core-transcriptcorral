@@ -170,6 +170,7 @@ workflow TRANSCRIPTCORRAL {
             []
         )
 
+        // Want the unmapped reads from ALIGN, in .fastq
         HISAT2_ALIGN(
             ch_filtered_reads,
             HISAT2_BUILD.out.index,
