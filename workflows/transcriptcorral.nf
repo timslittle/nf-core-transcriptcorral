@@ -244,6 +244,7 @@ workflow TRANSCRIPTCORRAL {
 
     SPADES_SC.out.scaffolds
         .mix(TRINITY.out.transcript_fasta)
+        .collectFile(name: "combined_assemblies.fasta", newLine: false, skip: 0)
         .set(ch_assembly)
 
     //
