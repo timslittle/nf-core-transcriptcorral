@@ -74,6 +74,7 @@ include { TRIMGALORE                  } from '../modules/nf-core/trimgalore/main
 include { BUSCO                       } from '../modules/nf-core/busco/main' 
 include { HISAT2_BUILD                } from '../modules/nf-core/hisat2/build/main' 
 include { HISAT2_ALIGN                } from '../modules/nf-core/hisat2/align/main'
+include { HMMER_HMMSEARCH } from '../modules/nf-core/hmmer/hmmsearch/main'  
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
