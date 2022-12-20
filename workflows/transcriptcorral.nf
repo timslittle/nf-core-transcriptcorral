@@ -189,11 +189,12 @@ workflow TRANSCRIPTCORRAL {
         if(params.filter_genome_index){
             ch_hisatIndex = Channel.fromPath(params.filter_genome_index)
         } else {
-            ch_hisatIndex = HISAT2_BUILD(
+            HISAT2_BUILD(
                 ch_filter_genome,
                 [],
                 []
-            ).out.index
+            ).index
+            .set { ch_hisatIndex }
         }
 
         // Want the unmapped reads from ALIGN, in .fastq
