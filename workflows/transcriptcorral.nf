@@ -243,8 +243,25 @@ workflow TRANSCRIPTCORRAL {
             []
         )
         ch_versions = ch_versions.mix(SPADES_SC.out.versions)
-
         ch_assembly = ch_assembly.mix(SPADES_SC.out.scaffolds)
+    }
+
+    //
+    // MODULE: Spades_RNA
+    //
+
+    if(params.assemble_spades_rna){
+        // TODO: Need to add elements for the 'pacbio' and 'nanopore' inputs in the tuple.
+        ch_spades_input=ch_filtered_reads
+            .map { [ it[0], it[1], [], [] ] }
+
+        SPADES_RNA (
+            ch_spades_input,
+            [],
+            []
+        )
+        ch_versions = ch_versions.mix(SPADES_RNA.out.versions)
+        ch_assembly = ch_assembly.mix(SPADES_RNA.out.scaffolds)
     }
 
     //
@@ -256,17 +273,12 @@ workflow TRANSCRIPTCORRAL {
             ch_filtered_reads
         )
         ch_versions = ch_versions.mix(TRINITY.out.versions)
-
         ch_assembly = ch_assembly.mix(TRINITY.out.transcript_fasta)
     }
 
     //
     // Use collect to ensure that downstream processes wait for all assemblies to be done.
     //
-
-// TODO: This may be making it run forever.
-    ch_assembly = ch_assembly
-        .collect()
 
     ch_assembly.collectFile(name: "combined_assemblies.fasta", newLine: false, skip: 0)
 
