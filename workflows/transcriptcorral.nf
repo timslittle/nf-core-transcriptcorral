@@ -186,16 +186,20 @@ workflow TRANSCRIPTCORRAL {
     if (params.filter_genome){
         ch_filter_genome = Channel.fromPath(params.filter_genome, checkIfExists: true)
 
-        HISAT2_BUILD(
-            ch_filter_genome,
-            [],
-            []
-        )
+        if(params.filter_genome_index){
+            ch_hisatIndex = Channel.fromPath(params.filter_genome_index)
+        } else {
+            ch_hisatIndex = HISAT2_BUILD(
+                ch_filter_genome,
+                [],
+                []
+            ).out.index
+        }
 
         // Want the unmapped reads from ALIGN, in .fastq
         HISAT2_ALIGN(
             ch_filtered_reads,
-            HISAT2_BUILD.out.index,
+            ch_hisatIndex,
             []
         )
         .fastq
@@ -259,6 +263,7 @@ workflow TRANSCRIPTCORRAL {
     // Use collect to ensure that downstream processes wait for all assemblies to be done.
     //
 
+// TODO: This may be making it run forever.
     ch_assembly = ch_assembly
         .collect()
 
