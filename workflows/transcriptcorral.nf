@@ -220,6 +220,9 @@ workflow TRANSCRIPTCORRAL {
         ch_versions = ch_versions.mix(SORTMERNA.out.versions.first())
     }
 
+    // Create empty assemblies channel which new assemblies will be added to.
+    ch_assembly = Channel.empty()
+
     //
     // MODULE: Spades_SC
     //
@@ -235,25 +238,28 @@ workflow TRANSCRIPTCORRAL {
             []
         )
         ch_versions = ch_versions.mix(SPADES_SC.out.versions)
+
+        ch_assembly = ch_assembly.mix(SPADES_SC.out.scaffolds)
     }
 
     //
     // MODULE: Trinity
     //
 
-    if(assemble_trinity){
+    if(params.assemble_trinity){
         TRINITY(
             ch_filtered_reads
         )
         ch_versions = ch_versions.mix(TRINITY.out.versions)
+
+        ch_assembly = ch_assembly.mix(TRINITY.out.transcript_fasta)
     }
 
     //
-    // Combine assemblies
+    // Use collect to ensure that downstream processes wait for all assemblies to be done.
     //
 
-    ch_assembly = SPADES_SC.out.scaffolds.ifEmpty{''}
-        .mix(TRINITY.out.transcript_fasta).ifEmpty{''}
+    ch_assembly = ch_assembly
         .collect()
 
     ch_assembly.collectFile(name: "combined_assemblies.fasta", newLine: false, skip: 0)
