@@ -245,10 +245,8 @@ workflow TRANSCRIPTCORRAL {
     ch_assembly = SPADES_SC.out.scaffolds
         .mix(TRINITY.out.transcript_fasta)
         .collect()
-        // .set(ch_assembly)
 
-        // .collectFile(name: "combined_assemblies.fasta", newLine: false, skip: 0)
-        
+    ch_assembly.collectFile(name: "combined_assemblies.fasta", newLine: false, skip: 0)
 
     //
     // MODULE: BUSCO
