@@ -221,30 +221,39 @@ workflow TRANSCRIPTCORRAL {
     }
 
     //
-    // MODULE: Spades
+    // MODULE: Spades_SC
     //
-    // TODO: Need to add elements for the 'pacbio' and 'nanopore' inputs in the tuple.
-    ch_spades_input=ch_filtered_reads
-        .map { [ it[0], it[1], [], [] ] }
 
-    SPADES_SC (
-        ch_spades_input,
-        [],
-        []
-    )
-    ch_versions = ch_versions.mix(SPADES_SC.out.versions)
+    if(params.assemble_spades_sc){
+        // TODO: Need to add elements for the 'pacbio' and 'nanopore' inputs in the tuple.
+        ch_spades_input=ch_filtered_reads
+            .map { [ it[0], it[1], [], [] ] }
 
-    TRINITY(
-        ch_filtered_reads
-    )
-    ch_versions = ch_versions.mix(TRINITY.out.versions)
+        SPADES_SC (
+            ch_spades_input,
+            [],
+            []
+        )
+        ch_versions = ch_versions.mix(SPADES_SC.out.versions)
+    }
+
+    //
+    // MODULE: Trinity
+    //
+
+    if(assemble_trinity){
+        TRINITY(
+            ch_filtered_reads
+        )
+        ch_versions = ch_versions.mix(TRINITY.out.versions)
+    }
 
     //
     // Combine assemblies
     //
 
-    ch_assembly = SPADES_SC.out.scaffolds
-        .mix(TRINITY.out.transcript_fasta)
+    ch_assembly = SPADES_SC.out.scaffolds.ifEmpty{''}
+        .mix(TRINITY.out.transcript_fasta).ifEmpty{''}
         .collect()
 
     ch_assembly.collectFile(name: "combined_assemblies.fasta", newLine: false, skip: 0)
