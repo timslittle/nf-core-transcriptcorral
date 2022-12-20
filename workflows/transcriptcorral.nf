@@ -242,15 +242,17 @@ workflow TRANSCRIPTCORRAL {
     // Combine assemblies
     //
 
-    SPADES_SC.out.scaffolds
+    ch_assembly = SPADES_SC.out.scaffolds
         .mix(TRINITY.out.transcript_fasta)
-        .collectFile(name: "combined_assemblies.fasta", newLine: false, skip: 0)
-        .set(ch_assembly)
+        .collect()
+        // .set(ch_assembly)
+
+        // .collectFile(name: "combined_assemblies.fasta", newLine: false, skip: 0)
+        
 
     //
     // MODULE: BUSCO
     // 
-// TODO: Is BUSCO not waiting for Trinity to finish?
     BUSCO (
         ch_assembly,
         params.busco_lineage,
