@@ -111,12 +111,14 @@ process EVIGENE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     #Perl script found in x
-    /camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/tr2aacds4.pl \\
-        -tidy \\
-        -NCPU $task.cpus \\
-        -MAXMEM $task.memory.toMega() \\
-        -log \\
-        -cdna multiassembly
+    #export PATH=${workflow.launchDir}/nf-core-transcriptcorral/bin/evigene/evigene/scripts/prot/:$PATH
+    ${workflow.launchDir}/nf-core-transcriptcorral/bin/evigene/evigene/scripts/prot/tr2aacds4.pl \\
+        -NCPU=$task.cpus \\
+        -MAXMEM=${task.memory.mega} \\
+        -logfile \\
+        -cdnaseq $multiassembly \\
+        -debug
+        #-tidy \\
     """
 }
 
@@ -315,7 +317,9 @@ workflow TRANSCRIPTCORRAL {
     // Use collect to ensure that downstream processes wait for all assemblies to be done.
     //
 
-    ch_assembly.collectFile(name: "combined_assemblies.fasta", newLine: false, skip: 0)
+    ch_assembly.collectFile(name: "combined_assemblies.fasta", 
+        newLine: false, skip: 0,
+        storeDir: 'combined_assemblies')
 
     //
     // PROCESS: EVIGENE
