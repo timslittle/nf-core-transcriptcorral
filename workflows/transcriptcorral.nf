@@ -85,6 +85,41 @@ include { HMMER_HMMSEARCH             } from '../modules/nf-core/hmmer/hmmsearch
 // Info required for completion email and summary
 def multiqc_report = []
 
+// EvidentialGene/EviGene process
+
+process EVIGENE {
+    tag "$meta.id"
+    label 'process_medium'
+
+    conda "bioconda::cd-hit=4.8.1 bioconda::exonerate=2.4 bioconda::blast=2.11.0"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 
+        "https://depot.galaxyproject.org/singularity/mulled-v2-962eae98c9ff8d5b31e1df7e41a355a99e1152c4:0ed9db56fd54cfea67041f80bdd8b8fac575112f-0" : 
+        "quay.io/biocontainers/mulled-v2-962eae98c9ff8d5b31e1df7e41a355a99e1152c4:0ed9db56fd54cfea67041f80bdd8b8fac575112f-0" }"
+
+    input:
+    tuple val(meta), path(multiassembly)
+
+    output:
+    tuple val(meta), path("*combined.okay.fa"), emit: metaassembly
+    path "versions.yml"                       , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    #Perl script found in x
+    /camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/tr2aacds4.pl \\
+        -tidy \\
+        -NCPU $task.cpus \\
+        -MAXMEM $task.memory.toMega() \\
+        -log \\
+        -cdna multiassembly
+    """
+}
+
 workflow TRANSCRIPTCORRAL {
 
     ch_versions = Channel.empty()
@@ -281,6 +316,16 @@ workflow TRANSCRIPTCORRAL {
     //
 
     ch_assembly.collectFile(name: "combined_assemblies.fasta", newLine: false, skip: 0)
+
+    //
+    // PROCESS: EVIGENE
+    //
+
+    // if(params.use_evigene){
+    EVIGENE (
+        ch_assembly
+    )
+    // }
 
     //
     // MODULE: BUSCO
