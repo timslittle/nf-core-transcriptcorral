@@ -316,19 +316,19 @@ workflow TRANSCRIPTCORRAL {
     //
     // Use collect to ensure that downstream processes wait for all assemblies to be done.
     //
-
+// TODO: Save the combined assembly file.
     ch_assembly.collectFile(name: "combined_assemblies.fasta", 
         newLine: false, skip: 0,
         storeDir: 'combined_assemblies')
 
     //
-    // PROCESS: EVIGENE
+    // PROCESS: EVIGENE - TODO: Get working
     //
 
     // if(params.use_evigene){
-    EVIGENE (
-        ch_assembly
-    )
+    // EVIGENE (
+    //     ch_assembly
+    // )
     // }
 
     //
@@ -340,6 +340,23 @@ workflow TRANSCRIPTCORRAL {
         params.busco_lineages_path,
         params.busco_config_file
     )
+
+    //
+    // MODULE: HMMer/hmmsearch
+    //
+
+    // ch_assemblyOrfs
+    //     .map{ [it[0], 
+    //         params.hmmsearch_hmmfile,
+    //         it[1],
+    //         [],
+    //         [],
+    //         [] ] }
+    //     .set(ch_hmmsearchInput)
+
+    // HMMER_HMMSEARCH (
+    //     ch_hmmsearchInput
+    // )
 
     //
     // MODULE: Pipeline reporting
