@@ -344,6 +344,19 @@ workflow TRANSCRIPTCORRAL {
     )
 
     //
+    // MODULE: Transdecoder - ORF detection
+    //
+
+    TRANSDECODER_LONGORF(
+        ch_assembly
+    )
+
+    TRANSDECODER_PREDICT(
+        ch_assembly,
+        TRANSDECODER_LONGORF.out.folder
+    )
+
+    //
     // MODULE: HMMer/hmmsearch
     //
 
