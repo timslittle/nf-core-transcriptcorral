@@ -169,7 +169,7 @@ workflow TRANSCRIPTCORRAL {
                 }
             }
             .set { ch_num_trimmed_reads }
-
+// TODO: Is MULTIQC_TSV_FAIL_TRIMMED running at all?
         MULTIQC_TSV_FAIL_TRIMMED (
             ch_num_trimmed_reads.collect(),
             ["Sample", "Reads after trimming"],
