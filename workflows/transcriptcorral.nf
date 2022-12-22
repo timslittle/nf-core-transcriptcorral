@@ -330,7 +330,12 @@ workflow TRANSCRIPTCORRAL {
                 
     } else {
         // Need to provide assembly for meta-assembly as a parameter
-        ch_assembly = Channel.fromPath(params.input)
+        ch_assembly = Channel.fromPath(params.input, checkIfExists: true)
+            .map { //Defining meta ID as the file name without the last element in '_' TODO: This only makes sense for paired end files not transcript files.
+                def meta = [:]
+                meta.id = it.getFileName().toString().split('_')[0..-2].join('_')
+                [meta, it] 
+                }
     }
 
     //
