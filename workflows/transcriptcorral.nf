@@ -330,7 +330,7 @@ workflow TRANSCRIPTCORRAL {
                 
     } else {
         // Need to provide assembly for meta-assembly as a parameter
-        ch_assembly = Channel.fromPath(params.provided_assembly)
+        ch_assembly = Channel.fromPath(params.input)
     }
 
     //
@@ -341,6 +341,8 @@ workflow TRANSCRIPTCORRAL {
         EVIGENE (
             ch_assembly
         )
+
+        ch_assembly = EVIGENE.out.metaassembly
     }
 
     //
@@ -410,9 +412,12 @@ workflow TRANSCRIPTCORRAL {
     ch_multiqc_files = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
     ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml'))
     // ch_multiqc_files = ch_multiqc_files.mix(CUSTOM_DUMPSOFTWAREVERSIONS.out.mqc_yml.collect())
+
+    if (!params.only_evigene) {
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC_UMITOOLS_TRIMGALORE.out.fastqc_zip.collect{it[1]}.ifEmpty([]))
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC_UMITOOLS_TRIMGALORE.out.trim_zip.collect{it[1]}.ifEmpty([]))
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC_UMITOOLS_TRIMGALORE.out.trim_log.collect{it[1]}.ifEmpty([]))
+    }
 
     MULTIQC (
         ch_multiqc_files.collect(),
