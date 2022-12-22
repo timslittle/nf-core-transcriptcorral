@@ -319,9 +319,11 @@ workflow TRANSCRIPTCORRAL {
     // Use collect to ensure that downstream processes wait for all assemblies to be done.
     //
 // TODO: Save the combined assembly file.
-    ch_assembly.collectFile(name: "combined_assemblies.fasta", 
-        newLine: false, skip: 0,
-        storeDir: 'results/combined_assemblies')
+    ch_assembly
+        .map{ it[1] } // To get the assembly files and not meta
+        .collectFile(name: "combined_assemblies.fa.gz", 
+            newLine: false, skip: 0,
+            storeDir: '${params.outdir}')
 
     //
     // PROCESS: EVIGENE - TODO: Get working
