@@ -321,7 +321,7 @@ workflow TRANSCRIPTCORRAL {
 // TODO: Save the combined assembly file.
     ch_assembly.collectFile(name: "combined_assemblies.fasta", 
         newLine: false, skip: 0,
-        storeDir: 'combined_assemblies')
+        storeDir: 'results/combined_assemblies')
 
     //
     // PROCESS: EVIGENE - TODO: Get working
@@ -342,6 +342,7 @@ workflow TRANSCRIPTCORRAL {
         params.busco_lineages_path,
         params.busco_config_file
     )
+    ch_versions = ch_versions.mix(BUSCO.out.versions)
 
     //
     // MODULE: Transdecoder - ORF detection
@@ -351,35 +352,40 @@ workflow TRANSCRIPTCORRAL {
         ch_assembly
     )
 
-    TRANSDECODER_PREDICT(
+    ch_assemblyOrfs = TRANSDECODER_PREDICT(
         ch_assembly,
         TRANSDECODER_LONGORF.out.folder
     )
+    .pep
+
+    ch_versions = ch_versions.mix(TRANSDECODER_LONGORF.out.versions)
+
 
     //
     // MODULE: HMMer/hmmsearch
     //
 
-    // ch_assemblyOrfs
-    //     .map{ [it[0], 
-    //         params.hmmsearch_hmmfile,
-    //         it[1],
-    //         [],
-    //         [],
-    //         [] ] }
-    //     .set(ch_hmmsearchInput)
+    ch_hmmsearchInput = ch_assemblyOrfs
+        .map{ [it[0], 
+            params.hmmsearch_hmmfile,
+            it[1],
+            [],
+            [],
+            [] ] }
 
-    // HMMER_HMMSEARCH (
-    //     ch_hmmsearchInput
-    // )
+    HMMER_HMMSEARCH (
+        ch_hmmsearchInput
+    )
+
+    ch_versions = ch_versions.mix(HMMER_HMMSEARCH.out.versions)
 
     //
     // MODULE: Pipeline reporting
     //
-
-    CUSTOM_DUMPSOFTWAREVERSIONS (
-        ch_versions.unique{ it.text }.collectFile(name: 'collated_versions.yml')
-    )
+// TODO: Find out why CUSTOM_DUMP is going forever and then uncomment its sections
+    // CUSTOM_DUMPSOFTWAREVERSIONS (
+    //     ch_versions.unique{ it.text }.collectFile(name: 'collated_versions.yml')
+    // )
 
     //
     // MODULE: MultiQC
@@ -393,7 +399,7 @@ workflow TRANSCRIPTCORRAL {
     ch_multiqc_files = Channel.empty()
     ch_multiqc_files = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
     ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml'))
-    ch_multiqc_files = ch_multiqc_files.mix(CUSTOM_DUMPSOFTWAREVERSIONS.out.mqc_yml.collect())
+    // ch_multiqc_files = ch_multiqc_files.mix(CUSTOM_DUMPSOFTWAREVERSIONS.out.mqc_yml.collect())
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC_UMITOOLS_TRIMGALORE.out.fastqc_zip.collect{it[1]}.ifEmpty([]))
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC_UMITOOLS_TRIMGALORE.out.trim_zip.collect{it[1]}.ifEmpty([]))
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC_UMITOOLS_TRIMGALORE.out.trim_log.collect{it[1]}.ifEmpty([]))
