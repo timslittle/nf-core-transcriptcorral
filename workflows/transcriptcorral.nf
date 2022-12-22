@@ -338,9 +338,9 @@ workflow TRANSCRIPTCORRAL {
     //
 
     if(params.use_evigene){
-    EVIGENE (
-        ch_assembly
-    )
+        EVIGENE (
+            ch_assembly
+        )
     }
 
     //
