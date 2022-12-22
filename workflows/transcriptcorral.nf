@@ -128,212 +128,220 @@ workflow TRANSCRIPTCORRAL {
 
     ch_versions = Channel.empty()
 
-    //
-    // SUBWORKFLOW: Read in samplesheet, validate and stage input files
-    //
+    // Option to only perform meta-assembly with evigene and no de novo assembly.
+    if (!params.only_evigene) {
 
-    // Read in files and combine into individual channels the samples needing concatenating (based on sample prefix in the first column)
-    INPUT_CHECK (
-        ch_input
-    )
-    .reads
-    .map {
-        meta, fastq ->
-            def meta_clone = meta.clone()
-            meta_clone.id = meta_clone.id.split('_')[0..-2].join('_')
-            [ meta_clone, fastq ]
-    }
-    .groupTuple(by: [0])
-    .branch {
-        meta, fastq ->
-            single  : fastq.size() == 1
-                return [ meta, fastq.flatten() ]
-            multiple: fastq.size() > 1
-                return [ meta, fastq.flatten() ]
-    }
-    .set { ch_fastq }
-    ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
+        //
+        // SUBWORKFLOW: Read in samplesheet, validate and stage input files
+        //
 
-    //
-    // MODULE: Concatenate FastQ files from same sample if required
-    //
-    CAT_FASTQ (
-        ch_fastq.multiple
-    )
-    .reads
-    .mix(ch_fastq.single)
-    .set { ch_cat_fastq }
-    ch_versions = ch_versions.mix(CAT_FASTQ.out.versions.first().ifEmpty(null))
-
-    //
-    // SUBWORKFLOW: Read QC, extract UMI and trim adapters
-    //
-    FASTQC_UMITOOLS_TRIMGALORE (
-        ch_cat_fastq,
-        params.skip_fastqc || params.skip_qc,
-        params.with_umi,
-        params.skip_umi_extract,
-        params.skip_trimming,
-        params.umi_discard_read
-    )
-    ch_versions = ch_versions.mix(FASTQC_UMITOOLS_TRIMGALORE.out.versions)
-
-    //
-    // Filter channels to get samples that passed minimum trimmed read count
-    //
-    ch_fail_trimming_multiqc = Channel.empty()
-    ch_filtered_reads = FASTQC_UMITOOLS_TRIMGALORE.out.reads
-    if (!params.skip_trimming) {
-        ch_filtered_reads
-            .join(FASTQC_UMITOOLS_TRIMGALORE.out.trim_log)
-            .map {
-                meta, reads, trim_log ->
-                    if (!meta.single_end) {
-                        trim_log = trim_log[-1]
-                    }
-                    num_reads = WorkflowTranscriptcorral.getTrimGaloreReadsAfterFiltering(trim_log)
-                    [ meta, reads, num_reads ]
-            }
-            .set { ch_num_trimmed_reads  }
-
-        ch_num_trimmed_reads
-            .map { meta, reads, num_reads -> if (num_reads > params.min_trimmed_reads) [ meta, reads ] }
-            .set { ch_filtered_reads }
-
-        ch_num_trimmed_reads
-            .map {
-                meta, reads, num_reads ->
-                if (num_reads <= params.min_trimmed_reads) {
-                    return [ "$meta.id\t$num_reads" ]
-                }
-            }
-            .set { ch_num_trimmed_reads }
-// TODO: Is MULTIQC_TSV_FAIL_TRIMMED running at all?
-        MULTIQC_TSV_FAIL_TRIMMED (
-            ch_num_trimmed_reads.collect(),
-            ["Sample", "Reads after trimming"],
-            'fail_trimmed_samples'
-        )
-        .set { ch_fail_trimming_multiqc }
-    }
-
-    //
-    // MODULE: HISAT2_BUILD of the genomes to remove
-    //
-
-    // TODO: Make it so that a named list of genomes could be provided.
-    if (params.filter_genome){
-        ch_filter_genome = Channel.fromPath(params.filter_genome, checkIfExists: true)
-
-        if(params.filter_genome_index){
-            ch_hisatIndex = Channel.fromPath(params.filter_genome_index)
-        } else {
-            HISAT2_BUILD(
-                ch_filter_genome,
-                [],
-                []
-            ).index
-            .set { ch_hisatIndex }
-        }
-
-        // Want the unmapped reads from ALIGN, in .fastq
-        HISAT2_ALIGN(
-            ch_filtered_reads,
-            ch_hisatIndex,
-            []
-        )
-        .fastq
-        .set { ch_filtered_reads }
-    }
-
-    //
-    // MODULE: Sortmerna: Remove ribosomal RNA reads
-    //
-    ch_sortmerna_multiqc = Channel.empty()
-    if (params.remove_ribo_rna) {
-        ch_sortmerna_fastas = Channel.from(ch_ribo_db.readLines()).map { row -> file(row, checkIfExists: true) }.collect()
-
-        SORTMERNA (
-            ch_filtered_reads,
-            ch_sortmerna_fastas
+        // Read in files and combine into individual channels the samples needing concatenating (based on sample prefix in the first column)
+        INPUT_CHECK (
+            ch_input
         )
         .reads
-        .set { ch_filtered_reads }
+        .map {
+            meta, fastq ->
+                def meta_clone = meta.clone()
+                meta_clone.id = meta_clone.id.split('_')[0..-2].join('_')
+                [ meta_clone, fastq ]
+        }
+        .groupTuple(by: [0])
+        .branch {
+            meta, fastq ->
+                single  : fastq.size() == 1
+                    return [ meta, fastq.flatten() ]
+                multiple: fastq.size() > 1
+                    return [ meta, fastq.flatten() ]
+        }
+        .set { ch_fastq }
+        ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
 
-        ch_sortmerna_multiqc = SORTMERNA.out.log
-        ch_versions = ch_versions.mix(SORTMERNA.out.versions.first())
-    }
-
-    // Create empty assemblies channel which new assemblies will be added to.
-    ch_assembly = Channel.empty()
-
-    //
-    // MODULE: Spades_SC
-    //
-
-    if(params.assemble_spades_sc){
-        // TODO: Need to add elements for the 'pacbio' and 'nanopore' inputs in the tuple.
-        ch_spades_input=ch_filtered_reads
-            .map { [ it[0], it[1], [], [] ] }
-
-        SPADES_SC (
-            ch_spades_input,
-            [],
-            []
+        //
+        // MODULE: Concatenate FastQ files from same sample if required
+        //
+        CAT_FASTQ (
+            ch_fastq.multiple
         )
-        ch_versions = ch_versions.mix(SPADES_SC.out.versions)
-        ch_assembly = ch_assembly.mix(SPADES_SC.out.scaffolds)
-    }
+        .reads
+        .mix(ch_fastq.single)
+        .set { ch_cat_fastq }
+        ch_versions = ch_versions.mix(CAT_FASTQ.out.versions.first().ifEmpty(null))
 
-    //
-    // MODULE: Spades_RNA
-    //
-
-    if(params.assemble_spades_rna){
-        // TODO: Need to add elements for the 'pacbio' and 'nanopore' inputs in the tuple.
-        ch_spades_input=ch_filtered_reads
-            .map { [ it[0], it[1], [], [] ] }
-
-        SPADES_RNA (
-            ch_spades_input,
-            [],
-            []
+        //
+        // SUBWORKFLOW: Read QC, extract UMI and trim adapters
+        //
+        FASTQC_UMITOOLS_TRIMGALORE (
+            ch_cat_fastq,
+            params.skip_fastqc || params.skip_qc,
+            params.with_umi,
+            params.skip_umi_extract,
+            params.skip_trimming,
+            params.umi_discard_read
         )
-        ch_versions = ch_versions.mix(SPADES_RNA.out.versions)
-        ch_assembly = ch_assembly.mix(SPADES_RNA.out.scaffolds)
-    }
+        ch_versions = ch_versions.mix(FASTQC_UMITOOLS_TRIMGALORE.out.versions)
 
-    //
-    // MODULE: Trinity
-    //
-
-    if(params.assemble_trinity){
-        TRINITY(
+        //
+        // Filter channels to get samples that passed minimum trimmed read count
+        //
+        ch_fail_trimming_multiqc = Channel.empty()
+        ch_filtered_reads = FASTQC_UMITOOLS_TRIMGALORE.out.reads
+        if (!params.skip_trimming) {
             ch_filtered_reads
-        )
-        ch_versions = ch_versions.mix(TRINITY.out.versions)
-        ch_assembly = ch_assembly.mix(TRINITY.out.transcript_fasta)
-    }
+                .join(FASTQC_UMITOOLS_TRIMGALORE.out.trim_log)
+                .map {
+                    meta, reads, trim_log ->
+                        if (!meta.single_end) {
+                            trim_log = trim_log[-1]
+                        }
+                        num_reads = WorkflowTranscriptcorral.getTrimGaloreReadsAfterFiltering(trim_log)
+                        [ meta, reads, num_reads ]
+                }
+                .set { ch_num_trimmed_reads  }
 
-    //
-    // Use collect to ensure that downstream processes wait for all assemblies to be done.
-    //
-// TODO: Save the combined assembly file.
-    ch_assembly
-        .map{ it[1] } // To get the assembly files and not meta
-        .collectFile(name: "combined_assemblies.fa.gz", 
-            newLine: false, skip: 0,
-            storeDir: '${params.outdir}')
+            ch_num_trimmed_reads
+                .map { meta, reads, num_reads -> if (num_reads > params.min_trimmed_reads) [ meta, reads ] }
+                .set { ch_filtered_reads }
+
+            ch_num_trimmed_reads
+                .map {
+                    meta, reads, num_reads ->
+                    if (num_reads <= params.min_trimmed_reads) {
+                        return [ "$meta.id\t$num_reads" ]
+                    }
+                }
+                .set { ch_num_trimmed_reads }
+    // TODO: Is MULTIQC_TSV_FAIL_TRIMMED running at all?
+            MULTIQC_TSV_FAIL_TRIMMED (
+                ch_num_trimmed_reads.collect(),
+                ["Sample", "Reads after trimming"],
+                'fail_trimmed_samples'
+            )
+            .set { ch_fail_trimming_multiqc }
+        }
+
+        //
+        // MODULE: HISAT2_BUILD of the genomes to remove
+        //
+
+        // TODO: Make it so that a named list of genomes could be provided.
+        if (params.filter_genome){
+            ch_filter_genome = Channel.fromPath(params.filter_genome, checkIfExists: true)
+
+            if(params.filter_genome_index){
+                ch_hisatIndex = Channel.fromPath(params.filter_genome_index)
+            } else {
+                HISAT2_BUILD(
+                    ch_filter_genome,
+                    [],
+                    []
+                ).index
+                .set { ch_hisatIndex }
+            }
+
+            // Want the unmapped reads from ALIGN, in .fastq
+            HISAT2_ALIGN(
+                ch_filtered_reads,
+                ch_hisatIndex,
+                []
+            )
+            .fastq
+            .set { ch_filtered_reads }
+        }
+
+        //
+        // MODULE: Sortmerna: Remove ribosomal RNA reads
+        //
+        ch_sortmerna_multiqc = Channel.empty()
+        if (params.remove_ribo_rna) {
+            ch_sortmerna_fastas = Channel.from(ch_ribo_db.readLines()).map { row -> file(row, checkIfExists: true) }.collect()
+
+            SORTMERNA (
+                ch_filtered_reads,
+                ch_sortmerna_fastas
+            )
+            .reads
+            .set { ch_filtered_reads }
+
+            ch_sortmerna_multiqc = SORTMERNA.out.log
+            ch_versions = ch_versions.mix(SORTMERNA.out.versions.first())
+        }
+
+        // Create empty assemblies channel which new assemblies will be added to.
+        ch_assembly = Channel.empty()
+
+        //
+        // MODULE: Spades_SC
+        //
+
+        if(params.assemble_spades_sc){
+            // TODO: Need to add elements for the 'pacbio' and 'nanopore' inputs in the tuple.
+            ch_spades_input=ch_filtered_reads
+                .map { [ it[0], it[1], [], [] ] }
+
+            SPADES_SC (
+                ch_spades_input,
+                [],
+                []
+            )
+            ch_versions = ch_versions.mix(SPADES_SC.out.versions)
+            ch_assembly = ch_assembly.mix(SPADES_SC.out.scaffolds)
+        }
+
+        //
+        // MODULE: Spades_RNA
+        //
+
+        if(params.assemble_spades_rna){
+            // TODO: Need to add elements for the 'pacbio' and 'nanopore' inputs in the tuple.
+            ch_spades_input=ch_filtered_reads
+                .map { [ it[0], it[1], [], [] ] }
+
+            SPADES_RNA (
+                ch_spades_input,
+                [],
+                []
+            )
+            ch_versions = ch_versions.mix(SPADES_RNA.out.versions)
+            ch_assembly = ch_assembly.mix(SPADES_RNA.out.scaffolds)
+        }
+
+        //
+        // MODULE: Trinity
+        //
+
+        if(params.assemble_trinity){
+            TRINITY(
+                ch_filtered_reads
+            )
+            ch_versions = ch_versions.mix(TRINITY.out.versions)
+            ch_assembly = ch_assembly.mix(TRINITY.out.transcript_fasta)
+        }
+
+        //
+        // Use collect to ensure that downstream processes wait for all assemblies to be done.
+        //
+    // TODO: Save the combined assembly file.
+        ch_assembly
+            .map{ it[1] } // To get the assembly files and not meta
+            .collectFile(name: "combined_assemblies.fa.gz", 
+                newLine: false, skip: 0,
+                storeDir: '${params.outdir}')
+                
+    } else {
+        // Need to provide assembly for meta-assembly as a parameter
+        ch_assembly = Channel.fromPath(params.provided_assembly)
+    }
 
     //
     // PROCESS: EVIGENE - TODO: Get working
     //
 
-    // if(params.use_evigene){
-    // EVIGENE (
-    //     ch_assembly
-    // )
-    // }
+    if(params.use_evigene){
+    EVIGENE (
+        ch_assembly
+    )
+    }
 
     //
     // MODULE: BUSCO
