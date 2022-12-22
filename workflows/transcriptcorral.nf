@@ -326,7 +326,7 @@ workflow TRANSCRIPTCORRAL {
             .map{ it[1] } // To get the assembly files and not meta
             .collectFile(name: "combined_assemblies.fa.gz", 
                 newLine: false, skip: 0,
-                storeDir: '${params.outdir}')
+                storeDir: params.outdir)
                 
     } else {
         // Need to provide assembly for meta-assembly as a parameter
