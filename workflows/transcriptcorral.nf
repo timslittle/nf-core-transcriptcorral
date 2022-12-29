@@ -102,8 +102,9 @@ process EVIGENE {
     tuple val(meta), path(multiassembly)
 
     output:
-    tuple val(meta), path("okayset/*.okay.aa"), emit: metaassembly
-    path "versions.yml"                       , emit: versions
+    tuple val(meta), path("okayset/*.okay.aa") , emit: metaassemblyOrfs
+    tuple val(meta), path("okayset/*.okay.cds"), emit: metaassembly
+    path "versions.yml"                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -338,33 +339,38 @@ workflow TRANSCRIPTCORRAL {
                 }
     }
 
-    //
-    // PROCESS: EVIGENE - TODO: Get working
-    //
+    // Process the assemblies. Can use EvidentialGene to filter for best transcripts, find ORFs and translate. Or use Transdecoder to find and translate ORFs.
 
-    if(params.use_evigene){
+    if(params.use_evigene || params.only_evigene){
+
+        //
+        // PROCESS: EVIGENE
+        //
+
         EVIGENE (
             ch_assembly
         )
 
-        ch_assembly = EVIGENE.out.metaassembly
-    }
+        ch_assemblyOrfs = EVIGENE.out.metaassemblyOrfs
 
-    //
-    // MODULE: Transdecoder - ORF detection
-    //
+    } else {
 
-    TRANSDECODER_LONGORF(
-        ch_assembly
-    )
+        //
+        // MODULE: Transdecoder - ORF detection
+        //
 
-    ch_assemblyOrfs = TRANSDECODER_PREDICT(
-        ch_assembly,
-        TRANSDECODER_LONGORF.out.folder
-    )
-    .pep
+        TRANSDECODER_LONGORF(
+            ch_assembly
+        )
 
-    ch_versions = ch_versions.mix(TRANSDECODER_LONGORF.out.versions)
+        ch_assemblyOrfs = TRANSDECODER_PREDICT(
+            ch_assembly,
+            TRANSDECODER_LONGORF.out.folder
+        )
+        .pep
+
+        ch_versions = ch_versions.mix(TRANSDECODER_LONGORF.out.versions)
+        }
 
     //
     // MODULE: BUSCO
