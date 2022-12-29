@@ -316,7 +316,7 @@ workflow TRANSCRIPTCORRAL {
                 []
             )
             ch_versions = ch_versions.mix(SPADES_RNA.out.versions)
-            ch_assembly = ch_assembly.mix(SPADES_RNA.out.scaffolds)
+            ch_assembly = ch_assembly.mix(SPADES_RNA.out.transcripts)
         }
 
         //
