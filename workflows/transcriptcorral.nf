@@ -114,13 +114,16 @@ process EVIGENE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2022.05.07' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    #Perl script found in x
+    
+    ${workflow.projectDir}/bin/evigene/evigene/scripts/rnaseq/trformat.pl \\
+        $multiassembly \\
+        > formatted_multiassembly.fa
 
     ${workflow.projectDir}/bin/evigene/evigene/scripts/prot/tr2aacds4.pl \\
         -NCPU=$task.cpus \\
         -MAXMEM=${task.memory.mega} \\
         -logfile \\
-        -cdnaseq $multiassembly \\
+        -cdnaseq formatted_multiassembly.fa \\
         -tidy \\
         $args
     
