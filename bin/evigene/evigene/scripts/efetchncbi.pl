@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # Author:  Oleg Khovayko
 # File Description: eSearch/eFetch calling example

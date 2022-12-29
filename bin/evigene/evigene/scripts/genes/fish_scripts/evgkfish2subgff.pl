@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evgkfish2subgff.pl
 # Genome annots with cds2aa checked, trasm pubaa translate exceptions
 

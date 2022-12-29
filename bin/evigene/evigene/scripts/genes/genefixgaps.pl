@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # genefixgaps.pl from geneattr.pl
 
 =item about

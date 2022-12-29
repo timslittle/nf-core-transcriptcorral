@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # overlapeval.pl from overlapfilter.perl
 
 =item usage

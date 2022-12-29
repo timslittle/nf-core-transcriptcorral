@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # gnodes_sumasmgcn2rtab.pl
 
 =item usage

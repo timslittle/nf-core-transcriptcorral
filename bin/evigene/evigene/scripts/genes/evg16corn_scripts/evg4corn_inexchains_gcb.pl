@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # intronchains_gcb.pl 
 
 =item about

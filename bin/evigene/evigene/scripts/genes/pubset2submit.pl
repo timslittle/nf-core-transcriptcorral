@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evgs/genes/pubset2submit.pl 
 
 =item pubset2submit.pl

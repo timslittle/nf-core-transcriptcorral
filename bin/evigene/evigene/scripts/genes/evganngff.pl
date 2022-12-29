@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evigene/scripts/genes/evganngff.pl 
 
 =item usage

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # clstr_pubsame.pl
 
 my $pMINLEN = $ENV{minlen} || 0.95;

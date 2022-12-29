@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # Old /usr/local/bin/perl -w
 
 # Author:  Oleg Khovayko

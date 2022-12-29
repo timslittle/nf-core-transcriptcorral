@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # gnodes_sam2ucgcov.pl
 # special case of cov depth calc for uniq conserved genes, busco etc;
 # C.UCG = Lread * Nread / Width_gene

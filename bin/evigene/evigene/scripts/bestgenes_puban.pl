@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # bestgenes_puban.pl
 # ?? merge into  evigene/scripts/bestgenes_update.pl
 # cat aphid2pub8d-{attr,homolog,express,gequal,name}.tab | env table=1 ../bestgenes_puban.pl > aphid2pub8d.attr.tbl

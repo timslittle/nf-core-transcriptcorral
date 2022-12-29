@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evg_buscogenesum.pl
 # usage: env dotab=1|0 summary=busco.sum.txt evg_buscogenesum.pl buscof/full_table*.tsv
 # or:  cat manybusco*/full_table*.tsv | env dotab=1|0 summary=busco.sum.txt evg_buscogenesum.pl

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # locustab_basic.pl was gmaploci_basic.pl
 # merge in locusgmapsub.sh here as perl..
 

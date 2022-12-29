@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # gnodes_samaddrdid.pl cut from evigene/scripts/genoasm/gnodes_sam2covtab8e.pl
 
 =item UPD21AUG20: readReadIds() now is BIG-MEM-PIG

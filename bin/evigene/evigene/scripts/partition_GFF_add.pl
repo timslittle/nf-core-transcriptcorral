@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # partition_GFF_add.pl from partition_GFF_genome.pl
 # d.gilbert: generalized from partition_EVM_inputs
 # input: partition list + any GFF files

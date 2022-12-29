@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # asmrna_dupfilter.pl V4,2017.03
 
 =item about

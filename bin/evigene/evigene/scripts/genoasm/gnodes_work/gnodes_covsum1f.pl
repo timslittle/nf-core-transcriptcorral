@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # gnodes_covsum.pl for evigene/scripts/genoasm/ 
 # from daphnia3covfilt.pl, daphnia3covtables.pl
 

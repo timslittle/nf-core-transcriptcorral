@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # rxpastecounts.pl
 
 # egrep '^HS_.._X_' ../dmrna5.groups.info | head

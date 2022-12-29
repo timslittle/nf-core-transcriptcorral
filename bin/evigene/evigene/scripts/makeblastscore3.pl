@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # makeblastscore2.pl   predictor-ortho.blastp predictor-self.blastp > predictor.blscore
 #  cut from annotate_predictions.pl
 

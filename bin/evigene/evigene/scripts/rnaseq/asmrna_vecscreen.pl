@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evigene/scripts/rnaseq/asmrna_vecscreen.pl
 
 =item about asmrna_vecscreen

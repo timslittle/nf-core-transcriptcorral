@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # make_consensus.pl cut from tr2aacds2c.pl
 # in: mygenes.nr.cds of fastanrdb;  out: cdsnrseq.consensus
 

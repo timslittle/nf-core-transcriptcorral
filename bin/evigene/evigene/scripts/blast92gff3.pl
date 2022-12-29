@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # blast92gff3.pl
 
 =head1 NAME

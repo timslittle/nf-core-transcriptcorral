@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evigene/scripts/genes/overinchain2locus.pl
 
 =item overintron chain.table to locus classed genes

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # gnodes_pipe.pl for evigene/scripts/genoasm/ 
 
 =item usage 

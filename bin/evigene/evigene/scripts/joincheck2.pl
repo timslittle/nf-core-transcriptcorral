@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # joincheck.pl : check gene annots for join evidence
 
 =item about

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # tall2agp.pl
 # in: $dmag/submitf/pubgenome/reads454f/asmnew/nwbdmag24g7c_allctg-dmag7finall9b.tall6
 # out: dmag7gene_ctgmap.agp

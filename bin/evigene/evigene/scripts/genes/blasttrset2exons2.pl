@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evigene/scripts/genes/blasttrset2exons.pl
 
 =item about

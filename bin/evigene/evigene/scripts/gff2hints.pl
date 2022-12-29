@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # gff2hints.pl
 # convert a GFF evidence file 
 # to augustus hints file 

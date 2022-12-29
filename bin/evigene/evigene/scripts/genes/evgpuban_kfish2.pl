@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evgpuban_kfish2.pl 
 # cut down from bestgenes_puban_kfish.pl
 # extensive revision, now just for kfish2 annot tables .. generalize hopefully

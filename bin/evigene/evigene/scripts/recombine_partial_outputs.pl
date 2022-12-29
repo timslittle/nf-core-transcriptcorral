@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 ## from recombine_EVM_partial_outputs.pl
 ## this one just reads gff output from partitions, and adjusts location to full genome/scaffold locs.

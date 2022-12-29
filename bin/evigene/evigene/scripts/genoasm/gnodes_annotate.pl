@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # gnodes2_annotate.pl for evigene/scripts/genoasm/ 
 
 =item usage gnodes2_annotate

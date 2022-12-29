@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evigene/scripts/genoasm/chrfasta2agp.pl from abyss-fatoagp.pl
 # Convert a FASTA file of scaffolds to a FASTA file of contigs and an AGP file.
 # Written by Shaun Jackman <sjackman@bcgsc.ca>.

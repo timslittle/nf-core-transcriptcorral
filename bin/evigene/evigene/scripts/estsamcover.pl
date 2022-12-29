@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # estsamcover.pl 
 #  transcripts coverage by est/rnaseq, for SAM/BAM input alignments
 #  estblastcover.pl converted to SAM input

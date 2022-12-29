@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # cdshexprob.pl
 # test code for scoring coding potential via cds hexamers
 # update for mrna w/ cds offset info, calc code/nocode=utr likelyhood

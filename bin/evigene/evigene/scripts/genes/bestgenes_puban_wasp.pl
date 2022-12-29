@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # bestgenes_puban.pl
 
 ## FIXME: wasp tilex groups > replace estgroup, need new express.tab w/ tigroup class

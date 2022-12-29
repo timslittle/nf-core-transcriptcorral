@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # asmrna2refjoins.pl
 # parse joins in align.tab of asmrna2refalign.sh
 

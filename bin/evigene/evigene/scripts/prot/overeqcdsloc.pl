@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # overeqcdsloc.pl evg2anofunz4b_cds.tall3d >  evg2anofunz4b_cds.eqgenebl
 
 =item about

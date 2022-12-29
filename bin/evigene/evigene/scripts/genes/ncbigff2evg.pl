@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # ncbigff2evg.pl
 
 # kfish ncbi.gff to usable genes gff

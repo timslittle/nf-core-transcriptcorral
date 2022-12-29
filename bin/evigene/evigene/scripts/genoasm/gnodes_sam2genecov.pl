@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # gnodes_sam2genecov.p
 
 =item about gnodes_sam2genecov.pl 

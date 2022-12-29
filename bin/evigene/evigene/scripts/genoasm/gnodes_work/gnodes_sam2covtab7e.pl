@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # sam2covtab7b.pl aka evigene/scripts/genoasm/gnodes_sam2covtab.pl
 # from make_cdsxchr_covtab3h.pl, samcopyn5tab.sh
 

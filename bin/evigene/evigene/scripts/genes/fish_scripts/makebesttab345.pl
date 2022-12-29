@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # makebesttab345.pl
 # /bio/bio-grid/kfish2/submitf/ 
 # from submitf/gmapn/findcds4upd/makecdstab.sh and kfish2/submitf/evgkfish2subgff.pl

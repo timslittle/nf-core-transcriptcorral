@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # altbest.pl : pull valid alt-transcript assemblies
 
 =item about

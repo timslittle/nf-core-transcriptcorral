@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # splign2evgff.pl : convert ncbi splign (mrna x genome) exon alignment table to gene.gff
 
 use strict;

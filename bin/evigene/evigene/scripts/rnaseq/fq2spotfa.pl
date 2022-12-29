@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 ## fq2spotfa.pl fastq pair files _1/2.fq to spot (join 1/2) fasta, 
 
 $SAMESIZE=$ENV{samesize}||0; # default on?

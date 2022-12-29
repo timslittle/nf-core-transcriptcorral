@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # asmrna2refalign_stats.pl
 # see: evigene_docwork/evigene_bugs10_aaqual.txt
 # cat $pt.aligny.tab | sort -k1,1 -k14,14nr -k6,6nr -k4,4r | env bestlist=0 g1=0 nt=30643 pc=80 na=$pt perl asmrna2refalign_stats.pl

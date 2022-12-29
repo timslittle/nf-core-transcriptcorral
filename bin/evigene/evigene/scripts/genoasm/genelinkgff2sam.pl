@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # genelinkgff2sam.pl
 
 =item about genelinkgff2sam.pl 

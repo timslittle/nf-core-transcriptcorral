@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # cdsalignkaks.pl
 # from  evigene run_cdsaln_kaks.sh, blastcds2axt.pl,
 # expand this to add more cds align stats? basic refcds x testcds qual stats, as per aa homol

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # splitmainalt.pl
 # env idtab=kf2pub11_both.renewids nam=kf2pub11_both2a perl splitmainalt.pl  kf2pub11_both.an2.gff
 

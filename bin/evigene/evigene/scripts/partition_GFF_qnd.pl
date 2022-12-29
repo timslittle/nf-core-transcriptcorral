@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # partition_GFF_qnd.pl from partition_GFF_genome.pl
 # d.gilbert: quick and dirty form of partition_GFF_add.pl
 # ?? no fasta

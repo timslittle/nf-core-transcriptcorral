@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # eval_orthogroup_genesets.pl
 # rename? evorthogenes.pl
 

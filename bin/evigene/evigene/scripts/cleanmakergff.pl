@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # cleanmakergff.pl
 # need also expand exon,CDS with 2+ parent IDs, convert to complete mRNA records
 # oops, not good enough, need to collect all of gene record and expand mRNAs as sequential mRNA1/exons1, mRNA2/exons2..

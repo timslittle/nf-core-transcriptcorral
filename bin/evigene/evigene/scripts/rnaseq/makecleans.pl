@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # make clean.sam, rrna.sam with hardclip for cufflinks v0.6
 # samtools -F 0x104 = drop unmapped(4), duplicates(x100)
 # ** revise DO NOT drop dupls, for cufflinks, need for paralog finding **

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # bestgenes_puban.pl
 
 # cacao3 version 2011.oct, from aphid2

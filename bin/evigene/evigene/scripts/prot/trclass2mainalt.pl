@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # trclass2mainalt.pl
 
 =item trclass2mainalt

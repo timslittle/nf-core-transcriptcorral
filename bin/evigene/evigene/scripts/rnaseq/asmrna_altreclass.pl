@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # altreclass.pl : evigene alt-reclassifier
 
 ## FIXME: *** input aa-size in trclass is wrong, no gap adjust; 

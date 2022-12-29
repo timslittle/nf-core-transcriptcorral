@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # gbrnaseqs.pl : ncbi genomes/SPECIES/RNA/rna.gbk parser for gene transcripts, proteins, annots
 
 =item about evigene/scripts/genes/gbrnaseqs.pl

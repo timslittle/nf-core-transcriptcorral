@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # cdclstr_merge.pl
 # usage:  cat $pt.{ok_cd,poor_cd}.aa.clstr | cdclstr_merge.pl > $pt-merged.aa.clstr
 # ?? add keepids=file.ids to leave out useless rows of merge

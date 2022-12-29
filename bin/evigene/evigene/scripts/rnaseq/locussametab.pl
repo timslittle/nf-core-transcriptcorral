@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # sameloctab.pl
 
 =item usage locussametab.pl  

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # blast2ctgmap.pl
 ## variants for scarpa, sopra scaffolders
 ## in: contigs_scafs.blastns 

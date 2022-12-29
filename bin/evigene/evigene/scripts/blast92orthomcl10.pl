@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # blast92orthomcl10.pl
 
 =item update 10

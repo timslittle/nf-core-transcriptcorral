@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # gnodes_genescov.pl
 # from gnodes_covsum.pl for evigene/scripts/genoasm/ 
 

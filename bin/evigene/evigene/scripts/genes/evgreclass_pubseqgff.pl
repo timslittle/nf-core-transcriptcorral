@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # pubseqgff.pl for evg2tribol; merge w/ pubseq.sh
 # see bugs/beetlet/tcas4evg/beetle_tcas4evg1.info
 

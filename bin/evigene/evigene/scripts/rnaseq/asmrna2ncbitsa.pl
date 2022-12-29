@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # asmrna2ncbitsa.pl
 
 =item about

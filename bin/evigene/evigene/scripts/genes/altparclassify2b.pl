@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # altparclassify.pl
 # cut from  evigene altpars/reclassaltpar.pl
 

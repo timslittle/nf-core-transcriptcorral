@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # # eval_orthodb_groups.pl
 
 =item about

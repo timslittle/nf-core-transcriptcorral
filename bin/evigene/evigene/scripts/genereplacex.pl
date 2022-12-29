@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # genereplacex.pl : replace fix.gff into pub.gff w/o changing mRNA, but need checks on changes, misses.
 
 =item about

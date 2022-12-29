@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # asmrna_equalgenes.pl
 # gene2asmrna.pl
 

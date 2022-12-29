@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evigene/scripts/genes/intronoktab.pl  introns.gff genes.gff > intronok.tab
 
 # ** FIXME need location sort exons/gene for some genes.gff 

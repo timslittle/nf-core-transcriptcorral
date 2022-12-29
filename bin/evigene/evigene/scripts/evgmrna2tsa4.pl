@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evgmrna2tsa4.pl stub to replace   evgmrna2tsa2.pl;   
 
 =item about

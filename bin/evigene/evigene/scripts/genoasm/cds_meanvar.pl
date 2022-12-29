@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 # loctab meanvar
 # cat dmag19skasm.cds_rdcovk27cb.loctab | \

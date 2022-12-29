@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # fqsrasplit.pl fastq , split read pairs /1 /2 in same file into _1.fq, _2.fq
 
 foreach $fq ( @ARGV ) {

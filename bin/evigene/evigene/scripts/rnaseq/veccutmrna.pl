@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # veccutmrna.pl
 ## test/work script for evigene/scripts/evgmrna2tsa.pl
 

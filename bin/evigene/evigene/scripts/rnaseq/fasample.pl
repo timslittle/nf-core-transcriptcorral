@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # fasample.pl : sample subset of _1.fa, _2.fa paired rnaseq
 # fasample.pl -parts 5 -nnnskip input_1.fa[.gz] (assume _2.fa or ignore)
 # .. want variants for .fastq (1 file, 2 pair files) and .fasta2 pair file

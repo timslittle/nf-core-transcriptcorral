@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evigene/genoasm/chragp2fasta.pl from chragp2contigs.pl
 
 use strict;

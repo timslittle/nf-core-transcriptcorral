@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evigene/namecleangb.pl  from evigene2genbanktbl.pl
 
 use FindBin;

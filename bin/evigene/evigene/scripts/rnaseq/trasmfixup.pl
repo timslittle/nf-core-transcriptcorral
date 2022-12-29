@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # trasmfixup.pl
 
 ## FIXed: add both strands.an.gff | overbest > bestofboth.gff

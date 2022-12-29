@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # estblastcover.pl 
 #  transcripts coverage by ests, for blastn -query trs -db ests
 #  cut from makeblastscore // annotate_predictions.pl

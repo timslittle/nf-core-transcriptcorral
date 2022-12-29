@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 =item overjoinspan.pl 
     from overlapjoins.pl

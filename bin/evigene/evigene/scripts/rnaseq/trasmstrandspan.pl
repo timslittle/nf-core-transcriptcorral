@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # trasmstrandspan.pl
 
 =item about trasmstrandspan

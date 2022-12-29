@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 my $debug=1;
 my $vprefix="sub1."; # subperf7

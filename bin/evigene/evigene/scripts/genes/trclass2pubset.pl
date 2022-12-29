@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evgs/genes/trclass2pubset.pl 
 
 =item trclass2pubset.pl

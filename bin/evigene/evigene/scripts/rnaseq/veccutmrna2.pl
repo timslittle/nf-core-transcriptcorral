@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # veccutmrna.pl
 
 =item about veccutmrna = dev script for evigene/scripts/evgmrna2tsa

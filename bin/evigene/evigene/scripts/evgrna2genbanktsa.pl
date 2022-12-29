@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evgrna2genbanktsa.pl or mrna2tsa.pl
 
 =item notes

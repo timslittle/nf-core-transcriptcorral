@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # exonregion.pl
 
 =item about
@@ -354,7 +354,7 @@ __END__
   wait
 
 #...
-  #!/usr/bin/perl
+  #!/usr/bin/env perl
   # exonrclust.pl
   use strict;
   use Getopt::Long;

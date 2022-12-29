@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evigene/scripts/prot/aanstat.pl
 # see evigene/scripts/prot/aastat.sh
 # add count aa>=100 (or opt)

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # cdsxref.pl : compare ref-exons found, align from blastn tables
 # env byhit=1 allg=1 ./cdsxref.pl cacao17uniqcdsx-arath3trsets.blastn
 

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # blastab2sam.pl
 
 =item blastab2sam.pl usage

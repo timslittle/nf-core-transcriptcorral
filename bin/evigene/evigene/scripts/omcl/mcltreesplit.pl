@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # mcltreesplit.pl
 # revise this to do better job; missing many good groupings
 # also try for 2nd level, higher groups (as ARC1,2,3.. id?)

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evigene/scripts/genes/tr2ncrna.pl
 # parts from altreclass.pl, trclass_resolve_strandmix.pl 
 

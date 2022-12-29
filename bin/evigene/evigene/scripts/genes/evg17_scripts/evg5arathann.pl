@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evg5arathann.pl
 
 my $IDPRE="Arath5nEV";

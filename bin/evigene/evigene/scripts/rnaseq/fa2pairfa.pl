@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # fa2pairfa.pl : paste _1.fa, _2.fa to one file .fa2 (assumes _1,_2 have identical entries, same order)
 
 use strict;

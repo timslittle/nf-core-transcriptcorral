@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # commonexons.pl < geneset.exontab
 
 =item about 

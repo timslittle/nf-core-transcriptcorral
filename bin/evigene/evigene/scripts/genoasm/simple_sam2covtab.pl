@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # simple_sam2covtab.pl
 
 =item 

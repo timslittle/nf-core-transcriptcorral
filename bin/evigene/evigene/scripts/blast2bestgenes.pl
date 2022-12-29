@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # blast2bestgenes.pl
 
 =item about blast2bestgenes 

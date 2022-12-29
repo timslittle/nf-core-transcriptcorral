@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # gffggb.perl
 # cat dmel_3L_172k.thmap2.gff | perl -pe's/ID=\w+;//' | sort -k3,3 -k9,9 | env s=src1 perl gfgb.perl \
 # | sort -k3,3n > dmel_3L_172k.thmap2.ggb

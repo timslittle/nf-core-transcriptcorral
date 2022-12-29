@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evigene/genes/trclass_resolve_strandmix.pl
 # parts from altreclass.pl : evigene alt-reclassifier
 

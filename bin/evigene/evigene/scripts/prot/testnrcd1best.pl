@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # testnrcd1best.pl : evg tr2aacds failing here.
 
 use strict;

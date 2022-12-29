@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evigene/scripts/prot/cdclstr_samesize.pl : cd-hit .clstr parser, from cd-hit scripts
 
 my $pMINLEN = $ENV{minlen} || 0.95;  # as prop 0.90 

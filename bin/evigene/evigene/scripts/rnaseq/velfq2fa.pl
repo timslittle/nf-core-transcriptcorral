@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # fastq , merge /1 /2 into velvet.fa2 format
 # input .fq1, fq2 already revcomp/1, sorted.
 

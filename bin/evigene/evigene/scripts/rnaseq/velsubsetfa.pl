@@ -1,4 +1,4 @@
-#!/usr/bin/perl	
+#!/usr/bin/env perl	
 # env suf=fa2 list=bigsub.list velsubsetfa.pl  *.mapt.fa2.gz
 
 $suf= $ENV{suf}||"fa";

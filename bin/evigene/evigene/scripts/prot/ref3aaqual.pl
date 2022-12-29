@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # ref3aaqual.pl
 # /bio/bio-grid/aabugs4/bugs/omclbugs10/ref3aaqual
 # rewrite sumqual2.sh to add stats: sd, sem, t-test for group compares (versions)

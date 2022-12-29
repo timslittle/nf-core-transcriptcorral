@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # blastcds2axt.pl : convert blastn -q xxx.cds -db other to axt align format
 
 =item about blastcds2axt

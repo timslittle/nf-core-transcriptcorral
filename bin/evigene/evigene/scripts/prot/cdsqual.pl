@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # cdsqual.pl : mod from evigene/scripts/cdna_evigenesub.pm and prot/aaqual.sh
 # adds coding potential calcs on CDS seq: Fickett + codon-usage hexamers, coding-class (code,nocode,unkn)
 # tested vs cpat calcs, same fickett score, similar hex (diff calc), similar class call

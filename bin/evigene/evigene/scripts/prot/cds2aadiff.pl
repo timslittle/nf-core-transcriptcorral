@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # cds2aadiff.pl : calc genes.cds2aa <> genes.aa 
 # cat $genes.cds2aa $genes.aa  | cds2aadiff.pl  > $genes.diffa
 # fixme: cds2aadiff.pl -cds $genes.cds2aa -aa $genes.aa > $genes.diffa

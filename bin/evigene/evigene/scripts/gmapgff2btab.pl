@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # gmapgff2btab.pl
 
 =item about gmapgff2btab.pl

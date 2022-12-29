@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 ## AUTHORS: Li Li, Feng Chen <fengchen@sas.upenn.edu>
 ## ORTHOMCL [2007-04-04] Version 1.4
 ## mod for evigene uses, d.g.gilbert, 2013 : evigene/scripts/omcl/orthomcl_evg.pl

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # kfish2_geneclass.pl
 
 =item run

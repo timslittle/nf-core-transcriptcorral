@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evgs/genes/altbest2pubset.pl 
 
 =item altbest2pubset.pl

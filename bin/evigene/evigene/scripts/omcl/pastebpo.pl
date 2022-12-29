@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # pastebpo.pl
 # gunzip -c aabugs_filtered.bpo.gz | \
 # cat omclfilt1_Aug_10/aabugs_omclgn.tab dmel_prota.ids - \

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # ncbi_mapview2gff.pl
 
 =item usage

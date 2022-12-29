@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # gff2cdsaligntab.pl : tabulate alignment annots from gmap.gff and gsplign.gff
 # special cases CDS exon spans > mRNA span fix
 #..............

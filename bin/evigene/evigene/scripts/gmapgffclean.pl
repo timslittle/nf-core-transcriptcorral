@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # gmapgffix.pl
 
 ## FIX gmap CDS bug: last 3' CDS end is -2 short, revcomp also ## gmap version? or all?

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 ## fq2fa.pl fastq to fasta, 
 
 foreach $fq ( @ARGV ) {

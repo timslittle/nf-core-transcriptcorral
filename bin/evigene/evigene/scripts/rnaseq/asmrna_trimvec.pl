@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evigene/scripts/rnaseq/asmrna_trimvec.pl
 
 =item about asmrna_trimvec 

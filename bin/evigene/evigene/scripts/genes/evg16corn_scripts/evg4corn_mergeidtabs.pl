@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evg4corn_mergeidtabs.pl
 
 =item about evg mergeidtabs

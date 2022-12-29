@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evigene/scripts/genoasm/tr2genome.pl
 
 =item add to evigene pipeline

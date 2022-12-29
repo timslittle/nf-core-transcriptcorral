@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # gff2aligntab.pl : tabulate alignment annots from gmap.gff and gsplign.gff
 #..............
 # $nam.align.tab columns

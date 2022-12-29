@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # lachesis2chrfasta.pl
 
 =item lachesis2chrfasta.pl usage

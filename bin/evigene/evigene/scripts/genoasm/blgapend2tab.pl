@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # evigene/genoasm/blgapend2tab.pl  
 
 =item usage
