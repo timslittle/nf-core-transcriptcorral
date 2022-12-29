@@ -112,6 +112,7 @@ process EVIGENE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '2022.05.07' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     #Perl script found in x
 
@@ -122,6 +123,14 @@ process EVIGENE {
         -cdnaseq $multiassembly \\
         -tidy \\
         $args
+    
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            EvidentialGene: $VERSION
+            blast: \$( blastn -version | head -n1 | awk '{print \$2}')
+            cd-hit: \$( cd-hit -h | head -n1 | cut -f 1 -d "(" | cut -f 2 -d "n" )
+            exonerate: \$( exonerate -v | head -n1 | cut -f 5 -d " " )
+        END_VERSIONS
     """
 }
 
@@ -370,7 +379,7 @@ workflow TRANSCRIPTCORRAL {
         .pep
 
         ch_versions = ch_versions.mix(TRANSDECODER_LONGORF.out.versions)
-        }
+    }
 
     //
     // MODULE: BUSCO
