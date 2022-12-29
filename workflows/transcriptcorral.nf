@@ -102,7 +102,7 @@ process EVIGENE {
     tuple val(meta), path(multiassembly)
 
     output:
-    tuple val(meta), path("okayset/*.okay.tr"), emit: metaassembly
+    tuple val(meta), path("okayset/*.okay.aa"), emit: metaassembly
     path "versions.yml"                       , emit: versions
 
     when:
@@ -113,7 +113,6 @@ process EVIGENE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     #Perl script found in x
-    #/camp/lab/langhornej/working/HPC/littlet/tl22-03_nfCoreTranscriptCorral/nf-core-transcriptcorral/bin/evigene/evigene/scripts/prot/../cdna_bestorf.pl
 
     ${workflow.projectDir}/bin/evigene/evigene/scripts/prot/tr2aacds4.pl \\
         -NCPU=$task.cpus \\
@@ -352,17 +351,6 @@ workflow TRANSCRIPTCORRAL {
     }
 
     //
-    // MODULE: BUSCO
-    // 
-    BUSCO (
-        ch_assembly,
-        params.busco_lineage,
-        params.busco_lineages_path,
-        params.busco_config_file
-    )
-    ch_versions = ch_versions.mix(BUSCO.out.versions)
-
-    //
     // MODULE: Transdecoder - ORF detection
     //
 
@@ -378,6 +366,16 @@ workflow TRANSCRIPTCORRAL {
 
     ch_versions = ch_versions.mix(TRANSDECODER_LONGORF.out.versions)
 
+    //
+    // MODULE: BUSCO
+    // 
+    BUSCO (
+        ch_assemblyOrfs,
+        params.busco_lineage,
+        params.busco_lineages_path,
+        params.busco_config_file
+    )
+    ch_versions = ch_versions.mix(BUSCO.out.versions)
 
     //
     // MODULE: HMMer/hmmsearch
