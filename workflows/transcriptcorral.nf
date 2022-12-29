@@ -396,19 +396,23 @@ workflow TRANSCRIPTCORRAL {
     // MODULE: HMMer/hmmsearch
     //
 
-    ch_hmmsearchInput = ch_assemblyOrfs
-        .map{ [it[0], 
-            params.hmmsearch_hmmfile,
-            it[1],
-            [],
-            [],
-            [] ] }
+    if(params.hmmsearch_hmmfile){
 
-    HMMER_HMMSEARCH (
-        ch_hmmsearchInput
-    )
+        ch_hmmsearchInput = ch_assemblyOrfs
+            .map{ [it[0], 
+                params.hmmsearch_hmmfile,
+                it[1],
+                [],
+                [],
+                [] ] }
 
-    ch_versions = ch_versions.mix(HMMER_HMMSEARCH.out.versions)
+        HMMER_HMMSEARCH (
+            ch_hmmsearchInput
+        )
+
+        ch_versions = ch_versions.mix(HMMER_HMMSEARCH.out.versions)
+
+    }
 
     //
     // MODULE: Pipeline reporting
