@@ -1,0 +1,149 @@
+evigene/scripts/evgpipe_sra2genes4v.pl
+
+  about
+        ombnibus pipeline to reconstruct genes from SRA data (RNA-seq), with evigene methods
+        outlined in evigene/docs/EvigeneAssemblyFromSRAdata.txt
+        take 1: 2017.nov.04
+        d.g.gilbert
+
+  method documents
+        evigene/docs/evigene_rnapipe_methods1708.txt
+        evigene/docs/perfect-mrna-assembly-2013jan.txt  
+        evigene/docs/evgmrna2tsa_help.txt
+        evigene/docs/evigene_goals2015.txt
+        evigene/docs/evigene_goals2015b.txt
+
+  UPDATE 2019.11
+        major update to tr2aacds v4
+        added transposons dfamcan
+
+  UPDATE 2020.02
+          added tr2ncrna pipeline 
+          tr2aacds4 -pHeterozygosity == PHETERO opt .. not here? let caller add as opt if wanted
+          tr2aacds4 -reorient == DO_RESOLVESENSE for genes/trclass_resolve_strandmix.pl stg2 call
+
+  UPD1806
+        STEP10: replace evgmrna2tsa2.pl with trclass2pubset.pl, 
+        expect prior STEP9a trimvec is run (from part of evgmrna2tsa2)
+        with followon STEP11: pubset2submit.pl (from part of evgmrna2tsa2)
+
+  pipe design
+        goal is automated RNA-data to annotated, publishable gene set
+        basic fetch rna-data, prepare, assemble several ways, combine assemblies, evigene reduce,
+          reference protein/domain blast annotate genes, contaminant/vector screen, public file set
+
+        input requirements
+          a. SRA data ID/table of metadata (species, contents)
+        input requirements/options
+          b. reference species protein set (fetch? have ready? option?)   
+          c. conserved prot domains (CDD)
+          d. reference contaminant data (vectors, rRNA db, dfam? transposons)
+  
+        serial step-wise pipeline
+          -- each step should be run with checks
+          -- design pipe to be called for each step, or run continuous waiting for each step to finish
+          -- step run time vaguely known, variable (minutes, hours, day+)
+
+        some steps should write script to run async, under various cluster batch control systems
+          then restart this pipe at next step (checking results of async step)
+        
+        options will be added
+
+        See also evigene/scripts/evgmrna2tsa2.pl (pipe script that is now too messy for customers..)
+
+  components
+        1. get data
+          sraget.pl : small script, enclose
+          = wget to ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/INSERTDATAPATH.sra
+          env fork=1 ./sraget.pl daphsim16huau_srarna.csv  >& get1.log &
+        * Merge 1+2, sratoolkit/fastq-dump now does web-data-fetch (http?), given SRRid
+
+        2. sra to fasta, uses NCBI sratoolkit/fastq-dump
+          env sra=SRX*/SRR*/SRR*.sra datad=`pwd` prog=./runsra2fa.sh sbatch ../srun_shared.sh
+
+        3. subset for data size; max data size for basic assembly : 15-20GB for given maxmem=120 GB
+          3a. option: clean/trim rna.fa
+          3b. option: digital normalize rna.fa
+
+        4.  run assemblers, with kmer size options, other opts
+          4a. velvet/oases, ~10 kmer steps
+          4b. idba_tran, ~10 kmer steps
+          4c. soap_trans, ~10 kmer steps
+          4d. trinity / other / user choices
+          -- est. time at 12hr x 8cpu x 120 GB mem per assembler multi-kmer set (same for 1kmer trinity)
+  
+        5. post process assembly sets (trformat.pl)
+          $evigene/scripts/rnaseq/trformat.pl -pre $nap -out $subd.tr -log -in $subd/vel*/transcripts.fa 
+          .. etc per assembler/output set
+          -- collect into evgrundir/subsets/
+          Gene Assembly ID: Lytvar1tsRn1l3SRR1661409soapk25loc0t1 
+          Gene Assembly ID parts: oname:Lytvar1t runid:sRn1l3SRR1661409 asmsubd:soapk25 asmid:loc0t1
+  
+        6. quick qual assessment: cdna_bestorf > aastats per assembly, report
+          $evigene/scripts/cdna_bestorf.pl -nostop -minaa=30 -aa -cdna $subd.tr.gz 
+          $evigene/scripts/prot/aaqual.sh $subd.aa
+          $evigene/scripts/prot/aastat.sh $subd.aa.qual >> assembly.aastat
+  
+        7. run evg over-assembly reduction, tr2aacds.pl
+          env trset=$pt.tr datad=`pwd` prog=./runtr2cds.sh sbatch srun_comet.sh
+
+        8. ref protein blastp x evg okayset
+          env aaset=okayset/$pt.aa refaa=refset/$refaa ncpu=20 datad=`pwd` prog=./run_evgaablast.sh sbatch srun_comet.sh 
+
+        9. namegenes from ref names, for annotation
+          $evigene/scripts/prot/namegenes.pl -blast $aabltab -refnames refset/$refaa.names -out $pt.names
+
+        add options:
+          9b. vecscreen -db UniVec vectors == SEE evgmrna2tsa2.pl
+          9c. blastn -db rRNA contam 
+              ^^^ 9b,c extract from evgmrna2tsa2 into separate pipe-part script
+          9d. rpsblastp -db CDD conserved domains
+          9e. hmmscan -db dbfam transposons
+  
+        10. annotated publicset 
+          env idprefix=$idp trclass=$pt.trclass names=$pt.names  species=$spp datad=`pwd` \
+             prog=./run_evgmrna2tsa.sh sbatch srun_comet.sh
+
+        10upd: trclass2pubset.pl replaces part of evgmrna2tsa
+
+        11.  TSA submission file set 
+           pubset2submit.pl replaces part of evgmrna2tsa
+
+  runme script
+        #! /bin/bash
+        ### env sratable=sraset.csv datad=`pwd` ncpu=16 qsub -q normal run_evgsra2genes.sh
+        #PBS -N evgsra2genes
+        #PBS -A PutAccountIdHere
+        #PBS -l nodes=1:ppn=16,walltime=39:55:00
+        #PBS -V
+
+        if [ "X" = "X$ncpu" ]; then ncpu=8; fi
+        if [ "X" = "X$maxmem" ]; then maxmem=64000; fi
+        if [ "X" = "X$datad" ]; then echo "ERROR: missing datad=/path/to/data"; exit -1; fi
+        if [ "X" = "X$sratable" ]; then echo "ERROR: missing sratable=/path/to/data"; exit -1; fi
+        # opt name=testsra2evg
+
+        # XSEDE .sdsc.edu
+        if [ 1 = 1 ]; then
+          bioapps=$HOME/bio
+          evigenes=$bioapps/evigene/scripts
+          # NOTE need current sratoolkit281 for web fetch by SRR id
+          srabin=$bioapps/sratoolkit/sratoolkit281/bin
+          #  velvet: fixme multi kmer binaries, bin4 = 151mer; bin2 = 99mer
+          velobin=$bioapps/velvet1210/bin4  
+          idbabin=$bioapps/idba/bin
+          soapbin=$bioapps/soaptrans103 
+          trinbin=$bioapps/trinity
+          xnrbin=$bioapps/exonerate/bin
+          cdhitbin=$bioapps/cdhit466/bin   
+          ncbibin=$bioapps/ncbi/bin
+        fi
+
+        export PATH=$srabin:$velobin:$idbabin:$soapbin:$trinbin:$xnrbin:$cdhitbin:$ncbibin:$evigenes:$PATH
+
+        evopts="-NCPU $ncpu -log -debug"
+        if [ "X" != "X$name" ]; then evopts="$evopts -runname $name"; fi
+
+        cd $datad
+        echo $evigenes/evgpipe_sra2genes.pl $evopts -SRAtable $sratable
+        $evigenes/evgpipe_sra2genes.pl $evopts -SRAtable $sratable

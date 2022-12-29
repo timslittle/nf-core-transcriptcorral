@@ -1,0 +1,80 @@
+
+EvidentialGene source code changes, 2019may to 2020jan .. to 2020mar04
+
+Major new script versions are 
+  tr2aacds4.pl and evgpipe_sra2genes4v.pl
+    with updates and additions of associated pipeline components.
+  tr2ncrna.pl  : new pipeline to select non-coding RNA subset of input transcripts
+
+Major component revisions
+  cdna_bestorf.pl, cdna_proteins.pm : revised bestorf calculations following tests
+  blasttrset2exons2.pl : new measurement script, exon chain analysis for alternate transcripts
+  trclass_resolve_strandmix.pl : resolve genes w/ mixed-strand CDS alternates
+  asmrna_dupfilter4.pl  : classify transcripts by self-alignment, with new,updated measures
+  asmrna_altreclass4.pl : reclassify alternates and noclass using new,updated measures
+  trclass2pubset.pl : revised sequence set publication
+  
+Useful additions
+  altparclassify.pl : classify transcript set as to alternate/paralog by self-alignment
+  cdshexprob.pl     : calculate CDS coding potential from transcript CDS - UTR hexamers
+  cdsalignkaks.pl   : calculate KaKs statistics for CDS-alignments, 
+                       of two species/pops with KaKs_Calculator and blastn
+  evg_buscogenesum.pl,evg_busco2v.py, : measure BUSCO conserved genes, for Evg gene IDs
+
+evigene19may_20jan30.diff - only.evigene19may14
+------
+Update  evigene20jan30/scripts/altbest.pl
+Update  evigene20jan30/scripts/cdna_bestorf.pl
+Update  evigene20jan30/scripts/cdna_evigenesub.pm
+Update  evigene20jan30/scripts/cdna_proteins.pm
+Update  evigene20jan30/scripts/evgpipe_sra2genes.pl : use evgpipe_sra2genes4v.pl
+New     evigene20jan30/scripts: evgpipe_sra2genes4v.pl  : production
+Update  evigene20jan30/scripts/evigene_pubsets.pm
+New     evigene20jan30/scripts/genes: altparclassify.pl : production, maybe
+Update  evigene20jan30/scripts/genes/blast2evgff.pl
+New     evigene20jan30/scripts/genes: blasttrset2exons2.pl : production
+New     evigene20jan30/scripts/genes: commonexons.pl  : test
+Update  evigene20jan30/scripts/genes/evg17_scripts/corntrsetbltab.pl
+Update  evigene20jan30/scripts/genes/evg17_scripts/run_cdsaln_kaks.sh
+Update  evigene20jan30/scripts/genes/evgpubsetsum.pm
+New     evigene20jan30/scripts/genes: run_s07p_tr2cdspub.sh : dev,test
+Update  evigene20jan30/scripts/genes/trclass2pubset.pl
+New     evigene20jan30/scripts/genes: trclass_resolve_strandmix.pl : production
+Update  evigene20jan30/scripts/makeblastscore.pl  : -> makeblastscore3
+Update  evigene20jan30/scripts/makeblastscore3.pl
+New     evigene20jan30/scripts/prot: aanstat.pl
+Update  evigene20jan30/scripts/prot/aaqual.sh
+New     evigene20jan30/scripts/prot: cdsalignkaks.pl
+New     evigene20jan30/scripts/prot: cdshexprob.pl  : production
+Update  evigene20jan30/scripts/prot/cdsqual.pl
+New     evigene20jan30/scripts/prot: cdsqual.sh
+New     evigene20jan30/scripts/prot: make_consensus.pl  : dev,test
+Update  evigene20jan30/scripts/prot/namegenes.pl
+Update  evigene20jan30/scripts/prot/protein_names.pm
+Update  evigene20jan30/scripts/prot/tr2aacds.pl   : -> tr2aacds4.pl
+Update  evigene20jan30/scripts/prot/tr2aacds2.pl
+New     evigene20jan30/scripts/prot: tr2aacds2d.pl  : dev
+New     evigene20jan30/scripts/prot: tr2aacds3.pl : dev
+New     evigene20jan30/scripts/prot: tr2aacds4.pl : production
+New     evigene20jan30/scripts/prot: tr2aacds4a.pl  : test
+Update  evigene20jan30/scripts/prot/traa2cds.pl
+Update  evigene20jan30/scripts/prot/trclass2mainalt.pl
+New     evigene20jan30/scripts/rnaseq: asmrna_altreclass3c.pl : production, becomes v4
+New     evigene20jan30/scripts/rnaseq: asmrna_altreclass4.pl  : -> asmrna_altreclass3c.pl
+Update  evigene20jan30/scripts/rnaseq/asmrna_dupfilter3c.pl
+New     evigene20jan30/scripts/rnaseq: asmrna_dupfilter4.pl : -> asmrna_dupfilter4a.pl
+New     evigene20jan30/scripts/rnaseq: asmrna_dupfilter4a.pl  : production, v4
+New     evigene20jan30/scripts/rnaseq: asmrna_identityclass4a.pl  : dev
+New     evigene20jan30/scripts/rnaseq: asmrna_overlocusclass4a.pl : dev
+Update  evigene20jan30/scripts/rnaseq/fa2pairfa.pl
+New     evigene20jan30/scripts: run_evgsra2genes4v.sh : example
+------
+
+Documents
+------
+evigene/docs/evg4docs/
+
+https://sourceforge.net/p/evidentialgene/blog/2020/03/reference-protein-annotation-with-namegenes/
+------
+
+

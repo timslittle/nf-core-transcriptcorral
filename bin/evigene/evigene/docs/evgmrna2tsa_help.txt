@@ -1,0 +1,266 @@
+
+The Evigene pipeline program evgmrna2tsa has several functions
+for publishing gene transcript assemblies (it processes mRNA sequences
+and tr2aacds.class table into those suited to publish at NCBI TSA archive).  
+A basic public set function is recommended as follow-on to all uses of tr2aacds.
+
+Q: how do I create a gene-locus x transcript ID linking table, e.g.
+    gene1  transcript1
+    gene1  transcript2
+    gene2  transcript3
+      
+A: Use this script evgmrna2tsa2.pl, which is my recommended follow-on to tr2aacds. 
+  $evigene/scripts/evgmrna2tsa2.pl -onlypubset -idprefix Aspecies1EVm -class aspecies.trclass
+
+One of its results is publicset/aspecies.pubids, which has gene locus
+primary and alternate classification table, with uniform new IDs,
+derived from classification info in aspecies.trclass.
+   Public_mRNA_ID   originalID   PublicGeneID  AltNum ...
+   Gene1Tr1         tr0001       Gene1          1
+   Gene1Tr2         tr0002       Gene1          2
+   Gene2Tr1         tr0003       Gene2          1
+   Gene3Tr1         tr0004       Gene3          1
+   Gene3Tr2         tr0005       Gene3          2
+   
+evgmrna2tsa has several more options, described below, for publishing gene sets to 
+NCBI-TSA archive, but for many  needs, this '-onlypubset' choice is enough.  
+You may want to test first with the test drive data set of arath_TAIR10: 
+  cd plants/arabidopsis/tr2aacds_test1712b/
+  tr2aacds outputs:
+    inputset/  okayset/  dropset/  tmpfiles/
+    arath_TAIR10_20101214up.tr2aacds.log		
+    arath_TAIR10_20101214up.trclass			 
+    arath_TAIR10_20101214up.trclass.sum.txt		
+  
+  Produce publicset/ tables and sequence files:
+    $evigene/scripts/evgmrna2tsa2.pl  -onlypubset -log  -debug \
+     -idprefix Arath1tEVm -species Arabidopsis_thaliana -class arath_TAIR10_20101214up.trclass
+  
+  Results in  publicset/
+  arath_TAIR10_20101214up.pubids       : Public and original transcript ID, gene ID, alternate number, class
+  arath_TAIR10_20101214up.mainalt.tab  : original ID cross reference of main/alternates
+  arath_TAIR10_20101214up.ann.txt      : annotations with Names, homology score (if provided)
+  arath_TAIR10_20101214up.aa_pub.fa    : sequences with public IDs, annotations
+  arath_TAIR10_20101214up.cds_pub.fa
+  arath_TAIR10_20101214up.mrna_pub.fa
+-----
+head  publicset/arath_TAIR10_20101214up.pubids | cut -f1-6
+#Public_mRNA_ID         originalID  PublicGeneID    AltNum  Class      AAqual
+Arath1tEVm000001t1      AT1G67120.1 Arath1tEVm000001  1     noclass     5393,98%,complete
+Arath1tEVm000002t1      AT3G02260.1 Arath1tEVm000002  1     noclass     5098,98%,complete
+Arath1tEVm000003t1      AT5G23110.1 Arath1tEVm000003  1     noclass     4706,98%,complete
+Arath1tEVm000004t1      AT4G17140.3 Arath1tEVm000004  1     main        4219,95%,complete
+Arath1tEVm000004t2      AT4G17140.2 Arath1tEVm000004  2     althi1      4218,95%,complete
+Arath1tEVm000005t1      AT1G48090.1 Arath1tEVm000005  1     noclass     4146,95%,complete
+Arath1tEVm000006t1      AT1G55860.1 Arath1tEVm000006  1     main        3930,97%,complete
+Arath1tEVm000007t1      AT2G17930.1 Arath1tEVm000007  1     main        3858,98%,complete
+Arath1tEVm000007t2      AT4G36080.1 Arath1tEVm000007  2     althi       3834,95%,complete
+-------------------
+
+
+Steps available in Evigene pipeline program evgmrna2tsa2.pl
+
+These steps need to be run from directory with Evigene tr2aacds outputs: 
+  mydata.trclass, okayset/mydata.okay,okalt.seqs
+For public database submission (NCBI Transcriptome Shotgun Assembly TSA is target)
+steps 1,2,3,4 should be run in order, but can be run separately, different order.
+I use step 3 only to get clean public data set, and 2 to get homology scores, gene names.
+  
+1. Vector screen/trim with NCBI vecscreen, UniVec_Core db,
+  also trims gaps, minimizing change to CDS
+    evgmrna2tsa2.pl -vectrim ...
+    evgtrimvec.sh = simplified shell script of this
+
+2. Name genes with Reference proteins, Blastp, and tabulate homology scores
+    run_evgaablast.sh = simplified shell script of this
+    (namegenes not yet in evgmrna2tsa2)
+
+3. Reclassify and format sequences of tr2aacds-okayset with public IDs, annotations 
+    from above steps 1,2 (or skip those steps)
+
+  publopts="-debug -log -dropshow -skipdropseq -novectrim -noruntbl2asn"
+  cd path/to/myspecies_tr2aacdsrun
+  evigenes/evgmrna2tsa2.pl $publopts -idprefix MySpeciesEVm -species=My_Species -class  mydata.trclass 
+  
+4. Create public db submission file set, for NCBI TSA database, from annotated genes
+  using NCBI tbl2asn
+    evgmrna2tsa2.pl -runtbl2asn ...
+  This step also uses template files for data submission, tsasubmit/ .cmt, .sbt forms
+  needing submittor edits. Those include SRA raw RNA-seq accessions, authors, etc.
+
+See below shell scripts for these separate steps (1,3,4 now can be done in series by  evgmrna2tsa2.pl
+but maybe shouldn't be as it is complex, needs intermediat checking).
+   
+#---------- STEP 1: vector screen/trim with NCBI vecscreen --------------------------------
+#!/bin/bash
+# env mrna=my.mrna datad=`pwd` nbin=/pathto/ncbi/bin  ./evgtrimvec.sh
+
+ncpu=4
+dovecs=1
+dotbl=0
+
+if [ "X" = "X$datad" ]; then echo "missing env datad=path/to/data"; exit -1; fi
+if [ "X" = "X$mrna" ]; then echo "missing env mrna=path/to/name.mrna"; exit -1; fi
+if [ "X" = "X$evigene" ]; then 
+  if [ -d /bio/bio-grid/mb/evigene ]; then 
+    evigene=/bio/bio-grid/mb/evigene; 
+  else 
+    echo "missing  env evigene=/PATH/TO/evigene"; exit -1; 
+  fi
+fi
+
+if [ "X" = "X$nbin" ]; then 
+  vsbin=`which vecscreen`
+  if [ -x $vsbin ]; then 
+    nbin=`dirname $vsbin`; 
+  else 
+    echo "missing  NCBI vecscreen/other binary path; nbin=/PATH/TO/ncbibin"; exit -1; 
+  fi
+fi
+
+export evigenes=$evigene/scripts/
+export vecscreen=$nbin/vecscreen
+export tbl2asn=$nbin/tbl2asn
+
+cd $datad/
+namepath=`echo $mrna | sed 's/\.mrna//; s/\.fasta//; s/\.fa//; s/\.tr//;'`
+namebase=`basename $namepath`
+
+trimopts="-nodeferupdate -MINSIZE 200 -NCPU $ncpu -log"
+tblopts="-onlysubmit -runtbl2asn -NCPU $ncpu -log -debug"
+
+echo "# Step1: " $evigene/scripts/rnaseq/asmrna_trimvec.pl $trimopts -mrna $mrna
+if [ ! -f $namepath.trimvec_done ]; then
+  if [ $dovecs = 1 ]; then
+  $evigene/scripts/rnaseq/asmrna_trimvec.pl $trimopts -mrna $mrna
+  else
+  echo "# SKIP Step1: trimvec"
+  fi
+else
+  echo "# Step1: $namepath.trimvec_done"
+fi
+
+exit;
+
+echo "# Step2: " $evigene/scripts/evgmrna2tsa2.pl $tblopts -mrna $mrna 
+if [ $dotbl = 1 -a -f $namepath.trimvec_done ]; then
+  $evigene/scripts/evgmrna2tsa2.pl $tblopts -mrna $mrna 
+else
+  echo "# Step1,2: not done, $namepath.trimvec_done"
+fi
+
+
+#---------- STEP 2: Reference proteins BlastP and Name genes --------------------------------
+
+#! /bin/bash
+## evg4daplx6su/run_evgaablast.sh
+## env datad=path/to/data trset=myspecies_all.tr.gz ./runtr2cds.sh
+## env datad=path/to/data trset=myspecies_all.tr.gz qsub -q normal runtr2cds.sh
+
+evigene=$HOME/bio/evigene
+export PATH=$HOME/bio/ncbi2230/bin:$PATH
+
+if [ "X" = "X$ncpu" ]; then ncpu=15; fi
+if [ "X" = "X$maxmem" ]; then maxmem=50000; fi
+if [ "X" = "X$aaset" ]; then echo "missing env aaset=xxxx.aa"; exit -1; fi
+if [ "X" = "X$refaa" ]; then echo "missing env refaa=refaa_blastdb"; exit -1; fi
+if [ "X" = "X$datad" ]; then echo "missing env datad=/path/to/data "; exit -1; fi
+
+cd $datad/
+
+echo "#START $aaset : `date`"
+
+qname=`basename $aaset .aa`
+refnam=`basename $refaa .aa`
+blopt="-evalue 1e-5"
+odir=blout1$qname
+mkdir $odir
+
+if [ ! -f $aaset.split.1.fa ]; then
+ pindir=`dirname $aaset`
+ splitsize=`grep -v '^>' $aaset | wc -c | sed 's/ .*//' `
+ splitbp=$(( $splitsize / $ncpu ))
+ $evigene/scripts/splitMfasta.pl --outputpath=$pindir --nparts $ncpu --minsize=$splitbp $aaset
+fi
+
+qset=`/bin/ls $aaset.split.*.fa`
+
+for qfile in $qset
+{
+  qnamspl=`basename $qfile .fa`
+  onam=$odir/$refnam-$qnamspl
+  echo blastp $blopt -outfmt 7 -db $refaa -query $qfile -out $onam.blastp
+  blastp $blopt -outfmt 7 -db $refaa -query $qfile -out $onam.blastp  &
+}
+
+wait
+
+opack=$refnam-$qname
+aablast=$refnam-$qname.blastp
+cat $odir/$opack.*.blastp > $aablast
+/bin/rm $qset
+
+env oid=1 off=1 $evigene/scripts/prot/aaqual.sh $aaset
+mbaopts="-tall -aasize $aaset.qual,$refaa.qual"
+aabltab=refaa-$qname.aa.btall
+
+$evigene/scripts/makeblastscore3.pl $mbaopts $aablast > $aabltab 
+
+if [ -f $refaa.names ]; then
+  $evigene/scripts/prot/namegenes.pl -blast $aabltab -refnames $refaa.names -out $qname.names
+fi
+
+gzip --fast $aablast
+echo "#DONE $trset : `date`"
+
+#---------- STEP 3: Public sequence data formatting, annotations --------------------------------
+#! /bin/bash
+## run_evgmrna2tsa.sh
+## env idprefix=MysppEGm trclass=myspp.trclass datad=`pwd` ./run_evgmrna2tsa.sh
+## env idprefix=MysppEGm trclass=myspp.trclass datad=`pwd` qsub -q shared run_evgmrna2tsa.sh
+
+## up to evgmrna2tsa2.pl
+# $evigene/scripts/evgmrna2tsa2.pl -species Daphnia_magna -idprefix Dapma5xEVm -novectrim -class $pt.trclass -log
+
+#nodef#if [ "X" = "X$species" ]; then species=Tribolium_castaneum; fi
+#nodef#if [ "X" = "X$idprefix" ]; then idprefix=Tribca2aEVm; fi
+#...........
+
+ncpu=10; # most 100K trsets run on 8cpu in 10m-20min; 300K set can take 1hr.
+## common option: skip vecscreen and tbl2asn == -novectrim (not def)  -noruntbl2asn (default)
+
+export evigenes=$HOME/bio/evigene/scripts
+export EVIGENES=$evigenes
+export vecscreen=$HOME/bio/ncbix/bin/vecscreen
+#missing# export tbl2asn=$HOME/bio/ncbix/bin/tbl2asn
+
+opts="-debug  -dropshow -skipdropseq -NCPU $ncpu"
+
+if [ "X" = "X$datad" ]; then echo "missing env datad=path/to/data"; exit -1; fi
+if [ "X" = "X$trclass" ]; then "echo env trclass=path/to/name.trclass"; exit -1; fi
+
+## .. these are now read via sra_result.csv, species => idprefix
+if [ "X" != "X$idprefix" ]; then opts="$opts -idprefix $idprefix"; fi
+if [ "X" = "X$vectrim" ]; then opts="$opts -novectrim"; fi
+if [ "X" != "X$tbl2asn" ]; then opts="$opts -runtbl2asn"; fi
+if [ "X" != "X$species" ]; then spp=`echo $species | sed 's/ /_/g;'`; opts="$opts -species=$spp"; fi
+#Fixme# if [ "X" != "X$sra" ]; then opts="$opts -sraids=$sra"; fi
+
+if [ "X" = "X$names" ]; then names=`echo $trclass | sed 's/.gz//; s/\.trclass/.names/;'`; fi
+if [ -s $names ]; then opts="$opts -names $names"; fi
+
+cd $datad/
+##FIXME: template files ; need these  or generate defaults?
+# if [ ! -f evgr_tsasubmit.sbt ]; then
+#  if [ -d ../tsasubmit ]; then cp ../tsasubmit/*.{cmt,sbt} ./; fi
+# fi
+
+echo $evigenes/evgmrna2tsa2.pl  $opts -log -class $trclass
+if [ ! -f $trclass ]; then echo "ERR: missing -class $trclass"; exit -1; fi
+$evigenes/evgmrna2tsa2.pl  $opts -log -class $trclass
+
+
+#---------- STEP 4: NCBI TSA formatting and tbl2asn --------------------------------
+# same as step 3, but tbl2asn=1 option, needs submit template files
+# 
+

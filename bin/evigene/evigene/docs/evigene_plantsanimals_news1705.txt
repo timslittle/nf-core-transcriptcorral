@@ -1,0 +1,79 @@
+
+Recent Animal and Plant gene set reconstructions with EvidentialGene:
+comparisons to other popular, recent gene reconstructions.
+
+Comparison to Pac-Bio RNA sequencing, Trinity-Illumina assembly, and genome
+gene models from NCBI and MAKER pipelines, indicate EvidentialGene methods are
+more accurate than commonly used methods. Evigene sets for Arabidopsis model
+plant, Zea mays corn, and pine trees, animals of Bemisia white fly, Daphnia
+water fleas, Aedes and Anopheles mosquitoes, and others are available at
+http://eugenes.org/EvidentialGene/
+
+Not only are the easy, well known ortholog genes reconstructed well, but
+harder gene problems of alternate transcripts, paralogs, and complex
+structured genes are usually more complete with Evigene methods.
+
+Who should use EvidentialGene for animal and plant gene reconstruction?
+
+* genomicists desiring accurate, complete and objectively reconstructed genes  
+  including those of you who may not believe my claims, but will look at 
+  objective results supporting them.
+  
+* new species genome projects
+  - use as primary gene set, with most alternate transcripts, 
+    add the 10% un-expressed genes with modeling.
+  - assess genome gene models for accuracy and completeness.
+  - assess fragmentation, mis-assembly of chromosome assembly, 
+    and use to join chromosome fragments
+  
+* model and well-supported genome projects
+  curators can use evigene reconstructions to improve precision of
+  high value gene information.
+  
+* gene/genome improvement projects 
+  add missing alternate transcripts, un-discovered and fragmented gene models,
+  improve complex genes
+
+* transcriptome and expression study projects
+  for more accurate gene information as a basis of expression comparisons
+
+One of my goals with this work is to reconstruct many high-value (model,
+otherwise) animal and plant gene sets in coming years as feasible. I welcome
+collaborations, especially from any group who can provide genomics/informatics
+expertise. This methodology is highly automatable (think BIG DATA), but still
+wants some improvements.  Over-assembly of suitable RNA takes a only few days
+on compute clusters, and produces all the accurate genes, plus a bigger pile
+of less accurate ones. The main time sink is in sensibly classifying and 
+reducing these to a "perfect" set (not too many, not too few), with use of
+additional gene evidence.
+  
+Reconstruction from RNA only provides independent gene evidence, free of
+errors and biases from chromosome assemblies and other species gene sets. 
+Evigene gene sets offer an independent assessment of a complete species gene
+catalog, rather than the easiest few percent of genes represented in BUSCO
+and other orthology reference sets.
+  
+There are now a few public Pac-Bio RNA gene sets, and publications suggesting
+genes from single-molecule sequencing may be more accurate than genes from 
+Illumina short reads.  My comparison for 3 plant species, Arabidopsis model
+plant, Zea mays corn, and pine trees, provides an objective comparison with
+different results:  fully assembled Illumina RNA produces the more accurate
+sets, including for loci where both methods recover some transcripts,
+for alternate and paralog transcript reconstruction.
+
+Evigene's RNA-only constructions often surpass accuracy of genome-modeled gene
+sets, those derived from many sources of gene evidence (prediction on
+chromosomes, RNA, other species proteins). This is likely due to the greater
+complexity of combining many evidence sources in modeled genes, with greater
+chances of mis-modeling.
+
+These recent works include Arabidopsis model plant, Zea mays corn, and pine
+trees, animals of Bemisia white fly, Daphnia water fleas, Aedes and Anopheles
+mosquitoes, and others.  Species genes built with Evigene by independent
+authors include a range of plants, fishes, a mouse, insects, crustaceans, and
+several of these papers provide their independent review of evigene versus
+other methods.
+
+-- Don Gilbert
+gilbertd @ indiana.edu
+

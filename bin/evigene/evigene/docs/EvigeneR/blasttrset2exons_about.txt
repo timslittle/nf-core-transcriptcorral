@@ -1,0 +1,32 @@
+evigene/scripts/genes/blasttrset2exons2.pl
+
+  about
+        infer exons from self-blast-align of alternate transcript set
+        input is high-ident basic-local (exon) aligned transcripts as from 
+          evigene tr2aacds tmpfiles/trasm-self98.blastn
+        use transcript pair align spans from makeblastscore.pl -showspan
+        record common align break-points of alt-trans gene set (inferred exon splice sites)
+        output table of such, as 'ic:splice-site-nums,..' and exon splice points, suited to evigene overinchain2locus.pl
+        similar to, replacement of  evigene/scripts/genes/inexchains_gcb.pl
+
+  usage
+    Called from evigene trclass2pubset.pl as part of tr2aacds4 pipeline.   
+    
+        a. prepare input table with exon align spans from trasm-self.blastn
+
+        $evigene/scripts/makeblastscore3.pl -pIDENTMIN 99.999 -pmin 0.01 -showspan=2 -tall \
+          -sizes ref_arath16apnrcd1x.cds.qual  ref_arath16apnrcd1x-self98.blastn.gz > ref_arath16apnrcd1x-self100.btall
+
+        b. exon table using publicset/pubid info,  input aligned exon table sorted by biggest ref (col7=reflen, col2=refid)
+
+        sort -k7,7nr -k2,2 -k6,6nr -k1,1 ref_arath16apnrcd1x-self100.btall | \
+        env pubids=ref_arath16ap.pubids pfrag=0.80 minunalign=20 $evigene/scripts/genes/blasttrset2exons2.pl \
+          > ref_arath16apnrcd1x.pubfrag80u20exon2a
+
+        c. version exons2 includes exon chains from relevant part of evigene/scripts/genes/overinchain2locus.pl
+
+        d. output exon table 
+          pubid, trasm_oid, xn:exon_chain, ichain:locus:symbolic,  align-spans
+        Atref9Evm000001t1     AT1G67120.2     xn:g1t1x1,g1t1x9589,g1t1x9599,g1t1x9610,g1t1x16203      ichain:l2551.t1:ACBCA   1-16203;1-9589,9610-16203;
+        Atref9Evm000001t2     AT1G67120.1     xn:g1t1x1,g1t1x9589,g1t1x9610,g1t1x16203        icalt:l2551.t2:ACCA     1-9589,9590-16182;1-16182;
+

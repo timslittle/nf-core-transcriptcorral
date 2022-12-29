@@ -1,0 +1,78 @@
+
+EvidentialGene source code changes, 2020may from 2020mar
+
+This is mainly a bug fix release to version 4 of 2020 march. Some of
+the corrections are for obscure data bugs, many deal with Evigene
+SRA2Genes pipeline components used after the redundancy reduction tool
+tr2aacds4.
+
+Components revised:
+  cdna_bestorf.pl, cdna_proteins.pm : corrected obscure bug, mRNA output from 
+    reverse UTRORF subsequences were miscalculated, AA and CDS were/are correct.
+  trclass_resolve_strandmix.pl : stranded RNA-seq detection, no_maybe option
+  asmrna_trimvec.pl and asmrna_vecscreen.pl : expanded contamination screens, and
+    replaced NCBI vecscreen with blastn
+  trclass2pubset.pl : revised sequence set publication
+  pubset2submit.pl  : revised NCBI TSA submission data sets
+  evgmrna2tsa.pl    : obsolete, replaced by trclass2pubset.pl
+  
+  docs/EvigeneR/evigene4_outputs_brief.txt : summarizes data outputs of SRA2Genes (EvigeneR),
+    from tr2aacds4 and other steps.
+  
+These are new, improved options:
+
+  asmrna_trimvec.pl and asmrna_vecscreen.pl are revised and expanded to
+    screen transcript sequences against several contamination databases.
+    asmrna_vecscreen is a new component, using NCBI blastn instead of vecscreen,
+    that handles these contaminant references: sequencing vectors (as UniVec), common
+    eukaryote contaminants (eg. E.coli bacteria), common species rRNA, and foreign species
+    chromosome DNA. SRA2Genes/refset/contam/ distributes these sequence data, obtained from NCBI. 
+    These use and follow NCBI contaminant screening data sets and methods.
+    asmrna_trimvec also checks and corrects for gaps and mismatched mRNA/CDS sequences, and both
+    now handle -ncrna (ie, without CDS).
+    
+  asmrna_vecscreen/trimvec recommended use vua SRA2Genes pipeline is at Step9B, following
+    tr2aacds and tr2ncrna outputs, as inputs to vecscreen: okayset/mrna and ncrnaset/ncrna
+    These screens adhere to NCBI Transcript Sequence Archive submission policy.
+    
+  trclass_resolve_strandmix (a script used by tr2aacds4): 
+    -strandedrna: stranded RNA-seq detection and use for protein strand corrections,
+      -stranded is default, as it seems reliable, -nostranded turns off this detection.
+
+      Strand detection is logged as 'isStrandedRNA=1, f:990/r:10', meaning 99% of
+      longest 1000 proteins have mRNA orientation, expected from assembly of 
+      strand-specific RNA-seq. 
+      'isStrandedRNA=0, f:510/r:490' means longest 1000 proteins are randomly
+      oriented, expected from non-specific RNA-seq.
+      
+    -nomaybe : turns off output of ambiguous-stranded proteins.  Default is to
+      output both forward/reverse strand proteins for same transcript, when
+      evidence is ambiguous.  Stranded RNA-seq and -stranded are evidence that also
+      turns off ambiguity. 
+    
+  "tr2aacds4.pl -reorient" invokes trclass_resolve_strandmix, and is recommended usage.  
+    "env reor_nomaybe=1 tr2aacds4.pl -reorient .. " invokes "trclass_resolve_strandmix -nomaybe .."
+
+
+Updated scripts, evigene20mar_may.diff 
+  evigene20may15/scripts/evgpipe_sra2genes4v.pl  : updated script steps
+  evigene20may15/scripts/cdna_bestorf.pl
+  evigene20may15/scripts/cdna_proteins.pm 
+  evigene20may15/scripts/cdna_evigenesub.pm 
+  evigene20may15/scripts/evigene_pubsets.pm
+  evigene20may15/scripts/evgmrna2tsa4.pl  : new stub of obsolete evgmrna2tsa, replaced by trclass2pubset.pl
+  evigene20may15/scripts/overgenedup.pl
+  evigene20may15/scripts/prot/tr2aacds4.pl 
+  evigene20may15/scripts/prot/traa2cds.pl
+  evigene20may15/scripts/prot/cdsalignkaks.pl
+  evigene20may15/scripts/genes/evgpubsetsum.pm
+  evigene20may15/scripts/genes/trclass2pubset.pl
+  evigene20may15/scripts/genes/pubset2submit.pl
+  evigene20may15/scripts/genes/tr2ncrna.pl
+  evigene20may15/scripts/genes/trclass_resolve_strandmix.pl
+  evigene20may15/scripts/genes/altparclassify.pl
+  evigene20may15/scripts/rnaseq/asmrna_vecscreen.pl  : new
+  evigene20may15/scripts/rnaseq/asmrna_trimvec.pl    : update for asmrna_vecscreen outputs
+
+New Documents    
+  evigene20may15/docs/EvigeneR: evigene4_outputs_brief.txt

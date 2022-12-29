@@ -1,0 +1,73 @@
+
+This is the basic method of evigene/scripts/overbestgene2.pl:
+gene models with overlapping CDS exons are "the same locus", each model has some form of evidence score,
+and the method picks out those models with highest evidence score.   The trick or trouble is mainly in applying
+various evidence scores, and their combination, to return the best models that a human expert would pick.
+
+basic usage:
+  $evigene/scripts/overbestgene2.perl  \
+  -scoretype='nintron:2,aalen:1,iste:-1,UTR:0.01,CDS:1.0' \
+  -dropscore='*nintron:1,*aalen:150' \
+  -pctover 5 -trivial 10 -summarize -skip -noONEBIN_GENES -novecscore \
+  -in inbest2gsann.gff -out outbest2gsann.gff >& best2.log
+
+where main parameters are
+  -in inbest2gsann.gff is catenation of all gene models, annotated with evidence
+  -out outbest2gsann.gff is best model/locus by evidence scores
+  -scoretype is list of weighted gene attributes, commonly in mRNA annotation column 9
+    nintron:2 means weight number of introns by 2 (2 * 2 introns = 4)
+    aalen:1 weight amino/protein length by 1
+  -dropscore lists minimum attribute scores to keep gene model, i.e. 
+    drop model if aalen < 150aa AND nintron < 2  
+    ( *nintron:1 == keep if >=1 intron, OR *aalen:150 == keep if aalen >= 150 aa )
+
+  Each gene model in GFF must have row types: mRNA, exon and CDS,
+  with mRNA ID=Idwhatever, and exon, CDS for that mRNA have Parent=Idwhatever
+  mRNA has list of evidence scores in column 9, e.g.
+    "ID=AUGcex2s1018g153t1;aalen=300;homolog=213,dapmaevg14:Dapma7bEVm019529t1;nintron=2/4;iste=64"
+  
+  Best model/locus is one with largest sum of weighted evidence scores.
+  Models with overlapping CDS belong to one locus.
+  A weighted score of above model is
+    score= 20*213 (homolog) + 2*2 (nintron) + -1*64 (iste) + 1*300(aalen) + 0.01*UTRval
+  Keep this model if all others with overlapping CDS have a lower score.  
+    
+  Only a few of these attributes are calculated by overbestgene2 (CDS, UTR, nintron),
+  it is expected that you add evidence scores as attributes in mRNA lines of GFF.
+
+my usage with evidence annotation
+  $evigene/scripts/overbestgene2.perl -genegroup='homolog,ovpro:100' \
+  -scoretype='homolog:20,ovpro:0.3,nintron:2,aalen:1,iste:-1,UTR:0.01,CDS:0.01' \
+  -dropscore='*homolog:50,*nintron:2,ovpro:80,*aalen:150' \
+  -pctover 5 -trivial 10 -summarize -skip -noONEBIN_GENES -novecscore \
+  -in inbest2gsann.gff -out outbest2gsann.gff \
+   > & log.ovb1
+
+nintron as I use it is the percent of introns supported by RNA evidence, value of 0..100
+genegroup is a special option for reference gene homolog scores with IDs,
+to aid detection of joined/fused models (homolog score is same for long/false and short/true model)
+
+Summary at end of outbest2gsann.gff
+# SUMMARY of scores/source, scoretype=homolog:20,ovpro:0.3,nintron:2,aalen:1,iste:-1,UTR:0.01,CDS:0.01,intr:2, 
+# Source        N       Ave     CDS     UTR     aalen   homolog intr    iste    nintron ovpro
+# 1_Kept         28377    405   1257.8  241.5   451.4   371.6     0.0     2.2     7.2    63.9
+# 2_Dropped      27840    371   1061.5  192.4   368.0   299.6     0.0     0.9     7.1    54.3
+# AUGcex2        13043    376   1512.5  294.7   503.2   394.7     0.0     4.0     7.0    67.8
+# AUGcex2.all    24104    402   1475.8  283.9   490.9   412.5     0.0     2.5     8.4    70.6
+# dpxevg5a       15334    438   1041.2  196.2   407.4   352.0     0.0     0.8     7.3    60.6
+# dpxevg5a.all   32113    376   924.0   167.1   349.4   278.5     0.0     0.9     6.2    50.5
+
+====
+
+Gene score examples from various evidence, added to mRNA in genes.gff
+AUGcex2s1018g153t1      homolog=213,dapmaevg14:Dapma7bEVm019529t1       ovpro=64,dapmaevg14:Dapma7bEVm019529t1/64      
+ nintron=2/4     iste=64
+AUGcex2s1043g174t1      homolog=80,dapmaevg14:Dapma7bEVm019536t1        ovpro=20,dapmaevg14:Dapma7bEVm019536t1/20      
+ nintron=2/4     iste=20
+AUGcex2s1057g186t1      homolog=1075,dapmaevg14:Dapma7bEVm015494t1      ovpro=76,dapmaevg14:Dapma7bEVm015494t1/76      
+ nintron=4/8     iste=76
+
+Paste gene scores into genes.gff, e.g add to
+  mRNA ID=AUGcex2s1018g153t1 the attrubutes 
+  "homolog=213,dapmaevg14:Dapma7bEVm019529t1;ovpro=64,..;nintron=2/4;iste=64"
+  

@@ -1,0 +1,259 @@
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -NCPU=2 -MAXMEM=1000 -logfile -cdnaseq arath_TAIR10_20101214up.cdna
+#t2ac: FATAL app=blastn, path=echo MISSING_blastn
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -NCPU=2 -MAXMEM=1000 -logfile -cdnaseq arath_TAIR10_20101214up.cdna
+#t2ac: FATAL app=blastn, path=echo MISSING_blastn
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -NCPU=2 -MAXMEM=1000 -logfile -cdnaseq arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin/blastn
+#t2ac: app=makeblastdb, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin/makeblastdb
+#t2ac: FATAL app=fastanrdb, path=echo MISSING_fastanrdb
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -NCPU=2 -MAXMEM=1000 -logfile -cdnaseq arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin/blastn
+#t2ac: app=makeblastdb, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin/makeblastdb
+#t2ac: app=fastanrdb, path=/camp/apps/eb/software/Exonerate/2.4.0-iccifort-2019.5.281/bin/fastanrdb
+#t2ac: FATAL app=cd-hit-est, path=echo MISSING_cd-hit-est
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -NCPU=2 -MAXMEM=1000 -logfile -cdnaseq arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin/blastn
+#t2ac: app=makeblastdb, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin/makeblastdb
+#t2ac: app=fastanrdb, path=/camp/apps/eb/software/Exonerate/2.4.0-iccifort-2019.5.281/bin/fastanrdb
+#t2ac: FATAL app=cd-hit-est, path=echo MISSING_cd-hit-est
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin/blastn
+#t2ac: app=makeblastdb, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin/makeblastdb
+#t2ac: app=fastanrdb, path=./bin/fastanrdb
+#t2ac: FATAL app=cd-hit-est, path=echo MISSING_cd-hit-est
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin/blastn
+#t2ac: app=makeblastdb, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin/makeblastdb
+#t2ac: app=fastanrdb, path=./bin/fastanrdb
+#t2ac: FATAL app=cd-hit-est, path=echo MISSING_cd-hit-est
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: FATAL app=blastn, path=echo MISSING_blastn
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: FATAL app=blastn, path=echo MISSING_blastn
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: FATAL app=blastn, path=echo MISSING_blastn
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: FATAL app=blastn, path=echo MISSING_blastn
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin
+#t2ac: FATAL app=makeblastdb, path=echo MISSING_makeblastdb
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin
+#t2ac: FATAL app=makeblastdb, path=echo MISSING_makeblastdb
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin
+#t2ac: FATAL app=makeblastdb, path=echo MISSING_makeblastdb
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin
+#t2ac: FATAL app=makeblastdb, path=echo MISSING_makeblastdb
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin/blastn
+#t2ac: app=makeblastdb, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin/makeblastdb
+#t2ac: app=fastanrdb, path=/camp/apps/eb/software/Exonerate/2.4.0-iccifort-2019.5.281/bin/fastanrdb
+#t2ac: FATAL app=cd-hit-est, path=echo MISSING_cd-hit-est
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin
+#t2ac: FATAL app=makeblastdb, path=echo MISSING_makeblastdb
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin
+#t2ac: FATAL app=makeblastdb, path=echo MISSING_makeblastdb
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin
+#t2ac: app=makeblastdb, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin
+#t2ac: app=fastanrdb, path=/camp/apps/eb/software/Exonerate/2.4.0-foss-2016b/bin
+#t2ac: FATAL app=cd-hit-est, path=echo MISSING_cd-hit-est
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin
+#t2ac: app=makeblastdb, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin
+#t2ac: app=fastanrdb, path=/camp/apps/eb/software/Exonerate/2.4.0-foss-2016b/bin
+#t2ac: FATAL app=cd-hit-est, path=echo MISSING_cd-hit-est
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin
+#t2ac: app=makeblastdb, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin
+#t2ac: app=fastanrdb, path=/camp/apps/eb/software/Exonerate/2.4.0-foss-2016b/bin
+#t2ac: FATAL app=cd-hit-est, path=echo MISSING_cd-hit-est
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin
+#t2ac: app=makeblastdb, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin
+#t2ac: app=fastanrdb, path=/camp/apps/eb/software/Exonerate/2.4.0-foss-2016b/bin
+#t2ac: FATAL app=cd-hit-est, path=echo MISSING_cd-hit-est
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin
+#t2ac: app=makeblastdb, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin
+#t2ac: app=fastanrdb, path=/camp/apps/eb/software/Exonerate/2.4.0-foss-2016b/bin
+#t2ac: FATAL app=cd-hit-est, path=echo MISSING_cd-hit-est
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin
+#t2ac: app=makeblastdb, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin
+#t2ac: app=fastanrdb, path=/camp/apps/eb/software/Exonerate/2.4.0-foss-2016b/bin
+#t2ac: FATAL app=cd-hit-est, path=echo MISSING_cd-hit-est
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin/blastn
+#t2ac: app=makeblastdb, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin/makeblastdb
+#t2ac: app=fastanrdb, path=/camp/apps/eb/software/Exonerate/2.4.0-iccifort-2019.5.281/bin/fastanrdb
+#t2ac: FATAL app=cd-hit-est, path=echo MISSING_cd-hit-est
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin/blastn
+#t2ac: app=makeblastdb, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin
+#t2ac: app=fastanrdb, path=/camp/apps/eb/software/Exonerate/2.4.0-foss-2016b/bin/fastanrdb
+#t2ac: FATAL app=cd-hit-est, path=echo MISSING_cd-hit-est
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -tidy -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin/blastn
+#t2ac: app=makeblastdb, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin
+#t2ac: app=fastanrdb, path=/camp/apps/eb/software/Exonerate/2.4.0-foss-2016b/bin/fastanrdb
+#t2ac: app=cd-hit-est, path=/camp/apps/eb/software/CD-HIT/4.8.1-GCC-10.2.0/bin/cd-hit-est
+#t2ac: app=cd-hit, path=/camp/apps/eb/software/CD-HIT/4.8.1-GCC-10.2.0/bin/cd-hit
+#t2ac: evigeneapp=cdna_bestorf.pl, path=/camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../cdna_bestorf.pl
+#t2ac: evigeneapp=prot/traa2cds.pl, path=/camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../prot/traa2cds.pl
+#t2ac: evigeneapp=prot/aaqual.sh, path=/camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../prot/aaqual.sh
+#t2ac: evigeneapp=rnaseq/asmrna_dupfilter4.pl, path=/camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../rnaseq/asmrna_dupfilter4.pl
+#t2ac: evigeneapp=rnaseq/asmrna_altreclass4.pl, path=/camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../rnaseq/asmrna_altreclass4.pl
+#t2ac: evigeneapp=makeblastscore.pl, path=/camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../makeblastscore.pl
+#t2ac: evigeneapp=prot/cdsqual.sh, path=/camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../prot/cdsqual.sh
+#t2ac: evigeneapp=genes/blasttrset2exons2.pl, path=/camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../genes/blasttrset2exons2.pl
+#t2ac: evigeneapp=genes/trclass2pubset.pl, path=/camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../genes/trclass2pubset.pl
+#t2ac: BEGIN with cdnaseq= arath_TAIR10_20101214up.cdna date= Tue 20 Dec 21:58:36 GMT 2022
+#t2ac: forkCMD= /camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../cdna_bestorf.pl -nostop -minaa=30 -codepot -cdna arath_TAIR10_20101214up_split/arath_TAIR10_20101214up.cdna.split1.fa -aaseq arath_TAIR10_20101214up_split/arath_TAIR10_20101214up.cdna.split1.aa0 -cdsseq arath_TAIR10_20101214up_split/arath_TAIR10_20101214up.cdna.split1.cds0
+#t2ac: forkCMD= /camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../cdna_bestorf.pl -nostop -minaa=30 -codepot -cdna arath_TAIR10_20101214up_split/arath_TAIR10_20101214up.cdna.split2.fa -aaseq arath_TAIR10_20101214up_split/arath_TAIR10_20101214up.cdna.split2.aa1 -cdsseq arath_TAIR10_20101214up_split/arath_TAIR10_20101214up.cdna.split2.cds1
+#t2ac: CMD= cat_splitset to arath_TAIR10_20101214up.aa from n=2, arath_TAIR10_20101214up_split/arath_TAIR10_20101214up.cdna.split1.aa0 .. 
+#t2ac: CMD= cat_splitset to arath_TAIR10_20101214up.cds from n=2, arath_TAIR10_20101214up_split/arath_TAIR10_20101214up.cdna.split1.cds0 .. 
+#t2ac: bestorf_cds== arath_TAIR10_20101214up.cds nrec= 43235
+#t2ac: CMD= /camp/apps/eb/software/Exonerate/2.4.0-foss-2016b/bin/fastanrdb arath_TAIR10_20101214up.cds > arath_TAIR10_20101214upnr.cds
+#t2ac: nonredundant_cds== arath_TAIR10_20101214upnr.cds nrec= 40575
+#t2ac: CMD= touch arath_TAIR10_20101214upnr.cds.isbest
+#t2ac: consensus transcripts n=31 tabled in arath_TAIR10_20101214up.consensus
+#t2ac: nonredundant_reassignbest= 1600 of 2104
+#t2ac: add_consensus_idset n=31 from .//arath_TAIR10_20101214up.consensus
+#t2ac: NOTE: evd_smallclassfilter not enough evidence nev=31 for naa=43235
+#t2ac: evd_smallclassfilter[100 aa] cut: 0 kept: 0 on evidence of nagree: 31 nhomol: 0
+#t2ac: CMD= /camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../prot/traa2cds.pl -extend2utr 900,60 -cdna arath_TAIR10_20101214up.cdna -aaseq arath_TAIR10_20101214upnr.aa -cdsseq arath_TAIR10_20101214upnrxu.cds
+#t2ac: cds -extend2utr  900,60 bp in arath_TAIR10_20101214upnrxu.cds
+#t2ac: CMD= /camp/apps/eb/software/CD-HIT/4.8.1-GCC-10.2.0/bin/cd-hit-est  -c 1.00 -T 2 -M 2000 -l 89 -d 0 -i arath_TAIR10_20101214upnrxu.cds -o arath_TAIR10_20101214upnrxucd1.cds 1> arath_TAIR10_20101214upnrxucd1.log 2>&1
+#t2ac: ERR=256  /camp/apps/eb/software/CD-HIT/4.8.1-GCC-10.2.0/bin/cd-hit-est  -c 1.00 -T 2 -M 2000 -l 89 -d 0 -i arath_TAIR10_20101214upnrxu.cds -o arath_TAIR10_20101214upnrxucd1.cds 1> arath_TAIR10_20101214upnrxucd1.log 2>&1
+#t2ac: ERR: nofrag_reassignbest missing cdsnr:arath_TAIR10_20101214upnrxucd1.cds, arath_TAIR10_20101214upnrxucd1.cds.clstr or aaqual:arath_TAIR10_20101214up.aa.qual
+#t2ac: nofrag_reassignbest= 0 of 0 arath_TAIR10_20101214upnrxucd1.cds
+#t2ac: ERR: openRead arath_TAIR10_20101214upnrxucd1.cds
+#t2ac: ERR: openRead arath_TAIR10_20101214upnrxucd1.cds
+#t2ac: FATAL ERR: failed  nofragments_cds== arath_TAIR10_20101214upnrxucd1.cds nrec= 0
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: FATAL app=blastn, path=echo MISSING_blastn
+#t2ac: EvidentialGene tr2aacds.pl VERSION 2022.01.20
+#t2ac: CMD: tr2aacds.pl  -NCPU 2 -MAXMEM 1000 -log -cdna arath_TAIR10_20101214up.cdna
+#t2ac: app=blastn, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin/blastn
+#t2ac: app=makeblastdb, path=/camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin/makeblastdb
+#t2ac: app=fastanrdb, path=/camp/apps/eb/software/Exonerate/2.4.0-iccifort-2019.5.281/bin/fastanrdb
+#t2ac: app=cd-hit-est, path=/camp/apps/eb/software/CD-HIT/4.8.1-GCC-10.2.0/bin/cd-hit-est
+#t2ac: app=cd-hit, path=/camp/apps/eb/software/CD-HIT/4.8.1-GCC-10.2.0/bin/cd-hit
+#t2ac: evigeneapp=cdna_bestorf.pl, path=/camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../cdna_bestorf.pl
+#t2ac: evigeneapp=prot/traa2cds.pl, path=/camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../prot/traa2cds.pl
+#t2ac: evigeneapp=prot/aaqual.sh, path=/camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../prot/aaqual.sh
+#t2ac: evigeneapp=rnaseq/asmrna_dupfilter4.pl, path=/camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../rnaseq/asmrna_dupfilter4.pl
+#t2ac: evigeneapp=rnaseq/asmrna_altreclass4.pl, path=/camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../rnaseq/asmrna_altreclass4.pl
+#t2ac: evigeneapp=makeblastscore.pl, path=/camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../makeblastscore.pl
+#t2ac: evigeneapp=prot/cdsqual.sh, path=/camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../prot/cdsqual.sh
+#t2ac: evigeneapp=genes/blasttrset2exons2.pl, path=/camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../genes/blasttrset2exons2.pl
+#t2ac: evigeneapp=genes/trclass2pubset.pl, path=/camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../genes/trclass2pubset.pl
+#t2ac: BEGIN with cdnaseq= arath_TAIR10_20101214up.cdna date= Wed 21 Dec 10:36:51 GMT 2022
+#t2ac: bestorf_cds== arath_TAIR10_20101214up.cds nrec= 43235
+#t2ac: nonredundant_cds== arath_TAIR10_20101214upnr.cds nrec= 40575
+#t2ac: nonredundant_reassignbest= 0 of 0
+#t2ac: add_consensus_idset n=31 from .//arath_TAIR10_20101214up.consensus
+#t2ac: NOTE: evd_smallclassfilter not enough evidence nev=31 for naa=43235
+#t2ac: evd_smallclassfilter[100 aa] cut: 0 kept: 0 on evidence of nagree: 31 nhomol: 0
+#t2ac: cds -extend2utr  900,60 bp in arath_TAIR10_20101214upnrxu.cds
+#t2ac: CMD= /camp/apps/eb/software/CD-HIT/4.8.1-GCC-10.2.0/bin/cd-hit-est  -c 1.00 -T 2 -M 2000 -l 89 -d 0 -i arath_TAIR10_20101214upnrxu.cds -o arath_TAIR10_20101214upnrxucd1.cds 1> arath_TAIR10_20101214upnrxucd1.log 2>&1
+#t2ac: CMD= touch arath_TAIR10_20101214upnrxucd1.cds.isbest
+#t2ac: nofrag_reassignbest= 0 of 40010 arath_TAIR10_20101214upnrxucd1.cds
+#t2ac: nofragments_cds== arath_TAIR10_20101214upnrxucd1.cds nrec= 40010
+#t2ac: CMD= /camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin/makeblastdb -in arath_TAIR10_20101214upnrcd1x.cds -dbtype nucl -out arath_TAIR10_20101214upnrcd1x_db -logfile arath_TAIR10_20101214upnrcd1x_db.log
+#t2ac: forkCMD= /camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin/blastn -task megablast  -ungapped -xdrop_ungap 4 -dust no -perc_identity 98 -evalue 1e-19 -outfmt 7 -db arath_TAIR10_20101214upnrcd1x_db  -query arath_TAIR10_20101214upnrcd1x_blsplit/arath_TAIR10_20101214upnrcd1x.cds.split1.fa -out arath_TAIR10_20101214upnrcd1x_blsplit/arath_TAIR10_20101214upnrcd1x.cds.split1-self98.blastn1
+#t2ac: forkCMD= /camp/apps/eb/software/BLAST+/2.11.0-gompi-2020b/bin/blastn -task megablast  -ungapped -xdrop_ungap 4 -dust no -perc_identity 98 -evalue 1e-19 -outfmt 7 -db arath_TAIR10_20101214upnrcd1x_db  -query arath_TAIR10_20101214upnrcd1x_blsplit/arath_TAIR10_20101214upnrcd1x.cds.split2.fa -out arath_TAIR10_20101214upnrcd1x_blsplit/arath_TAIR10_20101214upnrcd1x.cds.split2-self98.blastn2
+#t2ac: blastn_cds= arath_TAIR10_20101214upnrcd1x-self98.blastn
+#t2ac: skip step4.1 aadup clustering
+#t2ac: CMD= /camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../rnaseq/asmrna_dupfilter4.pl   -aasize arath_TAIR10_20101214up.aa.qual -CDSALIGN -blastab arath_TAIR10_20101214upnrcd1x-self98.blastn  -aconsensus arath_TAIR10_20101214up.consensus -pCDSOK=20 -pCDSBAD=20 -ALTFRAG=0.5  -outeqtab arath_TAIR10_20101214up.alntab -outclass arath_TAIR10_20101214up.trclass >arath_TAIR10_20101214up.adupfilt.log 2>&1
+#t2ac: asmdupfilter_cds= arath_TAIR10_20101214up.trclass
+# Class Table for arath_TAIR10_20101214up.trclass 
+class    	%okay	%drop	okay	drop
+althi    	4.2	0.07	1848	34
+althi1   	10.6	0.16	4615	70
+althinc  	0.09	0	42	0
+altmfrag 	0.42	0.04	184	19
+altmid   	0.8	0.04	357	19
+main     	12.6	0.03	5482	15
+mainnc   	0.09	0	40	0
+noclass  	56.8	1.4	24598	618
+noclassnc	3.2	0	1405	0
+parthi   	0	1.1	0	477
+parthi1  	0	0.43	0	187
+perfdupl 	0	6.1	0	2660
+perffrag 	0	1.3	0	565
+smallorf 	0	0	0	0
+---------------------------------------------
+total    	89.2	10.7	38571	4664
+=============================================
+# AA-quality for okay set of arath_TAIR10_20101214up.aa.qual (no okalt): all and longest 1000 summary 
+okay.top	 n=1000; average=1416; median=1265; min,max=1052,5393; nfull=996; sum=1416673; gaps=2,0
+okay.all	 n=31525; average=383; median=322; min,max=30,5393; nfull=30445; sum=12105077; gaps=19,0
+#t2ac: asmdupfilter_fileset= arath_TAIR10_20101214up.okay.cdna arath_TAIR10_20101214up.okalt.cdna arath_TAIR10_20101214up.drop.cdna arath_TAIR10_20101214up.okay.aa arath_TAIR10_20101214up.okalt.aa arath_TAIR10_20101214up.drop.aa arath_TAIR10_20101214up.okay.cds arath_TAIR10_20101214up.okalt.cds arath_TAIR10_20101214up.drop.cds
+#t2ac: tidyup output folders: okayset dropset inputset tmpfiles
+#t2ac: CMD= mv arath_TAIR10_20101214up.okay.cdna okayset/arath_TAIR10_20101214up.okay.cdna
+#t2ac: CMD= mv arath_TAIR10_20101214up.okalt.cdna okayset/arath_TAIR10_20101214up.okalt.cdna
+#t2ac: CMD= mv arath_TAIR10_20101214up.okay.aa okayset/arath_TAIR10_20101214up.okay.aa
+#t2ac: CMD= mv arath_TAIR10_20101214up.okalt.aa okayset/arath_TAIR10_20101214up.okalt.aa
+#t2ac: CMD= mv arath_TAIR10_20101214up.okay.cds okayset/arath_TAIR10_20101214up.okay.cds
+#t2ac: CMD= mv arath_TAIR10_20101214up.okalt.cds okayset/arath_TAIR10_20101214up.okalt.cds
+#t2ac: CMD= mv arath_TAIR10_20101214up.drop.cdna dropset/arath_TAIR10_20101214up.drop.cdna
+#t2ac: CMD= mv arath_TAIR10_20101214up.drop.aa dropset/arath_TAIR10_20101214up.drop.aa
+#t2ac: CMD= mv arath_TAIR10_20101214up.drop.cds dropset/arath_TAIR10_20101214up.drop.cds
+#t2ac: CMD= mv arath_TAIR10_20101214up.cds inputset/arath_TAIR10_20101214up.cds
+#t2ac: CMD= mv arath_TAIR10_20101214up.aa inputset/arath_TAIR10_20101214up.aa
+#t2ac: CMD= mv arath_TAIR10_20101214up.aa.qual inputset/arath_TAIR10_20101214up.aa.qual
+#t2ac: CMD= mv arath_TAIR10_20101214upnr.cds tmpfiles/arath_TAIR10_20101214upnr.cds
+#t2ac: CMD= mv arath_TAIR10_20101214upnr.aa tmpfiles/arath_TAIR10_20101214upnr.aa
+#t2ac: CMD= mv arath_TAIR10_20101214upnrxu.cds tmpfiles/arath_TAIR10_20101214upnrxu.cds
+#t2ac: CMD= mv arath_TAIR10_20101214upnrxucd1.cds.isbest tmpfiles/arath_TAIR10_20101214upnrxucd1.cds.isbest
+#t2ac: CMD= mv arath_TAIR10_20101214upnrxucd1.cds tmpfiles/arath_TAIR10_20101214upnrxucd1.cds
+#t2ac: CMD= mv arath_TAIR10_20101214upnrxucd1.cds.clstr tmpfiles/arath_TAIR10_20101214upnrxucd1.cds.clstr
+#t2ac: CMD= mv arath_TAIR10_20101214upnrxucd1.log tmpfiles/arath_TAIR10_20101214upnrxucd1.log
+#t2ac: CMD= mv arath_TAIR10_20101214upnrcd1x.cds tmpfiles/arath_TAIR10_20101214upnrcd1x.cds
+#t2ac: CMD= mv arath_TAIR10_20101214upnrcd1x-self98.blastn tmpfiles/arath_TAIR10_20101214upnrcd1x-self98.blastn
+#t2ac: CMD= mv arath_TAIR10_20101214upnrcd1x_db.log tmpfiles/arath_TAIR10_20101214upnrcd1x_db.log
+#t2ac: CMD= mv arath_TAIR10_20101214up.alntab tmpfiles/arath_TAIR10_20101214up.alntab
+#t2ac: CMD= mv arath_TAIR10_20101214up.adupfilt.log tmpfiles/arath_TAIR10_20101214up.adupfilt.log
+#t2ac: tidyup erase: n=8, arath_TAIR10_20101214upnrcd1x_db.nsq arath_TAIR10_20101214upnrcd1x_db.nin arath_TAIR10_20101214upnrcd1x_db.nhr arath_TAIR10_20101214upnrcd1x_blsplit/arath_TAIR10_20101214upnrcd1x.cds.split1.fa arath_TAIR10_20101214upnrcd1x_blsplit/arath_TAIR10_20101214upnrcd1x.cds.split2.fa ..
+#t2ac: CMD= env outcds=1 /camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../prot/cdsqual.sh tmpfiles/arath_TAIR10_20101214upnrcd1x.cds
+#t2ac: CMD= /camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../makeblastscore.pl -pIDENTMIN 99.999 -pmin 0.01 -CDSSPAN -showspan=2 -tall -sizes tmpfiles/arath_TAIR10_20101214upnrcd1x.cds.qual tmpfiles/arath_TAIR10_20101214upnrcd1x-self98.blastn > tmpfiles/arath_TAIR10_20101214upnrcd1x-self100.btall
+#t2ac: CMD= /camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../genes/trclass2pubset.pl -onlypub -norealt -noaltdrops -log -debug -class arath_TAIR10_20101214up.trclass
+#t2ac: CMD= sort -k7,7nr -k2,2 -k6,6nr -k1,1 tmpfiles/arath_TAIR10_20101214upnrcd1x-self100.btall | env pubids=publicset/arath_TAIR10_20101214up.pubids debug=1 /camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../genes/blasttrset2exons2.pl > tmpfiles/arath_TAIR10_20101214upnrcd1x.exontab
+#t2ac: CMD= /camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../genes/trclass2pubset.pl -noaltdrops -exontab tmpfiles/arath_TAIR10_20101214upnrcd1x.exontab  -log -debug  -class arath_TAIR10_20101214up.trclass
+#t2ac: tidy okayset => okayset1st, stage2 reduction => okayset
+#t2ac: DONE at date= Wed 21 Dec 10:39:22 GMT 2022
+#t2ac: ======================================

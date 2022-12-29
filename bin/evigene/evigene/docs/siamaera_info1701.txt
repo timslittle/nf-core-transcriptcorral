@@ -1,0 +1,44 @@
+
+2017.feb.12, d.gilbert
+self-chimera detection/trimming, or "siamaera" term of proovread, for evigene
+appears to be problem maybe related to RNA sample sources, or/and possibly assembler methods.
+shows up in part in gmap genome trasm > C1: self-chimera aligns, may be readily detectable, fixable
+
+env inlong=evg1arath.mrna_pub.fa ../../runproovsiamera.sh >& log.runproovsim2
+  out=evg1arath.mrna_pub.siamcut.fa : cuts are wrong for these results
+
+$nbin/blastn -perc_identity 97.5 -dust no -outfmt "6 qacc qstart qend sacc sstart send length pident qlen" \
+  -strand 'minus'  -xdrop_gap_final 25 -soft_masking false -gapopen 3 -gapextend 2 -penalty -4 \
+  -db $mrna -query $mrna |  perl -ne '($td,$tb,$te,$sd,$sb,$se,$al,$pi,$tw)=split; print if($td eq $sd); ' \
+  > evg1arath.mrna_pub.fa.siamnocul.blastn
+ 
+perl -ne '($td,$tb,$te,$sd,$sb,$se,$al,$pi,$tw)=split; if($tb <= 9) { $t="begin"; } elsif($te >= $tw-9) { $t="end";} else { if($se < $tb or $sb > $te) { next; }  $t="mid"; } $did{"$td.$tb"}++;  $sum{$t}{n}++; $sum{$t}{w}+= $al; $sum{$t}{id}{$td}++; END{ @t=sort keys %sum; print join("\t",qw(Part nPart avLen avID smLen))."\n"; for $t (@t) { ($n,$w)=map{ $sum{$t}{$_} } qw(n w); @id=keys %{$sum{$t}{id}}; $nd=@id; $sdc=0; for $d (@id) { $dc=$sum{$t}{id}{$d}; $sdc+=$dc; } $adc=int(100*$sdc/$nd)/100; ($aw,$ad)=map{ int(10*$_/$n)/10; } ($w,$nd); print join("\t",$t,$n,$aw,$adc,$w)."\n"; } } '  evg1arath.mrna_pub.fa.siamnocul.blastn | head
+
+Part	nPart	avLen	avID	smLen
+begin	17259	108	1.01	1864619
+end	4916	194.7	1.04	957146
+mid	100	45.3	1.53	4538
+   ^^ most self-rev-ident parts are 1..100~ matching true gene content in middle of transc
+   .. approx 20% of arabid root Illumina RNA assemblies (1 sample source) have these (both velvet, idba?)
+   .. dunno why this effect, if it is rna sample, assembler, other .. doesnt appear to be
+   vector/contam seq here for arabid, but part of arabid genes copied to front, or end of mrna.
+   add to evigene vectrim methods, standalone like proovread's siamaera script (mod for no BioPerl/etc)
+ 
+#... from proovread README
+http://dx.doi.org/10.1093/bioinformatics/btu392 
+proovread: large-scale high accuracy PacBio correction through iterative short read consensus. 
+Hackl, T.; Hedrich, R.; Schultz, J.; Foerster, F. (2014).
+
+***** 1. unsplit subreads, i.e. siamaera 
+Reads structure looks like this: =----R1--->--A--<--R1.rc--=. This happens quite
+frequently, however, it strongly depends on chemistry and particularly the
+quality of the libary prep. The more short DNA fragments make it through size
+selection, the more chances for having multiple subreads in one read... I've
+seen libraries form <1% to >5%.
+---
+.. discussion re pacbio siamaera detect/correct doesnt appear to apply to these short-read assemblies,
+but detection is same as there (self-revstrand-blast transcript, pick high ident pair HSP,), then
+for mRNA with coding-spans, trim front/end UTR of these. 
+
+
+

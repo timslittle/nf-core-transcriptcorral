@@ -1,0 +1,392 @@
+evigene20jan30/scripts/prot/tr2aacds4.pl  
+
+  ABOUT
+        EvidentialGene tr2aacds.pl
+ 
+        This program converts mRNA assembly sets of too many transcripts, to best open
+        reading frame coding sequences, with filtering of identical coding sequences, 
+        and alternate CDS transcripts found by high identity subset alignments.
+
+  EXAMPLE
+        evigene/scripts/prot/tr2aacds.pl -log -cdna transcripts.fa -NCPU 8 -MAXMEM 16000 
+
+        Input is one file of all transcripts.fasta[.gz]
+
+        Output is folder of non-redundant transcripts, proteins and CDS,
+        classified by gene locus, with tables of gene/transcript qualities,
+        and a separate drop folder of redundant sequences.
+
+        Use tr2aacds4.pl, Version 4, as evigene/scripts/prot/tr2aacds4.pl
+        See RUN SCRIPT below for a cluster script.
+
+  REQUIREMENTS
+        Current software required:
+        EvidentialGene source code from http://eugenes.org/EvidentialGene/evigene/
+                  or http://sourceforge.net/projects/evidentialgene/
+                  packaged by release as evigeneDATE.tar          
+        blastn, makeblastdb of NCBI C++ BLAST (tested ncbi2227 and later)
+                from  https://blast.ncbi.nlm.nih.gov/ (Altschul et al. 1990)
+        cd-hit, cd-hit-est, of https://github.com/weizhongli/cdhit/ or http://cd-hit.org/ (Li & Godzik 2006)
+        fastanrdb, of exonerate package, rapid and reliable non-redundant fasta sequence database, 
+          https://www.ebi.ac.uk/about/vertebrate-genomics/software/exonerate (Slater & Birney 2005)
+          
+        These need to be in PATH or ENV.
+
+  More ABOUT
+        This pipeline script comes out of many tests and refinements for
+        selecting best transcript assemblies from a superset of many, many
+        assemblies of same RNAseq data.  The focus on CDS of mRNA transcripts
+        allows for several of those refinements in balancing too few/too long mistakes,
+        and too many subset/nearly same assemblies.  The goal is a biologically
+        valid transcript assembly set.
+
+        The input mRNA assembly set is presumed a large collection from many
+        assemblers, data slices and options from the same transcript source.
+        Typically 1+ million input transcripts are processed, and reduced to a 
+        biologically realistic set of 20k - 50k main plus similar number of
+        alternate transcripts.
+
+        CDS sequence is primary quality of mRNA transcripts, after trying/discarding 
+        AA sequence (for those missed silent codon paralog changes).  CDS and AA
+        are guessed as ~longest ORF of transcript (with sizes options for complete/partial).
+        Long UTRs are also scanned for ORFs, of joined genes (common w/ hi-express neighbors,
+        some assemblers).   
+
+        CDS are classified by identity/alignment to each other, with fastanrdb (identicals), 
+        cd-hit-est (ident. fragments) and blastn (local hi-identity alternates).
+        High identity redundant assemblies are discarded, alternates classified
+        by hi-identity local alignments are classified and CDS-duplicative ones
+        discarded.   A final okay set contains main transcripts with informative
+        alternates, and unique CDS (no alternate or low identity).  Minimum CDS/AA sizes
+        are used. Protein completeness/partial, and UTR-poor qualities also
+        score and filter excess assemblies.
+
+        Transcript as whole is ignored due to many UTR misassemblies and difficulty
+        in assessing quality, but for CDS/UTR ratio as quality measure.  Test show
+        selection of longest CDS-ORF has strong +correlation with highest 
+        protein orthology score.
+
+        Use of high-identity CDS filtering (nrdb and cdhit-est at 100% identity, then
+        blastn exon-level identity >=98%), balances te removal of redundant CDS 
+        with retention of valid alternate, paralogs and clonal variant transcripts.
+
+        This reduction can be run on subset transcript assemblies, then
+        re-run on okay outputs to combine.  This script currently uses
+        -NCPU for parallelization on clusters.  The slowest computes are
+        for blastn-self of a large set.   Both use NCPU efficiently on one compute 
+        node w/ many cores.
+
+  SEE ALSO SRA2Genes
+        Please also consider using SRA2Genes of EvidentialGene, which includes this tr2aacds
+        as an important component. Read more in  evigene/docs/EvidentialGene_howto.txt 
+        and  evigene/docs/evgpipe_sra2genes.help.txt
+
+        tr2aacds is one component in a full gene reconstruction pipeline program.
+        It has a limited function of efficiently reducing large, over-assemblies of genes, using 
+        only intrinsic evidence (self-referential) of these sequences.
+
+        A full gene reconstruction pipeline program like SRA2Genes has many more operations, and is more
+        complex with choices of input gene evidence, measurements of protein homology, 
+        contamination, and added outputs.  As named, this SRA2Genes fetches RNA-seq input data 
+        from public repositories like NCBI SRA, to over-assemble, reduce, classify and analyze.  
+        It also operates on your own RNA-seq or/and transcript assemblies.
+
+  PIPELINE ALGORITHM of tr2aacds
+        Stage 1 reduction, steps 0 to 5, are original tr2aacds algorithm.
+        Stage 2 reduction, adds classifications steps, for version 4, tr2aacds4.
+
+        Stage1 reduction
+        0. collect input transcripts in one FASTA file, e.g. asm_name.tr, 
+           and compute best ORFs (aa and CDS sequences), working mostly on CDS sequences
+
+        1. perfect redundant removal:  fastanrdb  input.cds > input_nr.cds
+
+        2. perfect fragment removal: cd-hit-est -c 1.0 -l $MINCDS ..
+
+        3. blastn, basic local align hi-ident subsequences for alternate tr.
+
+        4. classify main/alternate cds, okay & drop subsets, using evigene/rnaseq/asmrna_dupfilter2.pl
+           .. merges alignment table, protein-quality and identity, to score okay-main, ok-alt, and drop sets.
+
+        5. make final output files from outclass: okay-main, okay-alts, drops 
+            okayset is for public consumption, drops for data-overload enthusiasts (may contain valids).
+
+        Stage2 reduction (more details below)
+
+        revised steps 0..5: 
+          a. reset default options of Stage1 to retain more alternates/paralogs, both true and false.
+          b. measure additional gene qualities, coding potential, assembler-replication (consensus).
+          c. revise S2, perfect fragment removal, to include UTR in comparison to keep valid 5'alternate starts.
+  
+        6. preliminary, unreduced, gene-classified data set, via trclass2pubset.pl
+
+        7. alternate exon pattern analysis, measure constituative, variable and fragment alternate patterns
+
+        8. reclassify with added measures, for alternate/paralog/fragment and shortaa/noncoding, via trclass2pubset.pl
+           Outputs of gene/locus classified sequences and tables, in okayset/ folder to preserve usage.  
+           Stage1 reduction is preserved in okayset1st/
+
+  VERSION 2016.07
+        -- update classifier version
+        -- utrbad,gapbad and related mods: problems dropping valid short aa, flip side is too many tiny frags
+
+  VERSION 2017.12
+        -- minor updates for evgpipe_sra2genes
+
+        -- add opt to switch classifier opts
+           between many-small-noblastp vs few-small-unless-blastp-hit 
+           e.g. for 2-stage reduction, so don't miss the few, short ortholog genes
+            -smallclass='keeptiny|droptinynoho' OR -tinynohomology=keep|drop
+           ** test first, direct w/ asmrna_dupfilter3.pl ** 
+           asmrna_dupfilter3.pl min-size opts (all ENV settings)
+        $AAMIN =$ENV{aamin}||30; #was 40;   # for aacomplete, utrok
+        $AAPART=$ENV{aapart}||100; # was 100; # for aapartial # 201402: THIS aapart cut is problem, drop.mains uniq orthologs here
+        $AAMINBAD=$ENV{aaminbad}||60; #was 200;  # for utrbad class
+        $AAMINPOO=$ENV{aaminpoo}||60; #was 100;  # for utrpoor class
+        tr2aacds: should use ONLY aamin or mincds not both
+        my $MINCDS = $ENV{MINCDS} || 90; # what? #maketraa3.sh: $AAMIN=40; $AMINPOO=100; $AMINBAD=200
+
+  VERSION 2018.06.18
+        -- tr2aacds3.pl (orig tr2aacds2c.pl), majorish version change
+        -- added, tested AACONS replication/consensus over assemblers (AACONS below)
+
+  VERSION 2019.08 .. 2019.12
+        -- tr2aacds4.pl (orig tr2aacds2d.pl), major revision of reduction filter algorithm
+        -- in conjunction with reference comparison tests of 3 reduce filter types: 
+            longest CDS, longest RNA, most RNA-seq.  See public doc doi: 10.1101/829184 
+        -- old algo measurement + classify details changed
+        -- new algo measure + class details added
+        -- updates marked as UPD1908 below
+
+        -- PHETERO/pHeterozygosity added UPD1912, to handle heterozyg. samples (eg. outbreed deer ticks),
+            by reducing align identity cut-offs, by 1..9 %, which lumps more nearly-same CDS,
+            and more high-identity transcripts are dropped.  Should be used only where heterozygosity
+            is measured, values of 1 or 2 should work reasonably well (as for Ixodes)
+
+  UPD1908 explained
+      Recovery of accurate alternates and paralogs was lower than
+      expected, and had a drop in number of valid transcripts per alt, par
+      classes. dgg examined implementation details using these
+      comparisons, and identified specific problems:
+
+        p1. Perfect fragment removal was removing valid alternate 5'starts,
+        by ignoring 5'UTR sequence where alternate exons are spliced to
+        produce shorter, but fragment-identical coding sequences.  This is
+        qualitatively different form of alternate splicing that the more
+        common exon-alternation in CDS.  The updated implementation adds
+        5'UTR for measure and reduction of perfect-fragment CDS alternates;
+        UTR-only alternate splicing is still ignored by evigene methods.
+
+        p2. Transcript aberrations includes a measure of percent CDS, where
+        transcripts with long UTR, e.g. less than 50% CDS, were reduced by
+        that measure.  However, coding genes with longer UTR are now a
+        common occurrence in reference gene sets, increasing since 2010, as
+        evidence of long-UTR transcript assemblies has been incorporated in
+        reference gene sets.  Now this reduction weight is only applied to
+        transcripts with less than 20% CDS.
+
+        p3. Alternates with nearly identical proteins, as opposed to CDS,
+        were reduced.  This is a mistake based on reference gene sets, with
+        valid CDS alternates that produce near or identical proteins.
+
+        p4. The ORF calculator option to distinguish complete versus 5'
+        partial proteins was adjusted for better agreement with reference
+        gene sets, increasing portion of complete proteins, with a related
+        result that fewer CDS alternates, at 5' partial end, are retained.
+
+      These corrections have the general result of retaining more
+      alternate models. New transcript set qualities have been examined
+      and found useful additions to this "longest CDS and valid
+      alternates" self-referential classifier:
+
+        q1. Coding potential calculation, to help distinguish random
+        sequence that has codon chains but is less likely to be valid
+        protein.  This is common for the shorter putative CDS, where random
+        results with large samples contain such codon chains.  Various
+        coding potential calculations are known (eg Kang et al 2017), but
+        are not perfect classifiers as many known reference proteins score
+        as having no coding potential.  Evigene's implementation uses coding
+        potential calculation as a modifier quality, to reduce low scoring
+        transcripts in absence of other positive qualities (ie homology).  A
+        subclass 'nc' for non-coding potential is added to the
+        classifications and transcript measures.
+
+        q2. Replication by assemblers of the same coding sequence
+        transcripts is a form of technical validation, where replicated
+        forms have higher likelihood as accurate than un-replicated
+        alternate models [cite Voshall thesis].  This also is not a perfect
+        classifier, as with many complex genes, a single assembly
+        parameter/data set often produces the most accurate model.  Another
+        type of replication score, across populations or individuals of a
+        species, will be distinguished, analogous to biological and
+        technical replication approaches used in gene expression analyses.
+
+        q3. Alternate exon splicing patterns are assessed from
+        self-alignment of gene alternates. This is an approximate measure
+        that compares to alternate exon splicing found with chromosome
+        mapped transcripts.  Valid alternates typically share common or
+        constitutive exons, invalid models do not share these, or contain a
+        fragment of the shared exons.  This exon splice pattern measure
+        helps discriminate valid and invalid models of alternates.
+          See also public doc doi: 10.1101/829184
+
+  UPD1908, 2019.08..11, tr2aacds2d.pl and asmrna_dupfilter3c.pl
+        * improved best perfdup and perffrag choices, tr2aacds2c nrcheckaaqual,
+          ie no longer picks shortest utr of cds-dups, but median utr size
+        -- fewer perfect-fragments; modified perfect-fragment test to include 5'UTR in test of identical CDS fragments, 
+            as this test was dropping most valid alternate start exons with splices in 5'UTR (proper name is what?)
+        -- modified keep/drop settings, esp. keep more althi, high identity alternates as these are measured 
+          to contain many biologically valid alternates.
+
+        * added assembly replication quality score, keeps alternates and noclass when assemblers agree.
+          replicate/agree/consensus evidence update, doesnt rescue frag/partial for agree>1  
+
+        * bestorf ORF_FULLvPART default 0.85 should be reduced to 0.50 or lower for accurate uses,
+          ref gene sets have few aapartials due largely to rarely calling long partial vs short full orfs.
+
+        * aaqual table now includes Code/Noncode column from bestorf codepot qual.
+
+        * added 'nc' class tag to tr2aacds classes, for pot. noncoding, 
+          ignores 'noncode' tag if aasize >= 140, or aasize > 99 and not poor 
+          keeps all 'nc' subclass of main/alt/noclass, but drops nc part/frag/utrorf,
+  
+        * modified default parameters: AADUP  99% from 98%, 
+        * later removed this AADUP test entirely, removed 'a2' sublcass tag,
+         as causing loss of valid alt/par w/o useful redundancy reduction.
+
+         * tr classifier: reduced cost of long UTR (ie. aberrant or joined-gene score) as such are now a common
+         occurence in reference gene sets (due to more evidence of long-UTR in transcript assemblies); 
+         params pCDSOK=pCDSBAD=20 (min % of mRNA as CDS is okay quality)
+
+  UPD1908, 2nd stage reduction filter
+        * overall, many more transcripts are retained in okayset as potentially valid, but wanting further
+         evidence tests to reduce to less redundant set.  This 2nd stage reduction filter is done now in
+         trclass2pubset.pl, with two variants: self-referential only (using only input trasm sequences),
+         and adding external evidence of more complete SRA2Genes/Tr2Genes, with cross-species homology,
+         contaminant checks, chromosome map checks.
+ 
+        * in keeping value of  self-referential only reduction filter, this 2nd stage reduction should always
+        be used w/ tr2aacds, now is included as step-7 of MAIN pipeline.  Test proc in "prot/tr2aacds4_stg2a.pl"
+        as tr2aacds4_stage2b($outclass,$cdsblast);  That calls several evg single-method scripts, plus
+        trclass2pubset that makes publicset/ sequences, with gene-tr-evidence table.
+
+        * 2nd stage reduction filter adds new self-ref quality algorithm (genes/blasttrset2exons): 
+        alternate/paralog exon splice site measurement, w/o chromosomes,
+        by alt transcript alignments per gene locus, assessment of common/constituative exons shared across
+        alternates, and quality scoring of alternates as to common/unique exon splice patterns.  This is
+        an analog of chromosome-mapped exon splice pattern analysis.  It agrees with chr-map results enough to be 
+        useful to help decide if alternate models are redundant/fragment models, 
+        as tested with reference and assembled genes.
+
+  RENAME tr2aacds to what?
+        'tr2aacds' is funny name for biologists, others, and 2019 update changes
+        enough to warrant new name, but also keep tr2aacds as it functions like old vers.
+        name1: tr2genes ? but this is only part of sra2genes omnibus pipe..
+           tr2codinggenes ?   
+           tr2genes_classifier ? no does more than class, and see asmrna_dupfilter, asmrna_altreclass
+        name2: tr2genes_self_referential_filter is too wordy
+               tr2genes_selfref ? tr2geneset ?
+        evgpipe_tr2genes.pl should be symlink to evgpipe_sra2genes.pl,
+           ie same program w/ diff start points.
+
+  AACONS consensus classing 2018.05
+        evigene/scripts/prot/tr2aacds_aaconsensus_item.txt
+        evigene/scripts/prot/tr2aacds2c.pl 
+        evigene/scripts/rnaseq/asmrna_dupfilter3c.pl
+
+        Consensus criterion is an important addition, to retain transcripts where
+        the coding sequence (protein) is supported by identical assemblies across
+        assembler methods.
+
+        Adam Voshall brought this to my attention, with this thesis,
+        https://digitalcommons.unl.edu/computerscidiss/145
+        "Consensus Ensemble Approaches Improve De Novo Transcriptome Assemblies"
+
+        showing that Evigene tr2aacds (and asmrna_dupfilter3 classifier) reduces,
+        drastically, the number of perfect protein matches to a reference gene
+        set, versus the number of perfects from individual assemblers.  The
+        reduction is due to longest-ORF often not being the "true" coding
+        sequence.
+
+        There is a puzzle here, as extensive measure by myself, others, show this
+        longest-ORF criteria does return greatest average alignment, and most
+        genes with high alignment, using protein or CDS aligned to reference
+        genes.  The difference, by digging thru discrepancies, is mostly at the
+        99+% level, where perfect means 100% identity, a harder criteria to
+        reach. Longest-ORF selection by Evigene is pulling rare? assemblies of
+        genes that are slightly longer (e.g. 1..10 aminos, or <=1% longer) than
+        "true" reference gene.  More work to determine if these are artifacts to
+        be dropped or valid, if slightly different transcripts.
+
+        tr2aacds should retain all valid, or likely valid, coding transcripts, removing
+        only truely redundant or fragment models.  To that end, AACON consensus scoring
+        and classification is added.  
+
+        tr2aacds will attempt to score input transcripts for CDS-consensus, using
+        ID patterns that distinguish assembler sources (as added by evigene trformat.pl, 
+        but customizable), or/and by SRA2Genes with its knowledge of separate assemblies
+        in  trsets/.  Consensus is measured as identical coding sequences, produced by 2+
+        different assembly methods (programs, or kmer setting, or data slices).
+
+        "Fastanrdb all.cds > nr.cds", as now used for assembly reduction, is also used now for
+        consensus detection.
+
+        Input to asmrna_dupfilter3c.pl for this is a table of
+          tr_ID <tab> consensus_score
+        where any score > 0 means the tr_ID will be retained in okayset, suitably classed
+        (generally as an alternate to longer ORF).  This is similar to how homology table
+        scores are used, 
+          tr_ID <tab> ref_ID <tab> homology_score
+
+        This command usage is then 
+          tr2aacds2c.pl -aconsensus[=acons_options] to enable, 
+            default mode measures consensus in trset.nrcds, writes trset.consensus table
+    
+          asmrna_dupfilter3c.pl -aconsensus trset.consensus  -anames trset.names (blastp scores + refnames) 
+           (asmrna_dupfilter is called by tr2aacds)
+
+  RUN SCRIPT run_tr2aacds4.sh
+        This script can be used, or modified, to execute tr2aacds4 on a cluster batch system,
+        or from Unix command line w/o batch system.  
+        NOTE you need to configure required software in path evgapps=$HOME/bio/apps/ ,
+        or equivalent w/ edits.  Required are 
+          evigene/scripts/ cdhit/bin/  exonerate/bin/ ncbi/bin
+
+        #! /bin/bash
+        #----------------------------------------
+        ### env trset=tevg9arathap.tr datad=`pwd` ./run_tr2aacds4.sh
+        ### env trset=myspecies_all.tr.gz datad=path/to/data qsub -q normal run_tr2aacds4.sh
+        #PBS -N tr2aacds
+        #PBS -A PutAccountIdHere
+        #PBS -l nodes=1:ppn=8,walltime=15:55:00
+        #PBS -V
+
+        if [ "X" = "X$ncpu" ]; then ncpu=8; fi
+        if [ "X" = "X$maxmem" ]; then maxmem=32000; fi
+        if [ "X" = "X$datad" ]; then echo "datad=?"; exit -1; fi
+        if [ "X" = "X$trset" ]; then echo "trset=what?"; exit -1; fi
+
+        evgapps=$HOME/bio/apps
+        evigenes=$evgapps/evigene/scripts
+        export PATH=$evgapps/cdhit/bin:$PATH
+        export fastanrdb=$evgapps/exonerate/bin/fastanrdb
+        export PATH=$evgapps/ncbi/bin:$PATH
+
+        evapp=$evigenes/prot/tr2aacds4.pl
+        traopts="-log"
+        #x traopts="-debug -log"
+        if [ "X" != "X$opt" ]; then traopts="$traopts $opt"; fi
+
+        cd $datad/
+        echo "#START `date` " 
+        echo $evapp -NCPU $ncpu -MAXMEM $maxmem $traopts -cdna $trset
+        $evapp -NCPU $ncpu -MAXMEM $maxmem $traopts -cdna $trset
+        echo "#DONE : `date`"
+        #----------------------------------------
+
+  AUTHOR
+        don gilbert, gilbertd near indiana edu, 2013 .. 2019 for v4
+        part of EvidentialGene, http://arthropods.eugenes.org/EvidentialGene/
+
+        =======================================================================================================
+

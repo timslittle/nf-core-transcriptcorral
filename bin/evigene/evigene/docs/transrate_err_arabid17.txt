@@ -1,0 +1,83 @@
+
+There is a basic problem with Transrate calculation of gene set quality 
+using paired RNA-seq mapped to transcripts: RNA-seq mapping 
+in proper pairing (or not) is a main statistic used by Transrate.
+
+RNA-seq assembly programs also use proper pairing of fragments as a basic
+part of the common graph assembly methods, so that assembled transcripts
+*should* consist of properly paired fragments.
+
+RNA-seq mapping methods are influenced strongly by presence of duplicated
+sequence spans, as with alternate transcripts and high identity paralogs.
+Some mapping methods have multi-map cut-offs, others may not report all
+proper pairing of fragments that map equally to several alternate
+transcripts.  An accurate statistic of proper paired fragment mapping to a
+given transcript should give the same value regardless of whether
+alternates to that transcript exist.  I.e., a transcript is properly
+assembled even if it shares identity with many alternate forms.
+
+A simple test of any transcript accuracy statistic is to (a) map RNA in
+presence and absence of alternates, then (b) score same single
+transcript/locus (i.e. longest or primary).
+
+TransRate: reference free quality assessment of de-novo transcriptome assemblies, 
+prepub bioRxiv 2015, doi: 10.1101/021626
+software https://github.com/Blahah/transrate
+
+Gene transcript source: arabidopsis_thaliana_araport2016 official gene set
+RNA-seq source: 31 M pairs of RNA seq of root tissue (SRA bioproject PRJNA323955,
+2016-10, diginorm set arab6roo3dn_trm_1,2)
+
+TransRate scores for Arabidopsis gene subsets:
+  Transrate scoring of primary transcripts only,
+  tabulated by locus categories of Has alternates vs No alternate transcripts.
+  RNA-seq is mapped to (t1) primary only, and (all) to all transcripts.
+  
+Result: 
+  Scores of primary transcripts with alternates change when alternates are present for
+  rna-mapping (same result if alts are not scored for rna-mapping qualities).
+  But scores of primary transcripts without alternates does not change.
+  I.e., transrate's rna-mapping is confused by presence of alternate transcripts.
+
+           RnaMap: TRmain  TRall  = transcripts for RNAseq mapping
+TrateStat  TReval: TRmain  TRmain = transcripts for Transrate Scoring
+---------------------------------
+                  Has Alternates      No Alternates
+                  t1map    allmap     t1map    allmap
+length            1942     1942       1413     1413
+prop_gc           0.414    0.414      0.414    0.414
+orf_length        480      480        355      355
+p_good            0.535    0.301*     0.434    0.433
+p_bases_covered   0.906    0.695*     0.725    0.721
+p_seq_true        0.838    0.778*     0.856    0.859
+score             0.329    0.144*     0.256    0.255
+p_not_segmented   0.767    0.817^     0.809    0.810
+eff_length        1942     1942       1413     1413
+sCnuc             0.838    0.778*     0.856    0.859
+sCcov             0.906    0.695*     0.725    0.721
+sCord             0.535    0.301*     0.434    0.433
+sCseg             0.767    0.817^     0.809    0.810
+n_seqs            10678    10678      16941    16941
+#--------------   ---------------    -----------------
+* reduced score of primary when alternates are present for RNA mapping.
+
+---- TransRate summary scores ---------
+Result: measure only primary transcript/locus gives higher score
+Score                 All_tr          Main(t1)
+n_seqs                48359           27619
+mean_len              1786            1616
+n_over_1k             38299           20171
+n_with_orf            42276           23199
+n50                   2067            1930
+gc                    0.41544         0.41654
+p_fragments_mapped    0.43314         0.5506
+p_good_mapping        0.14679         0.25764
+p_bases_uncovered     0.33991         0.13702
+p_contigs_uncovbase   0.97326         0.94631
+p_contigs_uncovered   1.0             1.0
+p_contigs_lowcovered  1.0             1.0
+p_contigs_segmented   0.10242         0.11195
+score                 0.00904         0.04226
+optimal_score         0.03614         0.07765
+--------
+

@@ -1,0 +1,83 @@
+
+EvidentialGene computes ORFs (proteins and coding sequences of those), and
+its method is drawn on Brian Haas's ORF computations, which also form the
+Transdecoder package now. ORF computation is fairly straight-forward, the
+only differences among methods will be at the edges for complicated,
+unusual cases. I've recently looked at results from Transdecoder versus
+Evigene, and I don't think Transdecoder is giving you improvements, it may
+well be reducing the number of best orthology proteins using its Predict
+variant. The initial TransDecoder.LongOrfs gives way to many results to be
+useful without the sort of filtering that Evigene does.
+
+Stats for Evigene versus Transdecoder, computing proteins for a known gene
+set, the Arabidopsis plant. You can see why I recommen using
+Evigene's computed ORFs, which are a better match to these carefully
+curated plant proteins. You can reproduce this test fairly easily, or with
+another reference species, and may get other results if you use other
+options/data.
+
+Published gene set: 
+  Araport11_genes.201606.cdna and  Araport11_genes.201606.aa, 
+  n=48,359 transcripts/proteins of 27,655 gene loci
+  Arabidopsis thaliana Genome Annotation Official Release, date: June 2016
+
+Method of ORF from cDNA transcripts:
+  1. Evigene $evigene/scripts/cdna_bestorf.pl -nostop -cdna Araport11_genes.201606.cdna -outaa arath16ap_evgorf.aa
+  2. TransDecoder.LongOrfs -t Araport11_genes.201606.cdna -m 30
+  3. TransDecoder.Predict -t Araport11_genes.201606.cdna
+
+Predicted ORFs versus published Araport11_genes.201606.aa
+1. Evigene cdna_bestorf
+  Total=50,846, Identical=46,639, Missed=23, aveSizeDiff= +1.3, sumSizeDiff=67573   
+    (includes 2,510 "UTRorf" extra orf/transcript)
+2. TransDecoder.LongOrfs
+  Total=492,753, Identical=41,233 Missed=25, aveSizeDiff= +3.7, sumSizeDiff=181235 
+    (includes ~10 ORF per transcript)
+3. TransDecoder.Predict
+  Total=77,414, Identical=28,399, Missed=1363, aveSizeDiff= -0.4, sumSizeDiff=-19799
+    (includes 29,055 "UTRorf" extra orf/transcript)
+
+Identical counts are number of identical proteins for reference vs computed.
+For those Missed, there are some very short "proteins" in this published
+plant gene set, including one with 1 amino only, the others with a few
+aminos up to 20 or so .. these are below the computed ORF cut-off of 30 aa.
+
+-------------
+
+Evigene gives you a single longest ORF per transcript, which are checked
+and filtered for redundancy, with the non-redundant 'okayset' that contains
+proteins, CDS and transcripts for the non-redundant genes, and those
+alternate transcripts per gene that have different CDS from longest. So my
+suggestion is that you will get better results using the Evigene okayset of
+proteins for orthology computations. I suggest also that using BLASTp of
+those proteins by reference set (e.g. from Swissprot) will give more
+accurate results than using BLASTx of the transcript or CDS nucleic
+sequences to reference proteins. This later method will hide errors in the
+transcripts (indels, inner stop codings, fragmented CDS). More important to
+you perhaps, the protein x protein BLASTp is more sensitive in finding
+significant homology.
+
+The results of ignoring genes that lack homology to your reference proteins
+is variable: it depends on how complete the reference gene set is w/
+respect to all the genes your organism is expressing, and how close in
+phylogeny they are. I've found some large numbers (1000s) of putative
+recent orthology genes in some fishes, water fleas, plants and other
+species that exist across a narrow phylogenetic span at least, but are not
+found in more distant model species. These recently evolved genes can be
+among those with active differential expression, active in response to
+environmental stresses unique to those species. Ignoring these recent genes
+means possibly ignoring important gene responses in your organism.
+
+In terms of measuring differential expression, there are definite effects
+among the alternate transcripts, which share large portions of same exons,
+but differ at certain exons (which may be where your differential effects
+are). It is valuable, but harder, to measure DE among alternates of same
+locus due to the high portion of shared reads.
+
+There are also definite effects in non-coding regions, including non-coding
+genes but also long UTR and intergenic "ambiguous" expression that is hard
+to define as genic. Whether you measure that or not is your decision.
+
+I recommend measuring expression of all your genes, then report effects in
+those broad classes of (a) coding genes with homology, (b) coding without
+definite homology, (c) non-coding.

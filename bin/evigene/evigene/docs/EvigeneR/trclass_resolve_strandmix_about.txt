@@ -1,0 +1,60 @@
+evigene/scripts/genes/trclass_resolve_strandmix.pl
+
+  about
+        EvidentialGene trclass_resolve_strandmix 
+          Examines trclass to reorient mixed-strand alternates
+          from evidence of geneval/chr-map.align.tab (stronger) and/or code potential (weaker)
+  
+        Usage: trclass_resolve_strandmix.pl -trclass mymrna.trclass 
+         opts: 
+          -pubids myrna.pubids : use this pubids instead of publicset|okayset pubids
+          -output mymrna.reorient_pubids : print pubids to this file not STDOUT
+          -calccodepot : calculate codepot from mRNA (CDS - UTR)
+          -fragcheck   : blast-align new rev CDS to gene set for fragment detection
+          -allpubids   : print unchanged + changed pubids
+  
+         Expects Evigene data, from SRA2Genes or tr2aacds, with trclass, pubids and okayset sequences,
+         geneval/chr-map.align.tab is table from SRA2Genes step 9 chr-mapping.
+         Output reoriented sequences to reorset/ with updated okayset/ as integrated with tr2aacds4.
+ 
+         Tests on reference transcripts show codepot-only corrects more than it errs (human 10:1, plant 2:1),
+         while chr-map.align corrects those with CDS-oriented introns.   Ambiguous cases are tabulated
+         and CDS/AA of both ambiguous strands should be further tested with homology evidence.
+
+         The coding gene locus paradigm says that all alternates of one locus should be oriented
+         in same direction.  There is a biological subset of CDS where longest ORF calculations 
+         return a longer false ORF on reverse strand overlapping a true shorter ORF.  Homology to 
+         known reference proteins can correct this false reverse ORF, as can alignment to chromosomes 
+         with intron orientation.  False reverse ORFs tend to look more like non-coding amino sequence 
+         (lower code potential) but this is a weaker test.
+ 
+         Some paralogs appear as mixed strand alternates of one locus, a problem to keep in mind. 
+         Some of the  paralogs in reference gene sets do indeed have reversed ORF orientations,
+         which may be supported by experimental evidence, or may be computational reverses.
+
+  original usage
+        export PATH=$PATH:$ncbiblastbin # blastn for -fragcheck
+        pt=human18ncx
+
+        $evigene/scripts/genes/trclass_resolve_strandmix.pl \
+         -debug -log -fragcheck -changesonly \
+         -trclass $pt.trclass -out $pt.restrand_pubids 
+
+        export DROPSHORT_ANTISENSE=0.01 # can be reset to keep short ref seq
+
+  draft trclass_resolve_strandmix.pl
+        a. read trclass, pubids 
+        b. collect genes with mixed strands among alt/pars
+        c. pick proper strand from largest codepot among those,
+           modified by other quals?  aaref homol score, aaqual part/full?, aacons? no
+        d. reverse seqs of false strand subset,   
+        e. rewrite data: pubids, okayset/prepub seqs, other 2ndary like aa.qual, any tmpfiles?
+           .. retain? false strand seqs as .cullrev set?
+   
+        resolution method: use pubids gene groups, for each group 2+ trs, check trclass for -sense flag,
+        if -sense flag, check all aaqual codepot, pick one sense for largest codepot, with caveats? 
+        quals aaref* if have it, aasize/complete/aaqual? aacons? no
+        then swap revaa for -sense trs, changing okayset seqs
+
+        for tr2aacds4_stage2b .. after 1st trclass2pubset ? before blasttrset2exons ?
+        *** redo cdsqual, etc for cds and strand changes **

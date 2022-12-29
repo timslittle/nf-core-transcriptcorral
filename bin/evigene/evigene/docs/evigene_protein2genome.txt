@@ -1,0 +1,138 @@
+
+For genes from ref prots of many species mapped to chromosomes (exonerate)
+kfish2/prot/exonrs/info of 2013, also used with cacao, daphnia, other genome projects
+
+Proteins of several NS reference species are mapped to a target species 
+chromosome assembly, with some method like exonerate:protein2genome that
+aligns CDS to intron splice sites.  This will generate NS models per locus,
+that need reduction to best model per locus, using scores such as
+protein size, alignment length, valid intron splice sites.  Evigene tools
+evigene/scripts/overbestgene[12].perl do this.
+
+for several reference species proteins, do 
+{
+step 1. map ref proteins with exonerate:protein2genome:bestfit  --showtargetgff
+  kfish2b-tilapia-best4.allxbestprot.gff ngene=23538
+  this is done on compute cluster using 
+  evigene/scripts/prot/exonrclust.pl,
+   to split data, run  exonerate jobs in parallel for many genes/species
+  
+step 2.  process_exonerate_gff ...
+  gzcat kfish2b-tilapia-best4.allxbestprot.gff.gz  | process_exonerate_gff3.perl -options 
+    > kfish2b-tilapia.exonr4.gff
+}
+
+step 3. reduce all ref prot mappings to best nonredundant locus set (gff best locus)
+  input 7 species genes= 166018, output best gene/locus models= 31906
+  
+  cat kfish2*.exonr4.gff | evigene/scripts/overbestgene1.perl -options \
+    > kfish2.bestprotgenes.gff
+   ( overbestgene2.perl is a different algorithm)
+  input genes=166018, output best genes=31906
+    
+#------------------------  
+merge/reduce these gene mappings, 166018 total 
+  kfish2b-catfish1all4.exonr4.gff:31613
+  kfish2b-humanup50.exonr4.gff:20260
+  kfish2b-medaka.exonr4.gff:22459
+  kfish2b-platyfish.exonr4.gff:22210
+  kfish2b-stickleback.exonr4.gff:22403
+  kfish2b-tilapia.exonr4.gff:23262
+  kfish2b-zebrafish2.exonr4.gff:23811
+
+Majority vote for best model/locus with evigene/scripts/overbestgene1.perl
+  -major=3 is majority vote option, ie 3+ species agree it is gene
+  -pct=6 means genes with 6% overlapping CDS are same locus
+  -strand means forward vs reverse CDS are not overlaps
+  -score 'aalen:2,alignx:5,intron:20,CDS:1'
+    -- this is weighting of gene attribute scores, to pick best model/locus
+    i.e. longest protein has 2 weight, longest alignx has 5 weight, 
+    most intron splicing has 20 weight, CDS length has 1 weight.
+    Largest sum of weighted scores at locus is best model.
+
+  intron_good.gff has rna intron locations to improve gene scores (gff type=intron)
+
+  mrna input annot: align=100%,264/264;alignx=71%,82%,184,212/260 for tilapia:ENSONIP00000016441
+  this perl changes mrna input score annotation from align=xxx to aalen=264
+    'if(/\tmRNA/){s/;align=\d+%,\d+.(\d+)/;aalen=$1/;}'
+    
+gzcat $kfish2/intron/intron_good.gff.gz kfish2*.exonr4.gff.gz | \
+perl -pe 'if(/\tmRNA/){s/;align=\d+%,\d+.(\d+)/;aalen=$1/;}' |\
+$evigene/scripts/overbestgene1.perl -major=3 -typeover over -pct 6 -strand \
+-score 'aalen:2,alignx:5,intron:20,CDS:1' -in stdin \
+  > kfish2b-protmbest7b.gff
+
+overbestgene1.perl has a special case of gene gff overlap detection:
+ - input is one gene/cds gff file with quality scores
+    and many overlapping predictions (e.g. exonerate predicts)
+ - output best by score non-overlapping subset genes + cds
+   (some overlap possible, want all mostly distinct predictions)
+
+=====
+
+STEP1 output of exonerate:protein2genome:bestfit
+    
+/biodatn/bio-grid/kfish2/prot/exonrs/kfish2b-tilapia-best4.allxbestprot.gff.gz
+Command line: [exonerate --model protein2genome:bestfit \
+ --exhaustive 1 --subopt 0 --forcegtag 1 --softmasktarget 1 --showtargetgff --showvulgar 0 --showalignment 0 \
+ --ryo #qi %qi length=%ql alnlen=%qal\n#ti %ti length=%tl alnlen=%tal\n#pi %pi,%ps total=%et ident=%ei sim=%es\n \
+ --query /home/ux455375/scratchn/chrs/kfish/prot/xotilapia/xr19850.1.aa \
+ --target /home/ux455375/scratchn/chrs/kfish/prot/xotilapia/xr19850.1.na]
+Hostname: [trestles-10-17.local]
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:bestfit 2.2.0
+##date 2013-07-09
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+Scaffold0:4086-11408:-  exonerate:protein2genome:bestfit        gene    1001    6413    873     -       .       gene_id 1 ; sequence tilapia:ENSONIP00000016441 ; gene_orientation +
+Scaffold0:4086-11408:-  exonerate:protein2genome:bestfit        cds     5960    6413    .       -       .       
+Scaffold0:4086-11408:-  exonerate:protein2genome:bestfit        exon    5960    6413    .       -       .       insertions 3 ; deletions 3
+Scaffold0:4086-11408:-  exonerate:protein2genome:bestfit        splice5 5958    5959    .       -       .       intron_id 1 ; splice_site "GT"
+Scaffold0:4086-11408:-  exonerate:protein2genome:bestfit        intron  4399    5959    .       -       .       intron_id 1
+Scaffold0:4086-11408:-  exonerate:protein2genome:bestfit        splice3 4399    4400    .       -       .       intron_id 0 ; splice_site "AG"
+Scaffold0:4086-11408:-  exonerate:protein2genome:bestfit        cds     4250    4398    .       -       .       
+Scaffold0:4086-11408:-  exonerate:protein2genome:bestfit        exon    4250    4398    .       -       .       insertions 0 ; deletions 0
+Scaffold0:4086-11408:-  exonerate:protein2genome:bestfit        splice5 4248    4249    .       -       .       intron_id 2 ; splice_site "GT"
+Scaffold0:4086-11408:-  exonerate:protein2genome:bestfit        intron  1190    4249    .       -       .       intron_id 2
+Scaffold0:4086-11408:-  exonerate:protein2genome:bestfit        splice3 1190    1191    .       -       .       intron_id 1 ; splice_site "AG"
+Scaffold0:4086-11408:-  exonerate:protein2genome:bestfit        cds     1001    1189    .       -       .       
+Scaffold0:4086-11408:-  exonerate:protein2genome:bestfit        exon    1001    1189    .       -       .       insertions 6 ; deletions 0
+Scaffold0:4086-11408:-  exonerate:protein2genome:bestfit        similarity      1001    6413    873     -       .       alignment_id 1 ; Query tilapia:ENSONIP00000016441 ; Align 6414 1 60 ; Align 6354 24 294 ; Align 6057 122 96 ; Align 4397 155 147 ; Align 1190 204 144 ; Align 1040 252 39
+# --- END OF GFF DUMP ---
+
+
+STEP2 output of one species
+ gzcat kfish2b-tilapia-best4.allxbestprot.gff.gz  | process_exonerate_gff3.perl -options > kfish2b-tilapia.exonr4.gff
+  
+/biodatn/bio-grid/kfish2/prot/exonrs/kfish2b-tilapia.exonr4.gff.gz | head
+##gff-version 3
+#source-version exonerate:protein2genome:bestfit 2.2.0
+#date 2013-07-09
+Scaffold0       xb4tilapia      mRNA    5086    10498   873     -       .       ID=tilapia:ENSONIP00000016441;align=100%,264/264;alignx=71%,82%,184,212/260
+Scaffold0       xb4tilapia      CDS     10045   10498   .       -       .       Parent=tilapia:ENSONIP00000016441
+Scaffold0       xb4tilapia      CDS     8335    8483    .       -       .       Parent=tilapia:ENSONIP00000016441
+Scaffold0       xb4tilapia      CDS     5086    5274    .       -       .       Parent=tilapia:ENSONIP00000016441
+----
+
+STEP 3 output : input genes=166018, output best genes=31906
+/biodatn/bio-grid/kfish2/prot/exonrs/kfish2b-protbest7major.gff.gz <------
+##gff-version 3
+# appl: /bio/bio-grid/mb/evigene/scripts/overbestgene1.perl
+# args: -major=3 -typeover over -pct 6 -strand -score clen:5,alignx:5,intron:20,CDS:2 -in stdin
+# vers: 2012.08.03
+# scores: 'clen:5,alignx:5,intron:20,CDS:2'
+# drops : ''
+# ingene: 166018
+
+Scaffold0       bp7tilapia      mRNA    39524   57017   14436   +       .       ID=bp7tilapia:ENSONIP00000016438;aalen=11
+05;alignx=75%,85%,812,920/1088;ints=95,-1/39/40,i2:3,i3:3,i4:3,i5:3,i6:3,i7:3,i8:3,i9:3,i10:3,i11:3,i12:3,i13:3,i14:3,i15
+:3,i16:3,i17:3,i18:-1/2,i19:3,i20:3,i21:3,;cxlen=3318/0;nover=0;cdsover=0;ismajor=1;svec=1105,75,95,3318
+Scaffold0       bp7tilapia      CDS     39524   39899   0       +       .       Parent=bp7tilapia:ENSONIP00000016438
+Scaffold0       bp7tilapia      CDS     39984   40241   0       +       .       Parent=bp7tilapia:ENSONIP00000016438;ints
+=3

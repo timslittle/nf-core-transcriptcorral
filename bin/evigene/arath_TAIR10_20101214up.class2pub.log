@@ -1,0 +1,44 @@
+#egr: EvidentialGene trclass2pubset VERSION 2020.03.15
+#egr: /camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../genes/trclass2pubset.pl  -onlypub -norealt -noaltdrops -log -debug -class arath_TAIR10_20101214up.trclass
+#egr: BEGIN /camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../genes/trclass2pubset.pl  input= arath_TAIR10_20101214up date= 20221221
+#egr: Make mRNA publicset/arath_TAIR10_20101214up.mrna from okayset transcripts
+#egr: evigeneapp=prot/traa2cds.pl, path=/camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/genes/../prot/traa2cds.pl
+#egr: CMD= /camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/genes/../prot/traa2cds.pl -mrnaout -out publicset/arath_TAIR10_20101214up.mrna -aa ./okayset/arath_TAIR10_20101214up.okay.aa -cdna ./okayset/arath_TAIR10_20101214up.okay.cdna -aa ./okayset/arath_TAIR10_20101214up.okalt.aa -cdna ./okayset/arath_TAIR10_20101214up.okalt.cdna
+#egr: getmRNA publicset/mrna,aa,cds nid= 38571
+#egr: get_evgtrset= publicset/arath_TAIR10_20101214up.mrna . arath_TAIR10_20101214up
+#egr: data=arath_TAIR10_20101214up*.align.tab, exists=0, path=
+#egr: data=geneval/arath_TAIR10_20101214up*.align.tab, exists=0, path=
+#egr: makePubIdtabFromTrclass(arath_TAIR10_20101214up.pubids,arath_TAIR10_20101214up.mainalt.tab)
+#egr: readTrclass: dropset has 2579 alts
+#egr: done makePubIdtab(arath_TAIR10_20101214up.pubids,arath_TAIR10_20101214up.mainalt.tab) nin=40010, npub=38571, nmiss=0
+#egr: done -onlypubids makePubIdtab n= 38571
+#egr: tidy: n= 2 publicset/arath_TAIR10_20101214up.pubids publicset/arath_TAIR10_20101214up.mainalt.tab
+#egr: DONE at date= Wed 21 Dec 10:38:35 GMT 2022
+#egr: ======================================
+#egr: EvidentialGene trclass2pubset VERSION 2020.03.15
+#egr: /camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../genes/trclass2pubset.pl  -noaltdrops -exontab tmpfiles/arath_TAIR10_20101214upnrcd1x.exontab -log -debug -class arath_TAIR10_20101214up.trclass
+#egr: BEGIN /camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../genes/trclass2pubset.pl  input= arath_TAIR10_20101214up date= 20221221
+#egr: get_evgtrset= publicset/arath_TAIR10_20101214up.mrna . arath_TAIR10_20101214up
+#egr: data=arath_TAIR10_20101214up*.align.tab, exists=0, path=
+#egr: data=geneval/arath_TAIR10_20101214up*.align.tab, exists=0, path=
+#egr: makePubIdtabFromTrclass(arath_TAIR10_20101214up.pubids,arath_TAIR10_20101214up.mainalt.tab)
+#egr: readTrclass: dropset has 2579 alts
+#egr: done makePubIdtab(arath_TAIR10_20101214up.pubids,arath_TAIR10_20101214up.mainalt.tab) nin=40010, npub=38571, nmiss=0
+#egr: evigeneapp=rnaseq/asmrna_altreclass.pl, path=/camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/prot/../rnaseq/asmrna_altreclass4.pl
+#egr: data=arath_TAIR10_20101214up*.align.tab, exists=0, path=
+#egr: data=geneval/arath_TAIR10_20101214up*.align.tab, exists=0, path=
+#egr: evigeneapp=rnaseq/asmrna_altreclass3c.pl, path=/camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/genes/../rnaseq/asmrna_altreclass3c.pl
+#egr: CMD= /camp/lab/langhornej/working/HPC/littlet/evigene/evigene/scripts/genes/../rnaseq/asmrna_altreclass3c.pl -debug -noclasscut=100 -nodrops -trustpubids -exontable tmpfiles/arath_TAIR10_20101214upnrcd1x.exontab -altrenum -trclass arath_TAIR10_20101214up.trclass -pubids arath_TAIR10_20101214up.pubids -out arath_TAIR10_20101214up.pubids.realt > arath_TAIR10_20101214up.pubids.realt.log 2>&1
+#egr: #altreclass: nin/out=38571/38571, ndrop/keep=0/38571, nrenum=1184, ngenediff=381/31536 log=arath_TAIR10_20101214up.pubids.realt.log
+#egr: makePublicset(arath_TAIR10_20101214up.pubids,arath_TAIR10_20101214up)
+#egr: read_pubids n=38571, dropskip=0,dupskip=0,dup1=0, form NonamEVm%06d from arath_TAIR10_20101214up.pubids
+#egr: names  n=0
+#egr: read_annotab(arath_TAIR10_20101214up.ann.txt): ok=1
+#egr: checkputids arath_TAIR10_20101214up.mrna_pub.fa.checktab ok=38571,miss=0
+#egr: checkputids arath_TAIR10_20101214up.aa_pub.fa.checktab ok=38571,miss=0
+#egr: checkputids arath_TAIR10_20101214up.cds_pub.fa.checktab ok=38571,miss=0
+#egr: publicset:  arath_TAIR10_20101214up.mrna_pub.fa ok:38571,miss:0 arath_TAIR10_20101214up.aa_pub.fa ok:38571,miss:0 arath_TAIR10_20101214up.cds_pub.fa ok:38571,miss:0  missingdata arath_TAIR10_20101214up.ann.txt
+#egr: tidy: n= 12 publicset/arath_TAIR10_20101214up.pubids publicset/arath_TAIR10_20101214up.mainalt.tab publicset/arath_TAIR10_20101214up.pubids.old publicset/arath_TAIR10_20101214up.pubids.realt.log publicset/arath_TAIR10_20101214up.ann.txt
+#egr: tidy: n= 3 tmpfiles/arath_TAIR10_20101214up.mrna_pub.fa.checktab tmpfiles/arath_TAIR10_20101214up.aa_pub.fa.checktab tmpfiles/arath_TAIR10_20101214up.cds_pub.fa.checktab
+#egr: DONE at date= Wed 21 Dec 10:39:22 GMT 2022
+#egr: ======================================

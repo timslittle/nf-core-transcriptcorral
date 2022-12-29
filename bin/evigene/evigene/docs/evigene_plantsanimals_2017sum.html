@@ -1,0 +1,189 @@
+<html>
+<head>
+<title>
+Animal and Plant gene set reconstructions with EvidentialGene 2017
+</title>
+</head>
+<body>
+
+<h1>
+Animal and Plant gene set reconstructions with EvidentialGene:<br>
+Comparisons to other popular and recent gene reconstructions.
+</h1>
+D.G. Gilbert, gilbertd at indiana.edu, 2016/2017
+<p>
+
+
+Recent plant &amp; animal EvidentialGene constructions surpass PacBio,
+Maker, NCBI and Trinity methods for arabidopsis, corn plants, 
+white fly, water flea. 
+
+In comparison to gene sets of these other commonly used methods,
+the Evigene methods are more accurate at recovering genes as measured by
+homology across species and by expression data.
+<p>
+
+In particular, for 3 plant species sets, Illumina RNA assemblies done
+according to Evigene methods surpass Pac-Bio RNA genes not only in total gene set
+accuracy, but in per-locus accuracy, where both methods recover some transcripts,
+for primary, alternate and paralog transcript reconstruction.  Trinity
+assembled Illumina RNA gene sets are likewise incomplete compared to
+Evigene's multiple-assembler/reduction approach.
+<p>
+
+In comparison to genome-modeled gene sets, derived from many 
+sources of gene evidence (prediction from chromosomes, RNA, other species proteins),
+Evigene's RNA-only constructions often surpass accuracy of those modeled
+genes. This is likely due to the greater complexity of merging many evidence 
+sources in modeled genes, with greater chances of mis-modeling.
+<p>
+
+Evigene Illumina-RNA versus PacBio RNA comparisons include below summarized
+<a href="/EvidentialGene/plants/arabidopsis/evigene2017_arabidopsis/">
+Arabidopsis</a> model plant, 
+<a href="/EvidentialGene/plants/corn/">Zea mays</a> corn, as well as 
+<a href="/EvidentialGene/plants/pine/">pine trees</a>.  
+
+Evigene versus Trinity-only comparisons include these plants and animals such as 
+<a href="/EvidentialGene/arthropods/whitefly/whitefly3evigene/">Bemisia white fly</a>, 
+<a href="/EvidentialGene/arthropods/daphnia/">Daphnia water fleas</a>, 
+<a href="/EvidentialGene/arthropods/mosquito/">Aedes and Anopheles mosquitoes</a>,
+<a href="/EvidentialGene/arthropods/honeybee/">Honey bee</a>, 
+mice, fishes and others (including several by independent authors of animal
+and plant gene sets).
+
+Evigene versus genome modeled sets include those produced by NCBI EGAP,
+MAKER software, AUGUSTUS and similar gene modelers, for Arabidopsis, corn,
+pine and other plants, and animals including mosquitos, water fleas, honey bee,
+and others.
+
+<p>
+Zebrafish model animal is added for 2017-Dec reconstruction with Evigene methods,
+compared with the modelled gene sets of NCBI and Ensembl, surpassing both on
+average for complete fish/vertebrate protein homology and intron recovery. This
+draft evigene zebrafish set contains incomplete genes however, as with arabidopsis,
+only a small subset of RNA data was used.
+
+ 
+<pre>
+<a href="http://eugenes.org/EvidentialGene/plants/arabidopsis/evigene2017_arabidopsis/">
+1. Plant model Arabidopsis thal. gene reconstructions ...  evigene2017_arabidopsis </a>
+    Gene assemblies of Illumina RNA-seq vs PacBio
+
+               AtAraport genes   Cacao genes      Introns
+  Geneset     Found%  AlignT%   Found% AlignF%    Found%
+  AtAraport    --       --         88.7   70.7     88.1  
+  AtEvigene    95.4     95.0       89.1   70.3     87.5   
+  AtOases      90.0     91.2        na     na      81.1
+  AtIDBAtr     89.5     89.1        na     na      80.7
+  AtSOAPtr     88.9     87.0        na     na      79.1
+  AtTrinity    88.4     84.1        na     na      81.4
+  AtPacBio     58.1     48.2       64.2   60.5     56.3   
+ --------------------------------------------------------
+<a href="http://eugenes.org/EvidentialGene/plants/corn/">
+2.  Corn Zea mays gene reconstructions ...  evigene2016_corn</a>
+  Gene assemblies of Illumina, PacBio, and genes modeled on chromosome assembly
+  
+            Sorghum genes    Introns
+  Geneset   Found%  AlignT%  Found%
+  ZmEvigene   82.9    91.1     68.7 
+  ZmGramene   81.9    90.3     68.1 
+  ZmNCBI      81.3    89.6      na  
+  ZmPacBio    78.0    82.4     68.2   
+  ZmJgi4      77.6    81.2     68.9
+ ------------------------------------
+<a href="http://eugenes.org/EvidentialGene/arthropods/whitefly/whitefly3evigene/">
+3. White fly gene reconstructions ... evigene2016_whitefly </a>
+    Bemisia tabaci (cotton/crop plant pest)
+
+                 Reference species       RNA
+               Pea aphid    Fruit fly    Introns 
+  Geneset   Found%  AlnT%  Found% AlnT%  Found% 
+  BtEvigene   81.2   88.0    74.1  74.9   68.5   
+  BtNCBI      79.7   82.3    73.4  71.6   69.4   
+  BtMaker     77.4   73.8    72.1  66.0   57.7   
+  BtTrinity   73.5   59.2    68.0  53.2   50.5    
+ ----------------------------------------------
+<a href="http://eugenes.org/EvidentialGene/daphnia/daphnia_pulex/daphnia_pulex_genes2017/">
+4. Water flea Daphnia pulex gene reconstructions ...  evigene2017_daphnia_pulex</a>
+
+                 Reference species       RNA
+            Daphnia magna   Fruit fly    Introns 
+  Geneset   Found%  AlnT%  Found% AlnT%  Found% 
+  DpEvigene  72.0   88.6    67.9  80.3   66.6    
+  DpMaker    58.9   69.9    64.3  74.5   46.7    
+ ----------------------------------------------
+<a href="http://eugenes.org/EvidentialGene/vertebrates/zebrafish/zebrafish17evigene/">
+5. Zebrafish model Danio rerio gene reconstructions ...  zebrafish17evigene</a>
+       Evigene RNA assemblies vs NCBI, Ensembl genome-gene models
+  
+                Cavefish           Human genes      Vertebrate_BUSCO Introns
+  Geneset   Found% AlnT% Frag%  Found% AlnT% Frag%  Align  Miss Frag  Found% 
+  DrEvigene   97.0  96.5  0.5    87.5   90.8   0.5  446.8    9    5    81.6  
+  DrNCBI      93.9  92.7  3.9    86.9   89.3   1.2  434.6   19   13    76.4  
+  DrEnsembl   93.1  90.3  5.7    86.3   88.4   2.2  428.2   29   47    57.6  
+ ------------------------------ ------------------ -----------------  -----
+
+<a href="http://eugenes.org/EvidentialGene/vertebrates/pig/pig18evigene/">
+6. Pig, Sus scrufa, gene reconstructions compared </a>
+
+                Human genes      Vertebrate_BUSCO 
+  Geneset    Align% Miss% Frag%  Align  Miss Frag  
+  SsEvigene   97.0   0.7  1.4    447    8    10  
+  SsNCBI      96.0   0.7  0.7    440   17     2  
+  SsEnsembl   95.0   0.9  1.1    431   14    20  
+ ----------------------------- ----------------- 
+
+Arabidopsis gene sets
+  AtAraport  = public gene set of 2016 of Arabidopsis thal. from Araport.org 
+  AtEvigene= Evigene classification/reduction of Illumina RNA assemblies
+            http://arthropods.eugenes.org/EvidentialGene/plants/arabidopsis/evigene2017_arabidopsis/
+  AtOases   = Velvet/oases assembly of Illumina RNA,
+  AtIDBAtr  = idba_tran asm of Ill. RNA,
+  AtSOAPtr  = SOAP-Trans asm of Ill. RNA,
+  AtTrinity = Trinity asm of Ill. RNA,
+  AtPacBio  = Pac-Bio "no-assembly" assembly (PacBio xxx method) of Pac-Bio RNA data
+
+Zea mays gene sets
+  ZmEvig = Evigene Zeamay5fEVm 2016 assembly of Illumina RNA-seq, public at
+     http://arthropods.eugenes.org/EvidentialGene/plants/corn/evg5corn/
+  ZmGram = Ensembl/Gramene 2016.09 Zm000nnnn, 
+  ZmPacb = CSHL/Gramene PacBio gene assemblies of 2016 as SRA entries SRR3147024..054,
+  ZmNCBI = NCBI 2014 refgen zeamay
+  ZmJgi4 = JGI Rnnotator assembly set of Illumina RNA-Seq , 2014
+
+Bemisia tabaci gene sets 
+  BtEvig = Evigene gene assembly, 2016 update (vers 3), available [soon] at
+    http://arthropods.eugenes.org/EvidentialGene/arthropods/whitefly/whitefly3evigene/
+  BtNCBI = NCBI RefSeq gene models, 2016
+  BtMakr = Whitefly genome project genes modeled with MAKER, 2016, whiteflygenomics.org
+  BtTrin = TSA.GBII gene assembly 2015, Trinity of Illumina
+
+Daphnia pulex gene sets      
+  DpEvig7 Evigene genes of 2017 from 
+    http://arthropods.eugenes.org/EvidentialGene/daphnia/daphnia_pulex/daphnia_pulex_genes2017/
+  DpMaker7 genes of 2017 from report of doi:10.1534/g3.116.038638 
+
+Danio rerio gene sets 
+  DrEvigene = Evigene gene assembly, 2017 Dec
+    http://eugenes.org/EvidentialGene/vertebrates/zebrafish/zebrafish17evigene/
+  DrNCBI = NCBI RefSeq gene models, 2016 Dec, accession GCF_000002035.5_GRCz10
+  DrEnsEMBL = Ensembl gene  models, 2017 Nov
+
+Pig gene sets
+  SsEvigene = http://eugenes.org/EvidentialGene/vertebrates/pig/pig18evigene/
+  SsNCBI = NCBI RefSeq genes for the pig, 2018-May
+  SsEnsembl = Ensembl genes for the pig, 2018-June
+  Human RefSeq 2018 genes, 37,868 proteins matched, of 19122/20011 loci matched
+  Vertebrate BUSCO set of 2586 proteins of OrthoDB v9
+
+Measures
+  Genes Found%  = percent of reference genes with significant alignment to gene sets (BLASTp/n of proteins or CDS),
+  Genes AlnT%   = percent of aligned bases of reference gene bases
+  Introns Found% = percent of evidence introns aligned to gene set exons,
+       intron evidence from Illumina RNA-seq mapped to chromosome assemblies
+
+Further details are in <a href="evigene_plantsanimals_2017.txt">evigene_plantsanimals_2017.txt</a>
+</pre>
+</body></html>
+

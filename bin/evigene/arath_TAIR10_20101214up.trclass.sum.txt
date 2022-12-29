@@ -1,0 +1,22 @@
+# Class Table for arath_TAIR10_20101214up.trclass 
+class    	%okay	%drop	okay	drop
+althi    	4.2	0.07	1848	34
+althi1   	10.6	0.16	4615	70
+althinc  	0.09	0	42	0
+altmfrag 	0.42	0.04	184	19
+altmid   	0.8	0.04	357	19
+main     	12.6	0.03	5482	15
+mainnc   	0.09	0	40	0
+noclass  	56.8	1.4	24598	618
+noclassnc	3.2	0	1405	0
+parthi   	0	1.1	0	477
+parthi1  	0	0.43	0	187
+perfdupl 	0	6.1	0	2660
+perffrag 	0	1.3	0	565
+smallorf 	0	0	0	0
+---------------------------------------------
+total    	89.2	10.7	38571	4664
+=============================================
+# AA-quality for okay set of arath_TAIR10_20101214up.aa.qual (no okalt): all and longest 1000 summary 
+okay.top	 n=1000; average=1416; median=1265; min,max=1052,5393; nfull=996; sum=1416673; gaps=2,0
+okay.all	 n=31525; average=383; median=322; min,max=30,5393; nfull=30445; sum=12105077; gaps=19,0

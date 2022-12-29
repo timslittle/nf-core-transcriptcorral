@@ -1,0 +1,253 @@
+# gnodes_pipe_algo.txt gnodes/genome depth estimator  2021.jan
+
+=item about gnodes
+
+  gnodes/genome depth estimator  2021.jan
+  evigene package of  daphnia chrasm coverage depth toolkit as pipeline for general use
+
+=item Source data for gnodes_pipe
+
+   -- gDNA assemblies, at contig level, chr level okay, assume several alt asm for same gDNA data
+   -- gDNA data set(s),  Illumina paired high accuracy, for geno mapping, cover depth est
+   -- RNA gene assembly sequences as external evidence,  as coding seq, and mRNA?
+       with UCG unique conserved genes (BUSCO) identified
+   -- Transposon sequences for same species, eg. repeatmodeler built on one+ gDNA assembly
+      TE seq, from repeatmodeler? of same species, done on what chrasm? all? best?
+         or repeatmasker run on each chrasm? using custom daph + arpod TE lib?
+   .. any other genome-wide largish annot/evidence?
+
+=item new Evigene scripts
+  
+  1. evigene/scripts/genoasm/gnodes1_sam2covtab.pl
+    -- reads SAM mapping of gDNA x chrasm,cdsasm,teasm seq, ie. bwa-mem asm.db x reads.fastq > asm-rd.bam
+       filters multimap, uniqmap read aligns, and tabulates read depth on assemblies (in BINs of 100bp)
+    -- two-step usage: 
+      r1. gDNA x cds,transposon seq, output also readids hit
+      r2. gDNA x chr assembly, input also cds_te.readids for matching
+      o1: Primary coverage/depth output table is 8 cols: chrID,chrLoc cdsrd,terd,unkrd  acTotal,acMult,acUniq
+      where acMult is read count corrected for multi-maps, acTotal = total rdcount, acUniq = uniq map rdcount
+      per chrLoc bin (adjusted by bp aligned per 100bp bin)
+      o2: Secondary chrtab with read cover totals per chr/gene/te ID
+      
+  2. evigene/scripts/genoasm/gnodes2_annotate.pl
+    -- annotate chr assembly with gene CDS and known/modeled transposon sequences, 
+       including unique conserved gene spans (ie. BUSCO subset), simple repeats, and other
+       genome-wide measurable features.
+       
+  3. evigene/scripts/genoasm/gnodes3_covsum.pl
+    -- summarizes coverage tables of sam2covtab
+    -- partitions full chr-assembly by read/annotation classes: CDS-spans, TE-spans, Uniq-Gene-spans, etc
+       and calculates estimated spans from read depth over- and under- depth relative to measured
+       uniq-gene baseline gDNA map depth, and/or median values for uniquely mapped spans 
+       (which however may hide non-unique missing assembly)
+       
+  
+=item gnodes_pipe algorithm steps
+  
+  0c. new chrasm(s) need contam screening if not done; 2 ways: 
+    0c1. known-contam(bacteria).fa, 
+    0c2. not-daphnia (ie no align to published daph-species chrasm)
+    
+  1c. map gDNA reads (Ill.) to chrasm(s) w/ multi-map option, eg. -all aligns, to SAM
+      though use only best + best equivalents
+  1g. map gDNA reads to gene CDS, 
+  1t. map gDNA reads to transposon seq
+   -- 1g,t need separate DNA map x CDS_certain.fa, TE_certain.fa, UNK_ambig_cds_te.fa
+   
+  2g,t: tabulate CDS_gDNA, TE_gDNA aligns, saving readids
+  2c:   tabulate Chr_gDNA aligns, include matching CDS,TE gDNA reads 
+    using sam2covtab7a.pl
+    
+  3a:  annotate cov tables with other mappable evidence: gene CDS, TE, Repeat aligns, GAP table,
+     including ortholog, paralog?,UCG info from annotated genes,
+     w/ option to merge gDNA map sets;  map long seqs another way from gDNA reads
+     output table similar to sam2covtab, adding annot,geneid columns
+  using generdcov4tab.pl
+    --  3c,3g,3t steps to make evd x asm aligns, then merge w/ DNA cov table via generdcovtab
+    
+  2d/3d. calculate Ku coverage depth for UCG unique gene set [Dug?], also more common median/mode-peak depth vals (should agree)
+    -- calc for CDS gDNA, TE gDNA sets independent of chrasm, cmp to chr depth at UC gene-mapped locs? cmp to median/mode depth
+    
+  4a. whole-genome summary of chrasm cover depth by annotated parts, as per
+      daphcov3gsum/daphnia3cov6g_sumtable.txt
+  using daphnia3covfilt.pl, daphnia3covtables.pl
+  needs summary info describing assemblies, related data (eg flow cyto est sizes), as per daphnia3covsum.data  
+
+  4c. chromosome depth graph maps, using alt outputs (of generdcov4tab? w/ chr.AGP to link chrasm contigs as needed)
+  using ? xxx.pl of generdcov4tab output tables to make R-format plot tables
+
+=item 1.g,t x 2c,g,t details
+  
+  -- CDS,TE seq should have IDs tagged for classification.  Eg. reformat repeatmodeler
+     "family-nnn#LINE/xxx" > "TE_xxx_Rnnn", "family-uuu#Unknown" > "UNK_Ruuu"
+      gene.cds ID DapmagEVm000 > CDS_dm0000 
+  -- step 1g,t map gDNA to CDS, TE seq separately .. some TE modeled can be "junk" extreme collectors, obscure other eg CDS w/ such
+     step 2g,t to combine, class map-to type (CDS, TE, UNK) for each read-id     
+  -- ?? 1g,t: need separate DNA map x CDS_certain.fa, TE_certain.fa, UNK_ambig_cds_te.fa
+      ^^-- make these evidence class sets from evidence cross aligns, not using chrasm aligns,
+      ie, cds x teseq
+  -- for 2c in, make one table of *classified* read ids from CDS, TE  x gDNA aligns, cols 2,3,4 for CDSc,TEc,UNK ?
+  
+=item 3a details
+
+  -- include methods to (re)run annots on each chrasm
+  3g. gaps: use abyss2019f/bin/abyss-fatoagp (perl), splits scafs at gaps, writes .agp and optional scafsplit.fa
+  3c. gene.CDS:  blastn (dc-megablast or blastn?) to asm for all locs (cdslocs table)
+  3t. te.seq: use repeatmasker? or blastn?  assume te.seq is from same species so  blastn should work, simpler & like cds
+  ** need classify repeatmodeler Unknown vs TE and geneCDS TE vs ortholog vs Unknown; id tables? as w/ busco ucg.ids
+  .. 
+  
+=item  3g. gap table
+    $evigene/scripts/genoasm/chrfasta2agp.pl < $asm.fa > $asm.ctg.agp
+    cat $asm.fa | dmag20reasm/dmag20newasm/abyss_fatoagp.pl -g 10 -f $asm.ctg.fa > $asm.ctg.agp
+      other opts: -s 200 (min scaf len), -S 50 (min ctg len)
+    copy to $evigene/scripts/genoasm/chrfasta2agp.pl    
+      have: chragp2contigs.pl, chragp2fasta.pl
+      
+=item  3c. cdslocs current method:
+  cds=daphmag14t1cds
+  chrs=dmag15nwb2fullasm
+  -- can this be reused for te.seq? not as good as blastn -task rmblast below 
+  -- change dc-megablast to blastn? test 1 shows small increase in aligns, skip?
+  
+  see latest usage:
+     daphmag/gasm20set/dmag20reasm/geneval/run_dcblastcds2locs.sh
+
+  asm=dmag15nwb2fullasm
+  orig cds class
+  env cds=dmag14t1cds.fa  genome=genome/$asm.fa.gz ncpu=4 maxme=8000  datad=`pwd` ./run_dcblastcds2locs.sh
+
+  $nbin/blastn  -evalue 1e-9 -perc_identity 80 -task dc-megablast -template_type coding -template_length 18 -outfmt 7  \
+   -db $chrs -query $cds.fa  -out $chrs-$cds.dcblast1n  -num_threads $ncpu
+   
+MINIDALN=99; pMINTOP=0.66; 
+grep -v '^#' $chrs-$cds.dcblast1n | cut -f1-4,9-10 | \
+env minidal=$MINIDALN perl -ne 'BEGIN{ $MINIDALN=$ENV{minidal}||99; } 
+($td,$cr,$pi,$al,$cb,$ce)= split; $idal=int($al * $pi/100); 
+next if($idal < $MINIDALN); $pi=~s/\..*//; 
+$co="f"; if($cb>$ce) { ($cb,$ce)=($ce,$cb); $co="r"; } 
+print join("\t",$cr,"CDS",$cb,$ce,$co,$td,$idal,"$al,$pi")."\n";' | \
+  sort -k1,1 -k3,3n -k4,4nr | 
+env pmintop=$pMINTOP perl -ne 'BEGIN{ $pMINTOP=$ENV{pmintop}||0.50; } 
+next if(/^\W/); ($cr,$ty,$cb,$ce,$co,$id,$idal,$alpi)=split; 
+if($cr eq $lcr and $cb<$lce and $ce>$lcb) {
+   if($lid ne $id and $idal >= $pMINTOP*$topal) { push @x, $id; }
+} else { putx() if(@x); $topal=$idal; @x=($cr,$ty,$cb,$ce,$co,$id); }
+($lcr,$lcb,$lce,$lid)=($cr,$cb,$ce,$id); END{ putx(); } 
+sub putx{ my @xl=splice(@x,0,5); my $ids=join",",@x; print join("\t",@xl,$ids)."\n"; }  ' \
+  > $chrs-$cds.cdslocs
+
+BUG for 20.aug-21.jan results>> if($cr eq $lcr and $cb<$lce and $ce>$ldb) << ldb should be lcb **
+  -- may not have had much effect
+
+
+=item 3t. te.seq method
+
+  test te with run_dcblastcds2locs, 
+  env cds=dmag14t1cds.fa  genome=genome/$asm.fa.gz ncpu=4 maxme=8000  datad=`pwd` ./run_dcblastcds2locs.sh
+  
+  no use blastn -task rmblast instead, better align totals
+  $nbin/blastn -task rmblastn  -perc_identity 80 -evalue 1e-9 -outfmt 7 -num_threads 4  \
+     -db genome/bldb/$pt  -query dmag20sk4tefam.fa -out $pt-dmag20sk4tefam.i80.rmblastn 
+  .. and reduce minidal, 99b too large for TE aligns, reduce CDS also?
+  * FIXME: change CDS type to RM type: TER or UNR from  dmag20sk4tefam ids: xxx_(te|un)fnum
+  
+pt=dmag20sk4maca20ok; 
+grep -v '^#' $pt-dmag20sk4tefam.i80.rmblastn  | cut -f1-4,9-10 | env minidal=19 perl -ne \
+'BEGIN{ $MINIDALN=$ENV{minidal}||99; } next if(/^\W/);
+($td,$cr,$pi,$al,$cb,$ce)= split; $idal=int($al * $pi/100); 
+next if($idal < $MINIDALN); $pi=~s/\..*//; 
+$co="f"; if($cb>$ce) { ($cb,$ce)=($ce,$cb); $co="r"; } 
+print join("\t",$cr,"CDS",$cb,$ce,$co,$td,$idal,"$al,$pi")."\n";' | \
+sort -k1,1 -k3,3n -k4,4nr |  env pmintop=$pMINTOP perl -ne \
+'BEGIN{ $pMINTOP=$ENV{pmintop}||0.50; } 
+next if(/^\W/); ($cr,$ty,$cb,$ce,$co,$id,$idal,$alpi)=split; 
+if($cr eq $lcr and $cb<$lce and $ce>$lcb) {
+   if($lid ne $id and $idal >= $pMINTOP*$topal) { push @x, $id; }
+} else { putx() if(@x); $topal=$idal; ($al)=split",",$alpi;  @x=($cr,$ty,$cb,$ce,$co,$al,$id); }
+($lcr,$lcb,$lce,$lid)=($cr,$cb,$ce,$id); END{ putx(); } 
+sub putx{ my @xl=splice(@x,0,5); ($xa)=shift @x; my $ids=join",",@x; print join("\t",@xl,$ids,$xa)."\n"; }  ' \
+  > $pt-dmag20sk4tefam.rmtelocs
+
+for pt in dmag15nwb2fullasm dmag19skasm dmag14bgi2vtop5k dmag20sk4maca20ok; do {
+ env pt=$pt  perl -ne '($sc,$t,$sb,$se,$so,$rd)=@v=split; $sw=1+$se-$sb; 
+ ($un)=$rd=~m/_(..)/; $sw{$un}+=$sw; $sn{$un}++; END{ @un=sort keys %sw; print $ENV{pt}; 
+ for $u (@un){ $mb=int( $sw{$u}/100_000)/10; print "\t$u:$mb,$sn{$u}"; } print "\n"; } ' \
+  $pt-dmag20sk4tefam.rmtelocs; } done
+
+  dmag15nwb2fullasm       te:4.9,14587    un:6.7,31107
+  dmag19skasm             te:5.1,13120    un:7.3,29898
+  dmag14bgi2vtop5k        te:10.2,25132   un:12.6,49392
+  dmag20sk4maca20ok       te:15.9,39679   un:19.6,75378
+  ...
+  dmag15nwb2fullasm.i50   te:5.2,15255    un:6.8,31570
+
+cmp to repeatmask -db daphmagsk_arthropod_lib.fa -q dmag15nwb2asm.fa
+ie blastn -rmblast gets ~1/2 of repmask? effect of added arthropod_lib.fa ?
+          repmask  blast.rm
+  unclass  12 mb    7 mb
+  teclass  11 mb    5 mb
+  reptetc   2.5 mb
+  total    25 mb
+#-----------
+
+=item CDS or TE/Unc ?
+  .. could use more daph-species info to decide
+  .. ? resort locs, pick best among overlapping locs. CDS>TE>Unc or TE>CDS>Unc? 
+       Problem with TE over CDS, need annots to decide; sometimes both for partial overlaps
+  
+sort -k1,1 -k3,3n -k4,4nr -k2,2  dmag15nwb2fullasm*.{cdslocs,rmtelocs} | grep -v _contig | egrep -B2 -A2 'UNR|TER' | head -22
+dmag24nwb7d_scaffold00001	CDS	31037	31456	f	Dapma7bEVm000055t1
+dmag24nwb7d_scaffold00001	CDS	31522	31707	f	Dapma7bEVm000055t1
+dmag24nwb7d_scaffold00001	UNR	32817	32965	f	dmag20skm_unr1f61,dmag20skm_unr1f430,dmag20skm_unr1f62	149 <= Dapma7bEVm016267t1
+dmag24nwb7d_scaffold00001	CDS	32827	32965	f	Dapma7bEVm016267t1
+  Dapma7bEVm016267t1= quality=Class:Strong,Express:Strong,Homology:None,Intron:Weak,Map:Poor,Protein:complete; Name=Uncharacterized protein; aalen=231
+  .. Dapma7bEVm016267t1 might be daph/crust TE ..
+  
+dmag24nwb7d_scaffold00001	CDS	32827	32965	f	Dapma7bEVm016267t1
+dmag24nwb7d_scaffold00001	UNR	36110	36218	f	dmag20skm_unr1f325	109
+dmag24nwb7d_scaffold00001	TER	36410	36809	r	dmag20skm_ter1f123	401 <= Dapma7bEVm018704t1,Dapma7bEVm008712t1
+dmag24nwb7d_scaffold00001	CDS	36418	36572	f	Dapma7bEVm018704t1
+dmag24nwb7d_scaffold00001	CDS	36699	36813	r	Dapma7bEVm008712t1
+    Dapma7bEVm018704t1 quality=Class:Strong,Express:Strong,Homology:UniparalogStrong,Intron:Weak,Map:Poor-Split,Protein:complete; Name=Uncharacterized protein (69%A); genegroup=ARP7f_G10618,5/5/1; 
+    Dapma7bEVm018704t1 likely daphnid TE = dmag20skm_ter1f123, LINE/R2-NeSL
+    
+dmag24nwb7d_scaffold00001	CDS	36418	36572	f	Dapma7bEVm018704t1
+dmag24nwb7d_scaffold00001	CDS	36699	36813	r	Dapma7bEVm008712t1
+dmag24nwb7d_scaffold00001	UNR	36763	36809	f	dmag20skm_unr1f483	47 <= Dapma7bEVm008712t1
+dmag24nwb7d_scaffold00001	CDS	37650	37788	r	Dapma7bEVm010407t1
+dmag24nwb7d_scaffold00001	CDS	38148	38349	r	Dapma7bEVm010407t1
+    Dapma7bEVm008712t1  Class:Strong,Express:Strong,Homology:None,Intron:Strong,Map:Strong,Protein:complete; Name=Uncharacterized protein; aalen=160
+    Dapma7bEVm008712t1 maybe daphnid gene, maybe TE, see overlap w/ dmag20skm_ter1f123 .. many overlap pairings
+    
+dmag24nwb7d_scaffold00001	CDS	116917	117197	r	Dapma7bEVm008483t1
+dmag24nwb7d_scaffold00001	CDS	117396	117502	r	Dapma7bEVm008483t1
+  .. no CDS overlap
+dmag24nwb7d_scaffold00001	UNR	118320	118366	r	dmag20skm_unr1f680	47
+dmag24nwb7d_scaffold00001	TER	118473	118789	f	dmag20skm_ter1f8,dmag20skm_unr1f4,dmag20skm_unr1f5 320
+dmag24nwb7d_scaffold00001	TER	118648	118789	f	dmag20skm_ter1f12,dmag20skm_ter1f8,dmag20skm_unr1f6,dmag20skm_ter1f7,dmag20skm_ter1f9,dmag20skm_unr1f5,dmag20skm_unr1f4	142
+                          ^^^^^^^^^^^^^^^^^  count first TER overlap only
+dmag24nwb7d_scaffold00001	CDS	122334	122471	f	Dapma7bEVm009169t1
+
+  
+=cut
+
+=item gnodes_pipe_algo scripts
+
+# gnodes_pipe_algo scripts
+dmagnew=$bg/daphmag/gasm20set
+$gw/daphnia/gnodes_pipe_algo.txt
+$gw/daphnia/daphcov3gsum/daphnia3covfilt.pl 
+
+$dmagnew/geneval/generdcov4tab.pl 
+$dmagnew/dmag20reasm/dmag20newasm/gdnareads/mkreadids.sh 
+$dmagnew/dmag20reasm/contamug/run_contamblast.sh 
+$dmagnew/dmag20reasm/geneval/run_dcblastcds2locs.sh 
+$dmagnew/dmag20reasm/tefind/run_repmask2lib.sh 
+$dmagnew/dmag20reasm/tefind/run_repmod1a.sh 
+$dmagnew/dmag20reasm/dmag20newasm/gdnareads/run_sam2covtab7sd.sh 
+$dmagnew/dmag20reasm/dmag20newasm/gdnareads/runbwamem4sd.sh 
+$dmagnew/dmag20reasm/dmag20newasm/gdnareads/sam2covtab7a.pl
+
+
+=cut

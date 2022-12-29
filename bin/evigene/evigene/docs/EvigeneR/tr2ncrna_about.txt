@@ -1,0 +1,92 @@
+evigene/scripts/genes/tr2ncrna.pl
+
+  about
+        EvidentialGene tr2ncrna 
+          Collects putative non-coding RNA transcripts from Evigene tr2aacds results, 
+          using replication across assemblies as major validation quality, as:
+  
+           1.  ncRNAredundant.tr from input.tr (all transcripts) minus okay.mrna (coding transcripts)
+           2.  self-align ncRNAredundant.tr, measure replication from near-identicals across assemblies
+           3.  classify to locus (main+alt+par and unique/noclass), select subset of representative per locus,
+                i.e. keep long+replicated transcripts w/ exon-level variation (alt/par),
+                drop near duplicate alternates, short transcripts, partial okay.mrna transcripts
+
+  usage
+        Usage: tr2ncrna.pl -trset input/name.tr -mrna okayset/name.okay.mrna
+         options
+        -ncpu 8 : use 8 cpu, cores, for parallel processes
+        -log    : write progress to log file
+        -min_ncnra=500 : minimum ncRNA transcript size 
+        -minalign_ncrna=80 [1-99]: ignore ncrna % alignment below this, as likely paralog
+        -reuse_selfblast : test option, 1 or 2 self-align blastn runs on tr subsets
+        -updateall  : don't reuse intermediate results
+        -debug      : more progress info
+  
+        Expects Evigene data, from SRA2Genes or tr2aacds, with inputset/dropset transcripts containing ncRNA, 
+        and okayset mRNA sequences.  Output to ncrnaset/ with subsets of non-mRNA transcripts and classification
+        tables.
+
+  UPD2222, update 2020.02.22 ..
+        algorithm 2, from tests in human/sra2genes_tr19human/tr2aacds_test1908f/try20jaevg4f/evid/ncrna_altparscore.pl
+
+        replace ncrna_replicates: reduce by agreement, not working, ie no good cor of trasm agreement w/ ref ncrna
+        with ncrna_classgenes using rank of weighted evidence scores: trlen has most ref cor, 
+          and scores of pCDS, codepot, agree
+
+        use altparclass to group ncrna by locus, 
+        score (im)perfect.dups,frags to drop as per alt.hi1 overabundant subset
+
+        output table equivalent to mRNA pubids, with main/uni/alt/altpar classes, drop class of excess and low scores
+
+  test code run_evgncrnablself.sh
+        1a. remove mrna oids from trset, assume trset=input.tr all transcripts
+        1b. remove large dropped cds that are contained in okay.cds
+        1c. remove ~perfect dup+frag to okay.mrna using blastn align to okay.mrna
+
+        2. align imperfect notokmrna.tr, calc total align and keep subset w/ poor align to okay.mrna
+        2. blagree replacement: use only long-enough notoklong.tr, self-blast to find high-id long aligns, 
+          then pick blagree subset replicated over assemblers
+        2. FIXME: this way leaves in notokmrna with large overlap to okmrna : need to separate these from ncrna
+          step1 removes only contained-in-okmrna subset
+          ? use prior step2 + self-agree, add after step3 ? blastn -db uniqrna.tr -query ok.cds -qcov 60-90% ?
+
+        3. altpar classify unique_ncrna.tr
+          evigene/scripts/genes/altparclassify.pl -ncpu $ncpu -cds $trname.uniqrna.tr -sizes $trsizes
+  
+        3b. FIXME: step2 leaves in notokmrna with large overlap to okmrna : need to separate these from ncrna
+           step1 removes only contained-in-okmrna subset
+           use prior step2 + self-agree, add after step3 ? blastn -db uniqrna.tr -query ok.cds -qcov 60-90% ?
+
+  run_evgtr2ncrna.sh
+        #! /bin/bash
+        ### env trset=inputset/name.tr  mrna=okayset/name.okay.mrna  ncpu=12 datad=path/to/data  qsub -q normal run_evgtr2ncrna.sh
+        #PBS -N evg_tr2ncrna
+        #PBS -A PutAccountIdHere
+        #PBS -l nodes=1:ppn=16,walltime=39:55:00
+        #PBS -V
+
+        # run_evgtr2ncrna.sh = new evigene/scripts/genes/tr2ncrna.pl
+        # inputs: okayset/name.okay.mrna inputset/name.tr
+        # v1 opt:  -REUSE_SELFBLAST
+
+        # env need: $evigene/scripts/ and blastn on path
+        evgapps=$HOME/bio/apps
+        evigene=$evgapps/evigene
+        export PATH=$evgapps/ncbi/bin:$PATH
+        export PATH=$evgapps/exonerate/bin:$PATH
+        evgapp=$evigene/scripts/genes/tr2ncrna.pl
+
+        if [ "X" = "X$ncpu" ]; then ncpu=8; fi
+        if [ "X" = "X$maxmem" ]; then maxmem=64000; fi
+        if [ "X" = "X$datad" ]; then echo missing datad=/path/to/data; exit -1; fi
+        if [ "X" = "X$mrna" ]; then echo missing mrna='name.mrna'; exit -1; fi
+        if [ "X" = "X$trset" ]; then echo missing trset='name.tr'; exit -1; fi
+
+        cd $datad/
+        echo "#START `date` " 
+
+        echo $evgapp -debug -log  -ncpu $ncpu  -mrna $mrna -trset $trset
+        $evgapp -debug -log  -ncpu $ncpu  -mrna $mrna -trset $trset
+
+        echo "#DONE : `date`"
+

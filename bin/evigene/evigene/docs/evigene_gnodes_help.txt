@@ -1,0 +1,316 @@
+GNODES_ABOUT(1)       User Contributed Perl Documentation      GNODES_ABOUT(1)
+
+  ABOUT GNODES
+    EvidentialGene Gnodes programs are for genome coverage depth
+    estimation of animal & plant genomes. Gnodes is a Genome Depth
+    Estimator for animal and plant genomes, also a genome size
+    estimator. It calculates genome sizes based on DNA coverage of
+    assemblies, using unique, conserved gene spans for its standard
+    depth. Results of this tool match the independent measures from flow
+    cytometry of genome size quite well in tests with plants and
+    animals. Tests on a range of model and non-model animal and plant
+    genome assemblies give reliable and accurate results, in contrast to
+    unreliable K-mer histogram methods.
+  
+    Gnodes produces detailed assessments of genome assemblies to aid
+    improvments, including measures of major components of genes,
+    transposons, duplicated and unique genome regions, and an assembly
+    accuracy assessment of all genes in the genome.
+  
+    Genome reconstruction is a Goldilocks problem: answers are often too
+    hot, or too cold; the just-right solution takes effort to
+    discriminate among these outcomes. Gnodes provides a thermometer to
+    measure hot and cold genome assemblies. When used to compare several
+    assemblies of one organism, it spots over- and under-assembled
+    portions, relative to its unique gene DNA depth measure. It can be
+    used to estimate genome size from gene coding sequences mapped with
+    genomic DNA, and these tests show it is reliable for that. Gnodes is
+    now a component of the EvidentialGene package.
+  
+    Public URL: http://eugenes.org/EvidentialGene/other/gnodes/
+  
+  GNODES USAGE
+      $evigene/scripts/genoasm/gnodes_pipe.pl  
+         -title output_prefix 
+         -chr chr_assembly.fasta -cds cds.fasta : required 
+         -reads SRRnnnn_1.fastq  : required, may be many files, -reads SRR01_[12].fastq SRR02_[12].fastq 
+  
+      options: 
+       -asmid chr_assembly : usually chr_assembly name as in -chr fasta 
+       -metadata  genomes.metadata  : information for each asmid (below)
+       -idclasses cdste.idclass : table of classes per cds/te ID: CDS,TE,UNK and modifiers: UCG,busco, ..
+         -cds may be replaced with -mrna genes.fasta [???]
+         -te te.fasta : optional input transposon.fa sequences, or will use RepeatMasker  
+       -ncpu 24 : number-of-threads to use
+       -maxmem 240gb  : maximum computer memory
+       -RDMAPPER=bwa-mem2|minimap2  : one of a few read-mapper applications that are known to gnodes_pipe
+  
+      gnodes_pipe.pl generates a shell script run_gnodes.sh, using input file names and options.
+      The run_gnodes.sh calls several component Evigene scripts with those inputs, suited for
+      cluster computers.  gnodes_pipe.pl does no computations, and is safe to run on non-cluster machine.
+  
+      gnodes_setup.sh : Compute cluster and Unix system settings to be included at top of run_gnodes.sh
+  
+  GNODES REQUIRED SOFTWARE
+      Read mapper, bwa-mem2 or minimap2 currently, 
+        from https://github.com/bwa-mem2/bwa-mem2/ , https://github.com/lh3/minimap2/
+      samtools from https://sourceforge.net/projects/samtools/
+      NCBI BLAST, from ftp://ftp.ncbi.nlm.nih.gov/blast/  
+      BUSCO, run_BUSCO.py and hmmer software, Orthodb data for species, version 3 okay, other versions need test, 
+        from https://busco.ezlab.org/, https://gitlab.com/ezlab/busco/tree/3.0.2/
+      RepeatMasker to find transposons/repeats, or transposon sequences,
+        from http://www.repeatmasker.org/
+      and EvidentialGene, evigene21jul30.tar or later, 
+        from http://eugenes.org/EvidentialGene/other/evigene_old/
+      R statistical package is used to draw summary, chromosome plots.
+  
+  GNODES PIPELINE STEPS
+      sh_setup()
+  
+    STEP 1. Annotations of Genes, TE on chr_assembly
+  
+      sh_repeatmask() if($doREPMASK and not $teseq)
+      sh_buscoscan() if($doBUSCO and $cdsseq)
+      sh_annot($OUTSH,$chrasm,$cdsseq,$teann,$crclassf,$buscout);
+       uses EVIGENES/genoasm/gnodes_annotate.pl
+       annotate includes chr x cds aligns via NCBI BLASTN
+  
+    STEP 2. DNA mapping
+  
+      ($gnbam)= ($cdsseq)? sh_dnamap($OUTSH,$cdsseq,$reads,@morereads) : 0;
+      ($tebam)= ($teseq )? sh_dnamap($OUTSH,$teseq,$reads,@morereads) : 0;
+      ($crbam)= ($chrasm)? sh_dnamap($OUTSH,$chrasm,$reads,@morereads) : 0;
+  
+    STEP 3. Tabulate read coverages
+  
+     ($genescovtab)= sh_sam2genecov($OUTSH, $gnbam, ..) ;
+        uses EVIGENES/genoasm/gnodes_sam2genecov.pl
+  
+     ($cdstab,$cdsreadids)= sh_sam2covtab($OUTSH, 'cds', $gnbam, $crclassf);
+     ($tetab,$tereadids)  = sh_sam2covtab($OUTSH, 'te', $tebam, $crclassf);
+     ($chrcovtab)         = sh_sam2covtab($OUTSH, 'chr', $crbam, $crclassf, $cdsteids);
+       uses EVIGENES/genoasm/gnodes_sam2covtab.pl
+  
+    STEP 3 UPD21OCT: readid tables are obsolete, too memory-piggy, pig
+    genome crashed node w/ 240 Gb mem now sam2covtab reads both chr.bam
+    and cds.bam (or cdste.bam) for paired read maps NOTE: chr.bam and
+    cds.bam must be same read.fq/fa set mapped in same read order, which
+    gnodes_pipe does
+  
+    STEP 4: Summarize
+  
+      ($sumcds)= sh_covsum($OUTSH, $cdstab, $cdsid, $cdsid, "", $crclassf, $genescovtab, ..);
+      ($sumout)= sh_covsum($OUTSH, $chrcovtab, $asmid, $intitle, $anntable, $crclassf, $genescovtab); 
+        uses EVIGENES/genoasm/gnodes_covsum.pl
+  
+      ($gsumout)= sh_sumgenescov($OUTSH, $genescovtab, $chrgenetab, $asmid, $intitle, $crclassf); 
+        uses EVIGENES/genoasm/gnodes_sumgenecov.pl
+  
+     Steps may be changed, updated.
+  
+  OUTPUT TABLES
+     STEP1.  Annotations of
+        genes_buscofull_table.tsv = table of unique conserved genes as classified by BUSCO
+        chr.gaps.gff  
+        genes.idclass
+        rmout/chrasm.fa.out and chrasm.fa.rmte.gff : RepeatMasker TE/RPT locations
+        chr.anntab  : chrasm location bins with annotations of CDS, busco/UCG, TE, RPT, other and gene ids    
+           -- chr ID, Pos columns match read cover table columns
+  
+     STEP2.  BAM alignment files of chr,cds x read set 
+       
+     STEP3a. Gene coverage/copy table, cdsname_SRRreads.genexcopy
+  
+      1. Top summary with Uniq Gene Cov Depth statistics calculated from genes cover table  
+        # UCG Class Genes >= 1k long, 606 of 13954 total ----------------------
+        # Uniq Gene Cov Depth n=606, C.Map/W=32.3, 32.4 +/-1.32 (mdn,ave,sem) for W.genes=1142283, LN.reads=41565500
+        # Genome_size= 175.8 Mb of L*N/C= 125 * 45376972 / 32.3, CDS_size= 24.4 Mb,
+        #   for Nr.ucgcds=6299346 (13.9%), Nr.allcds=6299346 (13.9%), Nr.total=45376972, Lrdlen=125, MapErr=3641603 (0.52%),
+  
+      2. Genes cover table, with columns
+         Gene_ID    Glen = gene ID, CDS length
+           Nread = number of reads mapped
+           Rdlen = sum of read-bases mapped to gene (~ Nread * Readlen - unmapped)
+         tCopy = gene cover depth / UCG Cover depth (at top), eg tCopy = 1.0 = 31 CM / 32.3 (UCG.CM)
+         C.M  = gene cover depth, median of coverage over span     
+         Uniq = class of gene: uniq=1c, dupx=2+c, dups=partial-dup, skew=uneven coverage, zero=below minimal cover
+         Merr = mapping error (mismapped bases/aligned bases)
+         C.nz = gene cover depth average, median, bases, pct-cover
+         S.Dup,Unq,Nt,Equ,UCG = reads counts of dupl, uniq, total, equal types, and UCG gene flag
+  
+        Gene_ID              Glen Nread Rdlen   tCopy C.M  Uniq   Merr  C.nz                 S.Dup,Unq,Nt,Equ,UCG
+        dromel6:g10178777t1  327  97    12125   1.0   31   uniq   0.0   31.1,32,327,100.0    0,10160,10160,10160
+        dromel6:g10178781t1  204  70    8750    0.8   27   uniq   0.1   27.4,26,204,100.0    0,5595,5595,5595
+        dromel6:g10178782t1  171  40    5000    0.7   21   uniq   0.5   21.5,22,171,100.0    0,3676,3676,3676
+        dromel6:g10178941t1  642  552   69000   2.8   89   dupx   0.3   89.1,91,642,100.0    0,57171,57172,57095
+        dromel6:g117463t1    519  140   17500   0.9   30   dups   0.1   744.8,651,503,96.9   359140,15518,374659,0
+        dromel6:g14462699t1  642  231   28875   1.1   35   skew   4.5   70.4,28,642,100.0    22212,22703,45189,12741
+        dromel6:g10178912t1  186  0     0       0.0   0    zero   0     0,0,0,0.0            0,0,0,0
+  
+     STEP3b.  Coverage tables for cds, chr sequences
+  
+      name_SRRreads_tag.cc8a.chrtab = read counts per chromosome/scaffold/gene_ID, uniq and dupl,
+      nmap= total read mappings, with duplicates, nuniq = uniquely mapped, nmult = dupl. mappings,
+      nmread = total read IDs (<= total mappings), nomap = reads not mapped (0 for chr IDs).
+        #ChrID          chrlen    nmap        nuniq   nmult        nmread  nomap
+        NC_004353.4     1348131   20115181    379717  19735464     444193  0
+        NC_004354.4     23542271  1385190987  6136826 1379054161   7047905 0
+  
+       name_SRRreads_tag.cc8a.covtab = read counts per 100 base bins, on chr/gene, 
+       where  aCovT   aCovM   aCovU = coverage counts Total, Mean, Unique at each assembly bin position 
+        and   CovT,CovM,CovU are now CDS/TE/UNK-linked-read coverage counts
+        #ChrID     Pos     CovT    CovM    CovU    aCovT   aCovM   aCovU
+        NC_004353.4 100     0       0       0       1009    0       0
+        NC_004353.4 200     0       0       0       1619    5       0
+  
+      chrname_SRRreads_tag.genetab
+        -- counts aCovT,aCovM, noCov are for CDS-mapped readIDs also mapped (or not) to chr_assembly
+        -- gene IDs in column 1, then similar ChrID,Pos to name_SRRreads_tag.cc8a.covtab
+        #GeneID                 ChrID           Pos             aCovT   aCovM   noCov
+        dromel6:g10178777t1     NC_004354.4     1848600         1       1       0
+        dromel6:g10178777t1     NT_033777.3     17420600        1       1       0
+        dromel6:g10178777t1     NT_033777.3     17420700        26      26      0
+        dromel6:g10178777t1     NT_033777.3     17420800        31      31      0
+        dromel6:g10178777t1     sumgene         1               115     115     0
+  
+     STEP4. Summaries
+     chrname_SRRreads_tag_sum.txt and .means
+       -- summary table with read coverage depth of partition classes: annotations by CDS, TE, Repeat,
+          and unique, duplicated, CDS mapped reads.  Associated .means table of summary statistics.
+  
+     chrtitle_genesum.txt
+       -- gene copy number summary from genetab  
+  
+     Summaries now include R plots of 
+       a. deficit summary for chr-asm and gene-copy nums, as bar plot
+       b. chr-coverage plots (longest 20 chr/scaffolds) with gene-cds, TE, repeats and duplicated regions
+  
+  METADATA FOR ASSEMBLIES
+      asmid=     assembly ID, often name of chrseq.fasta file
+      flowcyto=  flow cytometry genome size
+      asmtotal=  Chr assembly size, for _total summary
+      asmname=   Label for asmid
+      species=   Genus_species
+      buscodb=   OrthoDB database name for BUSCO calculation
+      rmaskdb=   RepeatMasker database
+  
+            Examples
+      asmid=arath18tair_chr
+      flowcyto=157-166 Mb
+      asmtotal=120 Mb
+      asmname=Arath18TAIR
+      species=Arabidopsis_thaliana
+      buscodb=embryophyta_odb9
+      rmaskdb=Arabidopsis
+  
+      asmid=drosmel6ref_chr
+      asmtotal=143.7 Mb
+      flowcyto=156-176 Mb
+      asmname=DrosMel14
+      species=Drosophila_melanogaster
+      buscodb=arthropoda_odb9
+      rmaskdb=arthropoda
+  
+      asmid=human20ash_chr
+      asmtotal=3109 Mb
+      asmname=Human20AshJH
+      flowcyto=3423-3423 Mb
+      species=Homo_sapiens
+      buscodb=metazoa_odb9
+      rmaskdb=human
+  
+  EXAMPLE PLANT
+      DNA samples: SRR10178325 of Bioproject PRJNA574113, Illumina HiSeq 4000, 19.8M spots, 6G bases
+         Whole genome seq of Arabidopsis thaliana leaf, homozygous of Col-0 strain 
+         SRR3703081 of PRJNA314706, 4.8G bases, F1 heterozygote of Col-0 and Cvi-0 strains.
+  
+      CDS gene sequences used
+        a. arath18tair1cds.fa, TAIR 2018, chr-asm modelled, isoform 1 only
+        b. arath17evg5ico1cds.fa, Evigene RNA-assembled 2017, isoform 1 only
+        CDS set b is used for assembly comparisons as it is independent of the chr-assemblies, has more unique conserved genes,
+        though is otherwise similar to chr-modelled gene set. Gnodes gene results are similar though the alternate 2020 Max
+        assembly has slighly greater recovery of Evigene set than that modeled on TAIR 18 chr assembly.
+  
+      Reference chr-assembly = arath18tair_chr
+      Total length: 119.7 Mb
+      ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/735/GCF_000001735.4_TAIR10.1/
+  
+      Alternate chr-assembly = arath20max_chr
+      Submitter: Max-Planck Institute For Developmental Biology, 2020/09/12
+      Total length: 130.2 Mb
+      ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/904/420/315/GCA_904420315.1_AT9943.Cdm-0.scaffold
+  
+      pt=arath18tair_chr; pt=arath20max_chr;
+      $evigene/scripts/genoasm/gnodes_pipe.pl -title ${pt}8evg -chr $pt.fa  -cds arath17evg5ico1cds.fa  \
+        -sumdata arath20asm.metad -ncpu 32 -maxmem 180gb  -RDMAPPER=bwa-mem2 -reads readsf/SRR10178325_[12].fastq.gz
+  
+  EXAMPLE FLY
+      DNA sample of PRJNA618654 VETMEDUNI VIENNA, Drosophila melanogaster,  2020-11-25 
+      SRR11460802 (Illumina HiSeq 2500) run: 22.7M spots, 5.7G bases
+  
+      wget -nd -q -b https://sra-download.ncbi.nlm.nih.gov/traces/sra61/SRR/011192/SRR11460802
+      sratoolkit/fastq-dump --qual-filter-1 --split-3 SRR11460802
+  
+      CDS gene sequences: dromel6rel_cds.fa, dromel ncbi refseq of rel. 6, isoform=1 only
+  
+      Reference chr-assembly = drosmel6ref_chr
+      Assembly name:  Release 6 plus ISO1 MT; BioProject: PRJNA13812; GenBank accession: GCA_000001215.4
+      Submitter:      The FlyBase Consortium/Berkeley Drosophila Genome Project/Celera Genomics, 2014-08-01
+      Total sequence length:   143.7 Mb
+  
+      Alternate chr-assembly = drosmel20pi_chr
+      BioProject:     PRJNA618654; GenBank accession: GCA_015852585.1
+      Submitter:      VetMedUni Vienna, 2020/12/08
+      Total sequence length:   167.8 Mb
+  
+      pt=drosmel6ref_chr; pt=drosmel20pi_chr; 
+      $evigene/scripts/genoasm/gnodes_pipe.pl -title $pt -chr $pt.fa -cds dromel6rel_cds.fa \
+        -metadata drosmelchr.metad -ncpu 24  -maxmem 128gb -reads readsf/SRR11460802_[12].fastq
+  
+  EXAMPLE HUMAN
+      DNA sample name: HiSeq2500_LAB01_Mother_REP01, PRJNA200694,  Instrument: Illumina HiSeq 2500
+      SRR12898282   527M spots, 132.8G bases, 2020-10-26,  126bp 
+      https://sra-download.ncbi.nlm.nih.gov/traces/sra71/SRR/012595/SRR12898282
+  
+      CDS gene sequences: human18nc_cds1t.fa, human ncbi refseq of 2018, isoform=1 only
+  
+      Reference chr-assembly = human19grc_chr.fa
+      Assembly Name: GRCh38.p13, BioProject PRJNA31257, GenBank accession: GCF_000001405.39  
+      Submitter:  Genome Reference Consortium, 2019/02/28
+      Total sequence length: 3,099 Mb (2,948 Mb ungap)
+  
+      Alternate chr-assembly = human20ash_chr.fa
+      Assembly Name: Ash1.7, BioProject PRJNA607914, GenBank accession: GCA_011064465.1 
+      Submitter:   Johns Hopkins University, 2020/03/04
+      Total sequence length: 3,109 Mb (3,026 Mb ungap)
+  
+      pt=human19grc_chr; pt=human20ash_chr; 
+      $evigene/scripts/genoasm/gnodes_pipe.pl -title $pt  -chr $pt.fa \
+       -cds human18nc_cds1t.fa -metadata human20asm.metad \
+       -ncpu 32 -maxmem 240gb -RDMAPPER=bwa-mem2 -reads readsf/SRR12898282_[12].fastq.gz
+  
+  GNODES_SETUP.SH
+      ## --- example gnodes_setup.sh for sbatch/Slurm ---    
+      #SBATCH --job-name="gnodes_pipe"
+      #SBATCH --output="gnodes_pipe.%j.log"
+      #SBATCH --partition=general
+      #SBATCH -t 12:00:00
+      #SBATCH --nodes=1
+      #SBATCH --ntasks-per-node=32
+      #SBATCH --mem=240G
+      #SBATCH --export=ALL
+  
+      # samtools and read mappers bwa or minimap2 are required
+      # NCBI BLAST (n,p makeblastdb) for annotations
+      # BUSCO v 3.0.2 is tested version, later versions may not work w/o gnodes_pipe or run_script changes
+      # R is optional, used for summary and chromosome plots
+      module load blast 
+      module load samtools 
+      module load repeatmasker 
+      module load busco/3.0.2
+      module load R 
+      ## alternate read mappers, similar results but slight difference in dupl map counts
+      bwabin=$HOME/bio/bwa/bin; export PATH=$bwabin:$PATH; export RDMAPPER=bwa-mem2
+      # mimbin=$HOME/bio/gnomutil/flye28/bin;  export PATH=$mimbin:$PATH; export RDMAPPER=minimap2
+      ## --- end gnodes_setup.sh ---
+  

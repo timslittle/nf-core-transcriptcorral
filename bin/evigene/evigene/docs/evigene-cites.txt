@@ -1,0 +1,1531 @@
+
+Please cite this for EvidentialGene RNA assemblies and methods (EvigeneR):
+
+  Gilbert, Donald (2013) Gene-omes built from mRNA seq not genome DNA. 
+  7th annual arthropod genomics symposium. Notre Dame.
+  http://arthropods.eugenes.org/EvidentialGene/about/EvigeneRNA2013poster.pdf
+  and http://globalhealth.nd.edu/7th-annual-arthropod-genomics-symposium/
+  and doi:10.7490/f1000research.1112594.1 
+  
+Please cite this for EvidentialGene genome-gene construction methods (EvigeneD):
+
+  Gilbert, Donald (2012) Perfect Arthropod Genes constructed with Gigabases of RNA
+  6th annual Arthropod Genomics Symposium. Kansas State U.
+  http://arthropods.eugenes.org/EvidentialGene/about/PerfectGenes2012poster.pdf and doi:10.7490/f1000research.1112595.1
+
+Recent
+  Gilbert, DG. (2019). Longest protein, longest transcript or most expression, 
+    for accurate gene reconstruction of transcriptomes?
+  bioRxiv 829184; doi: 10.1101/829184
+
+  Gilbert, DG. (2019). Genes of the Pig, Sus scrofa, reconstructed with EvidentialGene.
+  PeerJ 7:e6374; doi:10.7717/peerj.6374  or BioRxiv, Sep 2018. doi: 10.1101/412130
+  -- with description of EvidentialGene omnibus SRA2Genes pipeline.
+
+  Gilbert D. (2016) Accurate & complete gene construction with EvidentialGene. 
+  Talk at Galaxy Community Conference 2016, Bloomington IN. F1000Research, 5:1567 (slide set). 
+  doi:10.7490/f1000research.1112467.1; talk video: https://youtu.be/Lu4JqZPGKW0
+  http://eugenes.org/EvidentialGene/about/evigene_bothgalmod1606iu.pdf (full slide set) 
+  
+ 
+EvidentialGene is used by others in these reports
+
+  Nakasugi K, Crowhurst R, Bally J, Waterhouse P (2014). 
+  Combining Transcriptome Assemblies from Multiple De Novo Assemblers in
+    the Allo-Tetraploid Plant Nicotiana benthamiana. 
+  PLoS ONE 9(3): e91776.  doi:10.1371/journal.pone.0091776
+  * independent review/comparison of Evigene and other gene assembly methods *
+  
+  Shu Chen, J. Scott McElroy, Fenny Dane, and Eric Peatman (2014).
+  Optimizing Transcriptome Assemblies for Eleusine indica Leaf and Seedling 
+   by Combining Multiple Assemblies from Three De Novo Assemblers. 
+  The Plant Genome, v8. doi:10.3835/plantgenome2014.10.0064
+  * independent review/comparison of Evigene and other gene assembly methods *
+
+  Mamrot J, R Legaie, SJ. Ellery, T Wilson, T Seemann, DR. Powell, DK. Gardner, 
+    DW. Walker, P Temple-Smith, AT. Papenfuss & H Dickinson (2017).
+  De novo transcriptome assembly for the spiny mouse (Acomys cahirinus)
+  Scientific Reports 7, A# 8996; doi:10.1038/s41598-017-09334-7 ; also bioRxiv preprint Sep. 2016; doi: 10.1101/076067. 
+  * independent review/comparison of Evigene and other gene assembly methods *
+
+  Hoang NV, A Furtado, PJ Mason, A Marquardt, L Kasirajan, PP Thirugnanasambandam, FC Botha and RJ Henry (2017).
+  A survey of the complex transcriptome from the highly polyploid sugarcane genome using 
+   full-length isoform sequencing and de novo assembly from short read sequencing.
+  BMC Genomics 18:395; doi: 10.1186/s12864-017-3757-8
+  * independent comparison of Pac-Bio RNA versus Illumina RNA
+  * over-assemblies, with Evigene reduction. See comment below.
+   
+  Chagne D, Crowhurst RN, Pindo M, Thrimawithana A, Deng C, et al. (2014).
+  The Draft Genome Sequence of European Pear (Pyrus communis L. Bartlett). 
+  PLoS ONE 9(4): e92644.  doi:10.1371/journal.pone.0092644
+  
+  Horn F, Uzum Z, Mobius N, Guthke R, Linde J, Hertweck C. (2015).
+  Draft genome sequences of symbiotic and nonsymbiotic Rhizopus microsporus
+  strains CBS 344.29 and ATCC 62417. Genome Announc. 3(1):e01370-14.
+  doi:10.1128/genomeA.01370-14.
+
+  Postnikova OA, Hult M, Shao J, Skantar A, Nemchinov LG (2015).
+  Transcriptome Analysis of Resistant and Susceptible Alfalfa Cultivars
+   Infected With Root-Knot Nematode Meloidogyne incognita. 
+  PLoS ONE 10(2):e0118269. doi:10.1371/journal.pone.0118269
+
+  Liu Y, Lin-Wang K, Deng C, Warran B, Wang L, Yu B, et al. (2015). 
+  Comparative Transcriptome Analysis of White and Purple Potato to
+   Identify Genes Involved in Anthocyanin Biosynthesis. 
+  PLoS ONE 10(6):e0129148. doi:10.1371/journal.pone.0129148
+
+  McTaggart SJ, Hannah T, Bridgett S, Garbutt JS, Kaur G, Boots M. (2015).
+  Novel insights into the insect trancriptome response to a natural DNA virus. 
+  BMC Genomics.  Apr 17;16(1):310. PubMed PMID:25924671; doi: 10.1186/s12864-015-1499-z  
+  
+  Duncan, R. P., Husnik, F., Van Leuven, J. T., Gilbert, D. G., Davalos,
+    L. M., McCutcheon, J. P. and Wilson, A. C. C. (2014).
+  Dynamic recruitment of amino acid transporters to the insect/symbiont interface. 
+  Molecular Ecology, 23: 1608-1623.  doi:10.1111/mec.12627
+
+  Faddeeva A, Studer RA, Kraaijeveld K, Sie D, Ylstra B, Marien J, etal. (2015). 
+  Collembolan Transcriptomes Highlight Molecular Evolution
+   of Hexapods and Provide Clues on the Adaptation to Terrestrial Life.
+  PLoS ONE 10(6): e0130600.  doi:10.1371/journal.pone.0130600
+
+  Lynch, Jeremy A (2015).
+  The Expanding Genetic Toolbox of the Wasp Nasonia vitripennis and Its Relatives.
+  Genetics, Vol. 199, 897-904, doi:10.1534/genetics.112.147512
+
+  Visser EA, Wegrzyn JL, Steenkmap ET, Myburg AA, Naidoo S (2015). 
+  Combined de novo and genome guided assembly and annotation of the Pinus patula juvenile shoot transcriptome. 
+  BMC Genomics,16:1057; doi:10.1186/s12864-015-2277-7
+  http://www.biomedcentral.com/1471-2164/16/1057
+  # Erik A. Visser, Jill L. Wegrzyn, Emma T. Steenkmap, Alexander A. Myburg and Sanushka Naidoo
+
+  Scott, A. D., Stenz, N. W. M., Ingvarsson, P. K. and Baum, D. A. (2016).
+  Whole genome duplication in coast redwood (Sequoia sempervirens) and
+  its implications for explaining the rarity of polyploidy in conifers.
+  New Phytol. doi:10.1111/nph.13930 ; bioRxiv preprint, 2015 Nov;  doi:10.1101/030585 
+
+  Chen, Shu; McElroy, J. Scott; Dane, Fenny; Goertzen, Leslie R. (2015).
+  Transcriptome Assembly and Comparison of an Allotetraploid Weed Species, Annual Bluegrass, 
+   with its Two Diploid Progenitor Species, Poa supina Schrad and Poa infirma Kunth.  
+  The Plant Genome;  doi:10.3835/plantgenome2015.06.0050
+
+  Luo H, Xiao S, Ye H, Zhang Z, Lv C, Zheng S, et al. (2016).
+  Identification of Immune-Related Genes and Development of SSR/SNP Markers from the Spleen 
+   Transcriptome of Schizothorax prenanti [fish]. 
+  PLoS ONE 11(3): e0152572. doi:10.1371/journal.pone.0152572
+
+  Franta Z, Vogel H, Lehmann R, Rupp O, Goesmann A, and Vilcinskas A. (2016). 
+  Next Generation Sequencing Identifies Five Major Classes of Potentially Therapeutic Enzymes Secreted by 
+   Lucilia sericata Medical Maggots. 
+  BioMed Research International, vol.2016, ID 8285428, 27p. doi:10.1155/2016/8285428
+   -- methods 2.4. Assembly: trinity + velvet/oases > EvidentialGene pipeline [51].
+
+  Wu C, Crowhurst RN, Dennis AB, Twort VG, Liu S, Newcomb RD, et al. (2016). 
+  De Novo Transcriptome Analysis of the Common New Zealand Stick Insect Clitarchus hookeri (Phasmatodea) 
+   Reveals Genes Involved in Olfaction, Digestion and Sexual Reproduction. 
+  PLoS ONE 11(6): e0157783. doi:10.1371/journal.pone.0157783
+
+  Drabesova J, Cerna L, Masterova H, Kolouskova P, Potocky M, Storchova H. (2016).
+  The evolution of the FT/TFL1 genes in Amaranthaceae and their expression patterns 
+   in the course of vegetative growth and flowering in Chenopodium rubrum.
+  G3: Genes|Genomes|Genetics, 2016 Oct 13;6(10):3065-3076. doi:10.1534/g3.116.028639 
+
+  Huylmans A K , A L Ezquerra, J Parsch, and M Cordellier (2016). 
+  De novo transcriptome assembly and sex-biased gene expression in the cyclical parthenogenetic Daphnia galeata.
+  Genome Biol Evol  doi: 10.1093/gbe/evw221 
+
+  Arvidson, Ryan Scott. (2016). 
+  Venomics and Functional Analysis of Venom From the Emerald Jewel Wasp, Ampulex compressa. 
+  UC Riverside: Biochemistry and Molecular Biology.  http://escholarship.org/uc/item/1ww2p6mk
+
+  Healy TM, Bryant HJ, Schulte PM (2016).
+  Mitochondrial genotype and phenotypic plasticity of gene expression in response to cold 
+   acclimation in killifish. 
+  Molecular Ecology, online 2016/12. doi: 10.1111/mec.13945
+  Data from: .., Dryad Digital Repository. http://dx.doi.org/10.5061/dryad.sg280
+   -- use gene models of Fundulus heteroclitus from EvidentialGene/killifish/
+
+  Nguyen TV, Jung H, Nguyen TM, Hurwood D, Mather P. (2016).
+  Evaluation of potential candidate genes involved in salinity tolerance in striped catfish 
+  (Pangasianodon  hypophthalmus) using an RNA-Seq approach. 
+  Mar Genomics. 2016 Feb;25:75-88. 
+  doi: 10.1016/j.margen.2015.11.010. PubMed PMID: 26653845.
+  -- nice application of rna overassembly and reduction to accurate gene set for a fish
+
+  Sales G, Deagle BE, Calura E, Martini P, Biscontin A, De Pitta C, 
+    Kawaguchi S, Romualdi C, Meyer B, Costa R, Jarman S (2017).
+  KrillDB: A de novo transcriptome database for the Antarctic krill (Euphausia superba). 
+  PLoS ONE 12(2): e0171908. doi:10.1371/journal.pone.0171908
+
+  Voelckel C, Gruenheit N, Lockhart P (2017).
+  Evolutionary Transcriptomics and Proteomics: Insight into Plant Adaptation.
+  Trends in Plant Science, ISSN 1360-1385,  doi:10.1016/j.tplants.2017.03.001
+
+  Roberts, W. R., & Roalson, E. H. (2017). 
+  Comparative transcriptome analyses of flower development in four species of Achimenes (Gesneriaceae). 
+  BMC Genomics, 18, 240. doi: 10.1186/s12864-017-3623-8
+
+  Christodoulides N, Van Dam AR, Peterson DA, Frandsen RJN, Mortensen UH, Petersen B, 
+    Rasmussen S, Normark BB, Hardy NB. (2017). 
+  Gene expression plasticity across hosts of an invasive scale insect species. 
+  PLoS ONE 12(5): e0176956. doi:10.1371/journal.pone.0176956
+
+  Zinkgraf M, Gerttula S, Groover A (2017). 
+  Transcript profiling of a novel plant meristem, the monocot cambium. J Integr Plant Biol XX: 1a14; 
+  doi:10.1111/jipb.12538
+  -- 2 non-tree (yucca,..) + 2 tree species, trinity-only assembly :( ,  tr2aacds to reduce
+
+  Wu, R, T Wang, B A.W. Warren, A C. Allan, R C. Macknight3 and E Varkonyi-Gasic (2017).
+  Kiwifruit SVP2 gene prevents premature budbreak during dormancy
+  J. Exp. Botany, 68:5, 1071-1082;  doi:10.1093/jxb/erx014
+  -- trinity-only asm :(, evigene reduced
+
+  K Takishita, Y Takaki, Y Chikaraishi, T Ikuta, G Ozawa, T Yoshida, N Ohkouchi, K Fujikura (2017). 
+  Genomic Evidence that Methanotrophic Endosymbionts Likely Provide Deep-Sea Bathymodiolus Mussels 
+  with a Sterol Intermediate in Cholesterol Biosynthesis. 
+  Genome Biol Evol; 9 (5): 1148-1160. doi: 10.1093/gbe/evx082
+  -- trinity-only asm :(, excess methods
+
+  Evangelistella C , A Valentini, R Ludovisi, A Firrincieli, F Fabbrini, S Scalabrin, F Cattonaro, 
+    M Morgante, G S Mugnozza, J J. B. Keurentjes and A Harfouche (2017).
+  De novo assembly, functional annotation, and analysis of the giant reed (Arundo donax L.) 
+  leaf transcriptome provide tools for the development of a biofuel feedstock.
+  Biotechnology for Biofuels 2017 10:138;  doi: 10.1186/s13068-017-0828-7
+
+  S. Sanders and M. Pfrender. (2017). 
+  deNovo assembly and annotation of Ambystoma laterale and Ambystoma jeffersonianum 
+   transcriptomes: the first steps toward investigating polyploid salamander expression. 
+  Evolution Conference 2017, Portland, OR. Retrieved from http://hdl.handle.net/2022/21599
+
+  L. Bu,   S. Buddenborg, S. Zhang and E.S. Loker (2017).
+  Comparative Study Of De Novo Transcriptome Assembly Methods And Potential Impacts On 
+   Differential Gene Expression, of the freshwater snail Biomphalaria pfeifferi.  
+  92nd Annual Meeting, American Soc. of   Parasitologists. San Antonio, Texas, June 2017 
+  http://amsocparasit.org/node/178
+
+  Hui Zhang, L R Goertzen,  C Yiwu Chen, E Peatman, and J. S McElroy (2017).
+  Constructing Eleusine Transcriptome References for Determination African 
+  Finger Millet (Eleusine coracana) Parentage.
+  Talk at Am.Soc. of Agronomy, Crop Science Soc.Am., Soil Science Soc. Am.
+  https://scisoc.confex.com/crops/2017am/webprogram/Paper104706.html
+
+  Renuka. P, Maganti. S. Madhav, Padmakumari. A. P, Kalyani. M. Barbadikar, Satendra. K.
+   Mangrauthia, Vijaya Sudhakara Rao. K, Soma S. Marla, and Ravindra Babu. V (2017).
+  RNA-seq of Rice Yellow Stem Borer, Scirpophaga incertulas reveals molecular insights
+  during four larval developmental stages.
+  G3: Genes|Genomes|Genetics  doi:10.1534/g3.117.043737
+  -- used Evigene to reduce Triniy-only gene assembly, also used cd-hit, TGICL
+  -- longest-transcript cluster filtering that reduces gene set accuracy
+
+  Yerramsetty P, EM Agar, WC Yim, JC Cushman and JO Berry (2017).
+  An rbcL mRNA-binding protein is associated with C3 to C4 evolution and 
+  light-induced production of Rubisco in Flaveria.
+  J. Exp. Botany, doi:10.1093/jxb/erx264
+
+  Brown, Stuart M., A Heguy, P Zappile, H Chen, A Goradia,
+    Y Wang, Y Hao, N K. Roy, K Vitale, R. C Chambers, Isaac Wirgin (2017). 
+  A Dramatic Difference in Global Gene Expression between TCDD-Treated 
+  Atlantic Tomcod Larvae from the Resistant Hudson River and a Nearby Sensitive Population.  
+  Genome Biology and Evolution, evx159, doi: 10.1093/gbe/evx159
+  
+  Roodt D, Lohaus R, Sterck L, Swanepoel RL, Van de Peer Y, Mizrachi E (2017). 
+  Evidence for an ancient whole genome duplication in the cycad lineage. 
+  PLoS ONE 12(9): e0184454. doi:10.1371/journal.pone.0184454
+  -- nice example where gene set precision of Evigene aids phylogenetic inferences
+
+  Arvind Sundaram, Torstein Tengs, Unni Grimholt (2017). 
+  Issues with RNA-seq analysis in non-model organisms: A salmonid example.
+  Developmental & Comparative Immunology, 75:38-47  doi:10.1016/j.dci.2017.02.006.
+  
+  Christodoulides, N (2017).
+  Exploring the transcriptomics of polyphagy in plant-eating insects. Thesis, Auburn University
+  https://etd.auburn.edu/bitstream/handle/10415/5892/NC%20Thesis%20FinalCheck.pdf?sequence=2
+ 
+  Buddenborg SK, Bu L, Zhang S-M, Schilkey FD, Mkoji GM, Loker ES (2017). 
+  Transcriptomic responses of Biomphalaria pfeifferi to Schistosoma mansoni: Investigation 
+  of a neglected African snail that supports more S. mansoni transmission than 
+  any other snail species. 
+  PLoS Negl Trop Dis 11(10): e0005984. doi:10.1371/journal.pntd.0005984
+
+  Stam, R, G A Silva-Arias, T Nosenko, D Scheikl, A C Horger, W Stephan, G Haberer, A Tellier (2017).
+  A small subset of NLR genes drives local adaptation to pathogens in wild tomato.
+  bioRxiv 210559  preprint, 2017 Oct; doi: 10.1101/210559 
+   
+  Cornelis G, M Funk, C Vernochet, F Leal, O A Tarazona, G Meurice, O Heidmann, A Dupressoir,
+   A Miralles, M P Ramirez-Pinilla, and T Heidmann (2017).
+  An endogenous retroviral envelope syncytin and its cognate receptor identified in the 
+  viviparous placental Mabuya lizard.
+  PNAS ; eprint November 21, 2017, doi:10.1073/pnas.1714590114 
+
+  Yang T, L Fang, S Sanders, S Jayanthi, G Rajan, R Podicheti, S K Thallapuranam, 
+   K Mockaitis and F Medina-Bolivar (2017).
+  Stilbenoid prenyltransferases define key steps in the diversification of peanut phytoalexins
+  J. Biol. Chem.  doi: 10.1074/jbc.RA117.000564
+
+  Gambino G, AD Molin, P Boccacci, A Minio, W Chitarra, CG Avanzato, P Tononi, 
+   I Perrone, S Raimondi, A Schneider, M Pezzotti, F Mannini, I Gribaudo & M Delledonne (2017).
+  Whole-genome sequencing and SNV genotyping of Nebbiolo (Vitis vinifera L.) clones.
+  Scientific Reports 7, A# 17294; doi:10.1038/s41598-017-17405-y
+
+  da Silva-Junior OB, D Grattapaglia, E Novaes, RG Collevatti (2017).
+  Genome assembly of the Pink Ipe (Handroanthus impetiginosus, Bignoniaceae),  
+  a highly-valued ecologically keystone Neotropical timber forest tree.
+  GigaScience, gix125. doi: 10.1093/gigascience/gix125
+
+  Schvartzman, MS, Corso M, Fataftah N, Scheepers M, Nouet C, Bosman B,
+   Carnol M, Motte P, Verbruggen N and Hanikenne M (2018).
+  Adaptation to high zinc depends on distinct mechanisms in 
+  metallicolous populations of Arabidopsis halleri. 
+  New Phytol. doi:10.1111/nph.14949
+  -- trinity-only gene assembly, + evigene reduction
+
+  Mun Hua Tan, C M Austin, M P Hammer, Y P Lee, L J Croft, H M Gan (2018).
+  Finding Nemo: Hybrid assembly with Oxford Nanopore and Illumina reads greatly improves 
+  the Clownfish (Amphiprion ocellaris) genome assembly.
+  GigaScience, 7:3, doi: 10.1093/gigascience/gix137
+
+  Grapputo A, AH Thrimawithana, B Steinwender and RD Newcomb (2018).
+  Differential gene expression in the evolution of sex pheromone communication in 
+  New Zealand's endemic leafroller moths of the genera Ctenopseustis and Planotortrix
+  BMC Genomics  19:94  doi: 10.1186/s12864-018-4451-1
+
+  Urbarova I , H Patel, S Foret, BO Karlsen, TE Jorgensen, JM Hall-Spencer 
+   and SD Johansen (2018). 
+  Elucidating the small regulatory RNA repertoire of the sea anemone Anemonia viridis 
+   based on whole genome and small RNA sequencing.  
+  GBE early. doi: 10.1093/gbe/evy003/4827693
+  -- evigene tools
+
+  Alleman A, B Feldmeyer & S Foitzik (2018). 
+  Comparative analyses of co-evolving host-parasite associations reveal unique gene 
+   expression patterns underlying slavemaker raiding and host defensive phenotypes.
+  Scientific Reports 8, A# 1951; doi:10.1038/s41598-018-20262-y
+
+  Massonnet M, A Morales-Cruz, A Minio, R Figueroa-Balderas, DP Lawrence, 
+   R Travadon, PE Rolshausen, K Baumgartner, and D Cantu (2018).
+  Whole-genome resequencing and pan-transcriptome reconstruction highlight the 
+   impact of genomic structural variation on secondary metabolism gene clusters 
+   in the grapevine Esca pathogen Phaeoacremonium minimum.
+  bioRxiv preprint, 23 Jan 2018; doi: 10.1101/252221; 
+  Front. Microbiol., 13 August 2018; doi: 10.3389/fmicb.2018.01784
+
+  Oostra V, Saastamoinen M, Zwaan, BJ, Wheat CW (2018).
+  Strong phenotypic plasticity limits potential for evolutionary responses to climate change
+  Nature Communications 9, A# 1005; doi: 10.1038/s41467-018-03384-9
+  and bioRxiv preprint, 2017 Apr; doi:10.1101/126177 
+
+  Machadoa AM, M Feliciob, E Fonsecab, RR da Fonsecad, L Filipe C. Castroa, (2018). 
+  A resource for sustainable management: De novo assembly and annotation of the 
+   liver transcriptome of the Atlantic chub mackerel, Scomber colias. 
+  Data in Brief, doi: 10.1016/j.dib.2018.03.013i
+
+  Korani W, Y Chu, CC Holbrook, and P Ozias-Akins (2018).
+  Insight into genes regulating post-harvest aflatoxin contamination of 
+   tetraploid peanut from transcriptional profiling.
+  Genetics, 209(1): 143-156;  doi:10.1534/genetics.118.300478
+  -- trinity asm only :(, evigene reduced
+ 
+  Hoang NV, A Furtado, PP Thirugnanasambandam, FC Botha, RJ Henry (2018). 
+  De novo assembly and characterizing of the culm-derived meta-transcriptome from 
+   the polyploid sugarcane genome based on coding transcripts. 
+  Heliyon 4 e00583. doi:10.1016/j.heliyon.2018.e00583
+
+  Yurchenkoa AA, Katolikova N, Poleve D, Shcherbakovae I, Strelkov P (2018).
+  Transcriptome of the bivalve Limecola balthica L. from Western Pacific: 
+   A new resource for studies of European populations.
+  Marine Genomics, Elsevier. doi: 10.1016/j.margen.2018.03.007
+
+  Shalev TJ, Yuen MMS, Gesell A, Yuen A, Russell JH, Bohlmann J (2018).
+  An annotated transcriptome of highly inbred Thuja plicata (Cupressaceae) and 
+   its utility for gene discovery of terpenoid biosynthesis and conifer defense 
+  Tree Genetics & Genomes, doi: 10.1007/s11295-018-1248-y
+
+  Han, Z., Xiao, S., Li W.,Ye, K., Wang, Z.Y. (2018).
+  The identification of growth, immune related genes and marker discovery 
+   through transcriptome in the yellow drum (Nibea albiflora).
+  Genes & Genomics.  doi: 10.1007/s13258-018-0697-x
+
+  Chen Q , X Liu, Y Hu, B Sun, Y Hu, X Wang, H Tang, Y Wang (2018).
+  Transcriptomic Profiling of Fruit Development in Black Raspberry Rubus coreanus.
+  International Journal of Genomics, 2018:8084032, doi: 10.1155/2018/8084032
+
+  Zhang X, K Xia, L Lin, F Zhang, Y Yu, K St. Ange, X Han, 
+   E Edsinger, J Sohn and RJ Linhardt (2018). 
+  Structural and Functional Components of the Skate Sensory Organ Ampullae of Lorenzini.
+  ACS Chem. Biol. XXXX, XXX; doi: 10.1021/acschembio.8b00335
+
+  Ismail NIB, Y Kato, T Matsuura, H Watanabe (2018).
+  Generation of white-eyed Daphnia magna mutants lacking scarlet function.
+  bioRxiv May. 2, 2018; doi: 10.1101/313395. 
+  -- uses daphia magna evigene set and eugenes.org genome database
+
+  Ueno S, Y Nakamura, M Kobayashi, S Terashima, W Ishizuka, K Uchiyama, 
+   Y Tsumura, K Yano, and S Goto. (2018).  
+  TodoFirGene: developing transcriptome resources for genetic analysis of Abies sachalinensis.
+  Plant Cell Physiol. 0(0):1-9; 15 March 2018; doi:10.1093/pcp/pcy058 
+
+  Venturini L, S Caim, G G Kaithakottil, D L Mapleson and D Swarbreck. (2018).
+  Leveraging multiple transcriptome assembly methods for improved 
+   gene structure annotation.
+  GigaScience, 2018, 0(0):1-13; doi:10.1093/gigascience/giy093/5057872
+  -- mikado is built upon evidentialgene methods to new chromosome-aligned gene assembly pipeline
+
+  Gan, H.M., Austin, C. & Linton, S (2018).
+  Transcriptome-Guided Identification of Carbohydrate Active Enzymes (CAZy) from the 
+   Christmas Island Red Crab,  Gecarcoidea natalis and a Vote for the Inclusion of 
+   Transcriptome-Derived Crustacean CAZys in Comparative Studies.
+  Mar Biotechnol.  doi: 10.1007/s10126-018-9836-2
+
+  Richardson MF, F Sequeira, D Selechnik, M Carneiro, M Vallinoto, JG Reid, AJ West,
+   MR Crossland, R Shine, LA Rollins (2018).
+  Improving amphibian genomic resources: a multitissue reference transcriptome of an iconic invader.
+  GigaScience, 7:1.1, gix114,  doi: 10.1093/gigascience/gix114
+
+  Zhang, Hui (2018). Expanded Understanding of Eleusine Diversity and Evolution
+  PhD. Dissertation, Auburn, Alabama; http://hdl.handle.net/10415/6253 or doi:10415/6253
+
+  Sohrabi, SS, A Ismaili, FN Firouz-Abadi, H Fallahi (2018).
+  Discovery of EST-SSRs Markers in Lentil (Lens culinaris) under Cold Stress.
+  Crop Biotech., Summer (2018) 22: 1-14  (in Persian)
+
+  Visser, Erik A., Jill L. Wegrzyn, Alexander A. Myburg and Sanushka Naidoo. (2018).
+  Defence transcriptome assembly and pathogenesis related gene family analysis 
+   in Pinus tecunumanii (low elevation).
+  BMC Genomics 19:632; doi: 10.1186/s12864-018-5015-0
+
+  Maex M, D Treer,  H De Greve, P Proost, I Van Bocxlaer, F Bossuyt (2018).
+  Exaptation as a Mechanism for Functional Reinforcement of an Animal Pheromone System, 
+  Current Biology, in press, 2018-Sep;  doi: 10.1016/j.cub.2018.06.074
+
+  Huerlimann R, NM. Wade, L Gordon, JD. Montenegro, J Goodall, S McWilliam, M Tinning, 
+   K Siemering, E Giardina, D Donovan, MJ. Sellars, JA. Cowley, K Condon, GJ. Coman, 
+   MS. Khatkar, HW. Raadsma, GE. Maes, KR. Zenger & DR. Jerry (2018).
+  De novo assembly, characterization, functional annotation and expression patterns 
+   of the black tiger shrimp (Penaeus monodon) transcriptome.
+  Scientific Reports, 8:13553 ; doi: 10.1038/s41598-018-31148-4
+
+  Edsinger E. and G Dolen, (2018).  
+  A Conserved Role for Serotonergic Neurotransmission in Mediating Social  Behavior in Octopus.  
+  Current Biology,  doi: 10.1016/j.cub.2018.07.061
+
+  Minio A, M Massonnet, R Figueroa-Balderas, AM. Vondras, B Blanco-Ulate, and D Cantu (2018).
+  Iso-Seq allows genome-independent transcriptome profiling of grape berry development.
+  bioRxiv preprint, 5 Nov 2018; doi: 10.1101/269530 
+  G3: Genes|Genomes|Genetics, 14 Jan 2019; doi:10.1534/g3.118.201008
+
+  Vita F, A Alpi, E Bertolini (2018).
+  De novo transcriptome assembly of the Italian white truffle (Tuber magnatum Pico)
+  bioRxiv preprint, 4 Nov 2018; doi: 10.1101/461483
+
+  Hamilton PT., CN. Hodson, CI. Curtis, and SJ. Perlman (2018).
+  Genetics and Genomics of an Unusual Selfish Sex Ratio Distortion in an Insect.
+  Current Biology 28, 1-7 December 3, 2018, doi:10.1016/j.cub.2018.10.035
+
+  Hasegawa Y, Ueno S, Matsumoto A, Ujino-Ihara T, Uchiyama K, Totsuka S, et al. (2018). 
+  Fine mapping of the male-sterile genes (MS1, MS2, MS3, and MS4) and development of 
+   SNP markers for marker-assisted selection in Japanese cedar (Cryptomeria japonica D. Don). 
+  PLoS ONE 13(11): e0206695.  doi: 10.1371/journal.pone.0206695
+
+  Machado AM, E Sarropoulou, LFC. Castro, V Vasconcelos, I Cunha (2018).
+  An important resource for understanding bio-adhesion mechanisms: Cement gland transcriptomes 
+   of two goose barnacles, Pollicipes pollicipes and Lepas anatifera (Cirripedia, Thoracica)
+  Marine Genomics, in press, 16 November 2018; doi: 10.1016/j.margen.2018.11.001
+
+  Veglia AJ, Hammerman NM, Rivera-Vicens RE, Schizas NV. (2018).
+  De novo transcriptome assembly of the coral Agaricia lamarcki 
+   (Lamarck's sheet coral) from mesophotic depth in southwest Puerto Rico.
+  Marine Genomics, 41:6-11. doi: 10.1016/j.margen.2018.08.003. 
+
+  Gupta S, DM. Rosenthal, JR. Stinchcombe, RS. Baucom (2019).
+  Assessing the remarkable morphological diversity and transcriptomic basis of 
+   leaf shape in Ipomoea batatas (sweetpotato)
+  bioRxiv preprint, 15 Jan 2019;  doi: 10.1101/520650
+  New Phytologist 225: 2183-2195 (2020); doi:10.1111/nph.16286
+
+  Lim SD, Lee S, Choi W-G, Yim WC and Cushman JC (2019).
+  Laying the Foundation for Crassulacean Acid Metabolism (CAM) Biodesign: 
+   Expression of the C4 Metabolism Cycle Genes of CAM in Arabidopsis. 
+  Front. Plant Sci. 10:101. doi: 10.3389/fpls.2019.00101
+
+  Kroc M, G Koczyk, K A. Kamel, K Czepiel, O Fedorowicz-Stronska, P Krajewski, 
+    J Kosinska, J Podkowinski, P Wilczura & W Swiecicki (2019).
+  Transcriptome-derived investigation of biosynthesis of quinolizidine alkaloids in narrow-
+    leafed lupin (Lupinus angustifolius L.) highlights candidate genes linked to iucundus locus.
+  Scientific Reports 9, A# 2231; doi: 10.1038/s41598-018-37701-5
+
+  Wong DCJ, R Amarasinghe, V Falara, E Pichersky & R Peakall (2019).
+  Duplication and selection in b-ketoacyl-ACP synthase gene lineages 
+    in the sexually deceptive Chiloglottis (Orchidaceace)
+  Annals of Botany XX: 1-14; doi: 10.1093/aob/mcz013
+
+  Rao T B, R Chopperla, R Methre, E. Punniakotti, V. Venkatesh, B. Sailaja, 
+    M. R Reddy, A Yugander, G. S. Laha, M. S Madhav, R. M. Sundaram, 
+    D. Ladhalakshmi, S. M. Balachandran, S K. Mangrauthia (2019).
+  Pectin induced transcriptome of a Rhizoctonia solani strain causing sheath 
+    blight disease in rice reveals insights on key genes and RNAi machinery for 
+    development of pathogen derived resistance.
+  Plant Molecular Biology, online 22 Feb 2019; doi: 10.1007/s11103-019-00843-9
+
+  Lauritano C , D De Luca, M Amoroso, S Benfatto, S Maestri, C Racioppi, 
+    F Esposito & A Ianora (2019).
+  New molecular insights on the response of the green alga Tetraselmis suecica 
+    to nitrogen starvation
+  Scientific Reports 9:3336; doi: 10.1038/s41598-019-39860-5
+
+  Hearn J, M Pearson, M Blaxter, P J. Wilson and T J. Little (2019).
+  Genome-wide methylation is modified by caloric restriction in Daphnia magna.
+  BMC Genomics 20:197 doi: 10.1186/s12864-019-5578-4
+
+  Machado AM, R Ferraz, R do Amaral Ribeiro, R Ozorio, LFC. Castro (2019).
+  From the Amazon: A comprehensive liver transcriptome dataset of the 
+   teleost fish tambaqui, Colossoma macropomum.
+  Data in Brief, doi: 10.1016/j.dib.2019.103751
+
+  Hill T, BS. Koseva, RL. Unckless (2019).
+  The genome of Drosophila innubila reveals lineage-specific 
+   patterns of selection in immune genes.
+  bioRxiv preprint 11 March 2019; doi: 10.1101/383877
+
+  Ng WL, Wu W, Zou P, Zhou R. (2019). 
+  Comparative transcriptomics sheds light on differential adaptation and 
+   species diversification between two Melastoma species and their F1 hybrid. 
+  AoB PLANTS 11: plz019; doi: 10.1093/aobpla/plz019
+
+  Hui Zhang, N Hall, LR Goertzen, CY Chen, E Peatman, J Patel, JS McElroy (2019).
+  Transcriptome analysis reveals unique relationships among Eleusine species 
+   and heritage of E. coracana.
+  G3: Genes|Genomes|Genetics, 22 April 2019; doi:10.1534/g3.119.400214
+
+  Stam R, T Nosenko, A C. Horger, W Stephan, M Seidel, J M.M. Kuhn, G Haberer, A Tellier (2019).
+  The de novo reference genome and transcriptome assemblies of the wild 
+   tomato species Solanum chilense.
+  bioRxiv preprint, 26 April 2019; doi: 10.1101/612085
+
+  Drikvand R M, S S Sohrabi, S M Sohrabi, K Samiei (2019).
+  Identification and characterization of conserved miRNAs of Coriandrum sativum L. 
+   using next-generation sequencing data.
+  Crop Biotech, Spring 25:59-74. doi: 10.30473/CB.2019.42829.1754 (in Persian)
+
+  Pessoa-Filho M., F.S. Sobrinho, R.R. Fragoso, O.B. Silva-Junior, M.E. Ferreira (2019).
+  Improving The Use Of Genomic Tools In Tropical Forage Grass Breeding With Diploid 
+   Ruzigrass As A Reference.
+  International Forage & Turf Breeding Conference, IFTBC 2019.
+  https://www.alice.cnptia.embrapa.br/bitstream/doc/1108398/1/iftbc2019onlineabstractboopg92.pdf
+
+  Giulio G, B Andrea, G Simone, B Michele, P Fulvio, B Gianni (2019).
+  Ovule Gene Expression Analysis in Sexual and Aposporous Apomictic 
+   Hypericum perforatum L. (Hypericaceae) Accessions.
+  Frontiers in Plant Science, 10; doi: 10.3389/fpls.2019.00654    
+
+  Ferreira NGC, RG Morgado, L Cunha, M Novoe, AMVM Soares, AJ Morgan, 
+   S Loureiro, P Kille (2019).
+  Unravelling the molecular mechanisms of nickel in woodlice.
+  Environmental Research, 31 May 2019; doi: 10.1016/j.envres.2019.05.038
+
+  Urbarova, I., Foret, S., Dahl, M., Emblem, A., Milazzo, M., 
+   Hall-Spencer, J. M., & Johansen, S. D. (2019). 
+  Ocean acidification at a coastal CO2 vent induces expression of stress-related
+   transcripts and transposable elements in the sea anemone Anemonia viridis. 
+  PloS one, 14(5), e0210358. doi:10.1371/journal.pone.0210358
+
+  Bossuyt, F; Schulte, L M; Maex, M; Janssenswillen, S; Novikova, P Yu; Biju, S D; 
+   Van de Peer, Y; Matthijs, S; Roelants, K; Martel, A Van Bocxlaer, I. (2019).
+  Multiple Independent Recruitment of Sodefrin Precursor-Like Factors in 
+   Anuran Sexually Dimorphic Glands.
+  Molecular Biology and Evolution, msz115, 25 June 2019; doi: 10.1093/molbev/msz115
+
+  Lallemand F, Martin-Magniette ML, Gilard F, Gakiere B, Launay-Avon A, 
+   Delannoy E, Selosse MA (2019). 
+  In situ transcriptomic and metabolomic study of the loss of photosynthesis in the
+   leaves of mixotrophic plants exploiting fungi. 
+  Plant J. 2019 Jun;98(5) 826-841. doi:10.1111/tpj.14276. PMID: 30735596.
+
+  Wong JM, Gaitan-Espitia JD, Hofmann GE (2019). 
+  Transcriptional profiles of early stage red sea urchins (Mesocentrotus franciscanus)
+   reveal differential regulation of gene expression across development. 
+  Mar Genomics. 2019 Jun . doi:10.1016/j.margen.2019.05.007. PMID: 31227413.
+
+  Linsmith G , S Rombauts, S Montanari, C H. Deng, J-M Celton, P Guerif, 
+    C Liu, R Lohaus, J D. Zurn, A Cestaro, N V. Bassil, L V. Bakker, 
+    E Schijlen, S E. Gardiner, Y Lespinasse, C-E Durel, R Velasco, 
+    D B. Neale, D Chagne, Y Van de Peer, M Troggio, L Bianco (2019).
+  Pseudo-chromosome length genome assembly of a double haploid Bartlett 
+    pear (Pyrus communis L.)
+  GigaScience, 8:1-17; doi: 10.1093/gigascience/giz138
+  bioRxiv 651778; 5 July 2019; doi: 10.1101/651778
+
+  Garcia-Fernandez P., M. Prado-Alvarez, M. Nande, D. Garcia de la serrana, 
+    C. Perales-Raya, E. Almansa, I. Varo & C. Gestal (2019).
+  Global impact of diet and temperature over aquaculture of Octopus vulgaris 
+    paralarvae from a transcriptomic approach.
+  Scientific Reports, 9:10312; doi: 10.1038/s41598-019-46492-2
+
+  Li F, Zhao X, Li M, He K, Huang C, Zhou Y, Li Z, Walters JR (2019).
+  Insect genomes: progress and challenges. 
+  Insect molecular biology. 2019 May 23.; doi: 10.1111/imb.12599
+
+  Barchi, L,  M Pietrella, L Venturini, A Minio, L Toppino, A Acquadro, G Andolfo, 
+    G Aprea, C Avanzato, L Bassolino, C Comino, A D Molin, A Ferrarini, L C Maor, 
+    E Portis, S Reyes-Chin-Wo, R Rinaldi, T Sala, D Scaglione, P Sonawane, P Tononi, 
+    E Almekias-Siegl, E Zago, M R Ercolano, A Aharoni, M Delledonne, G Giuliano, 
+    S Lanteri, G L Rotino (2019).
+  A chromosome-anchored eggplant genome sequence reveals key events in 
+    Solanaceae evolution.
+  Scientific Reports, 9:11769; doi: 10.1038/s41598-019-47985-w
+
+  Siebert S, JA Farrell, JF Cazet, Y Abeykoon, AS Primack, CE Schnitzler, CE Juliano (2019).
+  Stem cell differentiation trajectories in Hydra resolved at single-cell resolution.
+  Science 365, eaav9314  doi: 10.1126/science.aav9314
+
+  Ojeda DI, T Mattila, T Ruttink, S Kujala, K Karkkainen, J-P Verta, T Pyhajarvi (2019).
+  Utilization of tissue ploidy level variation in de novo transcriptome assembly 
+    of Pinus sylvestris.
+  G3: Genes|Genomes|Genetics, August 19, 2019; doi:10.1534/g3.119.400357
+
+  Punzalan R, A Bautista, E Emmanuel, R Rivera, S Rivera, C Saloma. (2019).
+  Transcriptome of the Traditional Coconut Variety Laguna Tall.
+  Philippine J. Science 148 (S1): 153-164, Special Issue on Genomics ISSN 0031-7683
+
+  Dorafshan M, M S Howyzeh, V Shariati (2019).
+  Identification of terpenoid backbone biosynthetic pathway genes in fruit of 
+    Citrullus colocynthis medical plant by RNA sequencing.
+  http://journals.areeo.ac.ir/article_119718.html; doi: 10.22092/ijmapr.2019.125294.2510
+
+  Lindeman L C, J Thaulow, Y Song, J H Kamstra, L Xie, J Asselman, P Alestrom and 
+    K E Tollefsen (2019).
+  Epigenetic, transcriptional and phenotypic responses in two generations of 
+    Daphnia magna exposed to the DNA methylation inhibitor 5-azacytidine.
+  Environmental Epigenetics, 2019, 1-12; doi: 10.1093/eep/dvz016
+
+  Drozdova P, L Rivarola-Duarte, D Bedulina, D Axenov-Gribanov, S Schreiber, A Gurkov, 
+    Z Shatilina, K Vereshchagina, Y Lubyaga, E Madyarova, C Otto, F Juhling, W Busch, 
+    L Jakob, M Lucassen, F J Sartoris, J Hackermuller, S Hoffmann, H-O Portner, 
+    T Luckenbach, M Timofeyev & P F Stadler (2019).
+  Comparison between transcriptomic responses to short-term stress exposures of a 
+    common Holarctic and endemic Lake Baikal amphipods.
+  BMC Genomics 20: 712; doi: 10.1186/s12864-019-6024-3
+
+  Haberer G , E Bauer, N Kamal, H Gundlach, I Fischer, M A Seidel, M Spannagl, 
+   C Marcon, A Ruban, C Urbany, A Nemri, F Hochholdinger, M Ouzonova, A Houben, 
+   C C Schoen, K F X Mayer (2019).
+  European maize genomes unveil pan-genomic dynamics of repeats and genes.
+  bioRxiv 766444; doi: 10.1101/766444 
+  European maize genomes highlight intraspecies variation in repeat and gene content. 
+  Nat Genet (2020); doi: 10.1038/s41588-020-0671-9
+
+  Herbert D B, T Gross, O Rupp, A Becker (2019).
+  Transcriptional changes suggest a major involvement of Gibberellins in 
+   Trifolium pratense regrowth after mowing.
+  bioRxiv 775841; doi: 10.1101/775841
+
+  Wong YY, P Le, W Elkhatib, T Piekut, and A Senatore (2019).
+  Transcriptome profiling of Trichoplax adhaerens highlights its digestive
+   epithelium and a rich set of genes for fast electrogenic and slow
+   neuromodulatory cellular signaling.
+  Research Square/BMC Genomics in review, 17 Sep 2019. doi:10.21203/rs.2.14504/v1
+
+  Ritter N, B Zeis (2019).
+  The impact of temperature and starvation on digestive enzymes in Daphnia magna.
+  Poster at Deutschen Gesellschaft fur Limnologie,
+   http://www.dgl2019-muenster.de/assets/abstractband_dgl2019.pdf
+
+  Petek M, M Zagorscak, Z Ramsak, M Zouine, K Gruden (2019).
+  Robust de novo assembly of tetraploid potato transcriptomes.
+  Abstract at 13th Meetng of the Slovenian Biochemical Society,
+    http://dobrna2019.sbd.si/upload/docs/SBD2019_Knjiga_Povzetkov_web.pdf
+
+  Petek M, M Zagorscak, Z Ramsak, S Sanders, E Tseng, M Zouine, A Coll, K Gruden (2019).
+  Cultivar-specific transcriptome and pan-transcriptome reconstruction of tetraploid potato.
+  bioRxiv 845818; v3.2020.apr; doi: 10.1101/845818
+  Sci Data 7, 249 (2020). doi: 10.1038/s41597-020-00581-4
+
+  Quan H, D Arsala and J A. Lynch (2019).
+  Transcriptomic and functional analysis of the oosome, a unique form of 
+    germ plasm in the wasp Nasonia vitripennis.
+  BMC Biology 17:7; doi: 10.1186/s12915-019-0696-7
+  -- shows value of Nasonia Evigene set
+
+  R Stam, T Nosenko, A C. Horger, W Stephan, M Seidel, J M.M. Kuhn, 
+   G Haberer, A Tellier. (2019).
+  The de novo reference genome and transcriptome assemblies of the wild tomato 
+   species Solanum chilense confirms birth and death of NLR genes between tomato species.
+  G3: Genes|Genomes|Genetics, 11 October 2019; doi:10.1534/g3.119.400529
+
+  Modahl C.M., Durban J., Mackessy S.P. (2020). 
+  Exploring Toxin Evolution: Venom Protein Transcript Sequencing and 
+    Transcriptome-Guided High-Throughput Proteomics. 
+  pp 97-127 In: Priel A. (eds) Snake and Spider Toxins. Methods in Molecular Biology, 
+    vol 2068. Humana, New York, NY; doi: 10.1007/978-1-4939-9845-6_6
+
+  Gonzalez-Castellano I, C Manfrin, A Pallavicini and A Martinez-Lage. (2019).
+  De novo gonad transcriptome analysis of the common littoral shrimp 
+    Palaemon serratus: novel insights into sex-related genes.
+  BMC Genomics 20:757; doi: 10.1186/s12864-019-6157-4
+
+  Bentz AB, GWC Thomas, DB Rusch, KA Rosvall (2019).
+  Tissue-specific expression profiles and positive selection analysis 
+    in the tree swallow (Tachycineta bicolor) using a de novo 
+    transcriptome assembly.
+  Scientific Reports, 9:15849; doi: 10.1038/s41598-019-52312-4
+
+  Suresh, Sneha (2019).
+  Differential Gene Expression and Splicing in Distinct Daphnia pulex 
+    Lineages under Acute Copper Toxicity. 
+  MS. Thesis, U. of Massachusetts Lowell, 74pp. Thesis 13878843; ProQuest ID 2243688502.
+
+  Yuen B, J Polzin and J M. Petersen (2019). 
+  Organ transcriptomes of the lucinid clam Loripes orbiculatus (Poli, 1791) 
+   provide insights into their specialised roles in the biology of a 
+   chemosymbiotic bivalve.
+  BMC Genomics 20:820; doi: 10.1186/s12864-019-6177-0
+
+  Rivera-Garcia, L., RE. Rivera-Vicens, AJ. Veglia, NV. Schizas (2019).
+  De novo transcriptome assembly of the digitate morphotype of Briareum asbestinum 
+   (Octocorallia: Alcyonacea) from the southwest shelf of Puerto Rico.
+  Marine Genomics, 47: 100676; doi: 10.1016/j.margen.2019.04.001
+
+  Kurland, S, Wheat, CW, de la Paz Celorio Mancera, M, et al. (2019).
+  Exploring a Pool-seq-only approach for gaining population genomic insights 
+   in nonmodel species. 
+  Ecol Evol. 2019; 9: 11448-11463. doi: 10.1002/ece3.5646
+
+  Woronik, A., K. Tunstrom, M.W. Perry, R Neethiraj, C Stefanescu, M de la 
+    Paz Celorio-Mancera, O Brattstrom, J Hill, P Lehmann, R Kakela & C W. Wheat (2019).
+  A transposable element insertion is associated with an alternative 
+   life history strategy. 
+  Nat Commun 10, 5757  doi: 10.1038/s41467-019-13596-2
+  bioRxiv 424879; doi: 10.1101/424879
+
+  Thole V, J-E Bassard, R Ramirez-Gonzalez, M Trick, B G Afshar, D Breitel, 
+   L Hill, A Foito, L Shepherd, S Freitag, C N dos Santos, R Menezes, 
+   P Banados, M Naesby, L Wang, A Sorokin, O Tikhonova, T Shelenga, D Stewart, 
+   P Vain & C Martin (2019).
+  RNA-seq, de novo transcriptome assembly and flavonoid gene analysis in 13 
+   wild and cultivated berry fruit species with high content of phenolics. 
+  BMC Genomics 20, 995; doi:10.1186/s12864-019-6183-2
+
+  Yamamoto, N, Y Wang, R Lin, Y Liang, Y Liu, J Zhu, L Wang, S Wang, H Liu, 
+   Q Deng, S Li, P Li & A Zheng (2019).
+  Integrative transcriptome analysis discloses the molecular basis of a 
+   heterogeneous fungal phytopathogen complex, Rhizoctonia solani AG-1 subgroups. 
+  Sci Rep 9, 19626; doi:10.1038/s41598-019-55734-2
+
+  Bowsher, A.W., Shetty, P., Anacker, B.L., Siefert, A., Strauss, S.Y. 
+   and Friesen, M.L. (2017).
+  Transcriptomic responses to conspecific and congeneric competition in 
+   co-occurring Trifolium. 
+  J Ecol, 105: 602-615. doi:10.1111/1365-2745.12761
+
+  Basak S, J. S McElroy, A M. Brown, C G. Goncalves, J D. Patel, 
+    and P E. McCullough (2019).
+  Plastidic ACCase Ile-1781-Leu is Present in Pinoxaden-Resistant 
+   Southern Crabgrass (Digitaria ciliaris). 
+  Weed Science 68(1), 41-50, (9 October 2019). doi: 10.1017/wsc.2019.56 
+
+
+  Kvist, J., C.G. Athanasio, M.E. Pfrender, J.B. Brown, J.K. Colbourne & 
+   L. Mirbahai (2020).
+  A comprehensive epigenomic analysis of phenotypically distinguishable, 
+   genetically identical female and male Daphnia pulex. 
+  BMC Genomics 21, 17; doi:10.1186/s12864-019-6415-5
+
+  Hernandez-Escribano L, E A. Visser, E Iturritxa, R Raposo and S Naidoo  (2020).
+  The transcriptome of Pinus pinaster under Fusarium circinatum challenge.
+  BMC Genomics 21:28; doi: 10.1186/s12864-019-6444-0
+
+  Ren Z, Y Zhao, W Song, C Wang, C Mu, R Li (2020).
+  Transcriptome Analysis of the Sepia pharaonis [cuttlefish]: Identification of salt stress-related 
+    information and Microsatellite Markers.
+  Comp Biochem and Physl D: Genomics and Proteomics; doi: 10.1016/j.cbd.2020.100705
+  Research Square/Epigenetics & Genomics preprint; doi: 10.21203/rs.2.20024/v1
+  
+  da Fonseca R, A Couto, A Machado, B Brejova, C Albertin, F Silva, P Gardner, T Baril, 
+   A Hayward, A Campos, A Ribeiro, I Barrio-Hernandez, H Hoving, R Tafur-Jimenez, C Chu, 
+   B Frazao, B Petersen, F Penaloza, F Musacchia, G Alexander, H Osorio, I Winkelmann, 
+   O Simakov, S Rasmussen, M Rahman, D Pisani, J Vinther, E Jarvis, G Zhang, J Strugnell, 
+   L Castro, O Fedrigo, M Patricio, Q Li, S Rocha, A Antunes, Y Wu, B Ma, R Sanges, T Vinar, 
+   B Blagoev, T Sicheritz-Ponten, R Nielsen, M Gilbert (2020). 
+  A draft genome sequence of the elusive giant squid, Architeuthis dux.
+  GigaScience, 9:1, giz152; doi: 10.1093/gigascience/giz152
+
+  Walter G M, J Clark, A Cristaudo, B Nevado, S Catara, M Paunov, V Velikova, 
+   D Filatov, S Cozzolino, S Hiscock, J R Bridle (2020).
+  Ecology and evolutionary history determine plastic responses to environmental 
+   variation in two closely related species [of Senecia ragwort plants].
+  bioRxiv 2020.01.24.918201; doi: 10.1101/2020.01.24.918201
+
+  Grandjean F., H.M. Gan, B. Moumen, I. Giraud, S. Hatira, R. Cordaux, C.M. Austin (2020).
+  Dataset for sequencing and de novo assembly of the European endangered white-clawed
+   crayfish (Austropotamobius pallipes) abdominal muscle transcriptome. 
+  Data in Brief,  doi: 10.1016/j.dib.2020.105166.
+
+  Wilding CS, N Fletcher, E K. Smith, P Prentis, G D. Weedall, Z Stewart (2020).
+  The genome of the sea anemone Actinia equina (L.): Meiotic toolkit genes 
+    and the question of sexual reproduction.
+  Marine Genomics, 100753, ISSN 1874-7787; doi: 10.1016/j.margen.2020.100753
+
+  Bjornsdotter E, M Nadzieja, W Chang, L Escobar-Herrera, D Mancinotti, D Angra, 
+   H Khazaei, C Crocoll, A Vandenberg, F L. Stoddard, D M O'Sullivan, J Stougaard, 
+   A H. Schulman, S U Andersen, F Geu-Flores (2020).
+  VC1 catalyzes a key step in the biosynthesis of vicine from GTP in faba bean.
+  bioRxiv 2020.02.26.966523; doi: 10.1101/2020.02.26.966523
+  Nat. Plants  (2021). doi: 10.1038/s41477-021-00950-w
+
+  Cattelan, S, Vidotto, M, Devigili, A, Pilastro, A, Grapputo, A. (2020).
+  Differential gene regulation in selected lines for high and low sperm 
+   production in male guppies. 
+  Mol Reprod Dev. 2020; 1-12. doi: 10.1002/mrd.23332
+
+  Kozma MT, Ngo-Vu H, Wong YY, Shukla NS, Pawar SD, Senatore A, et al. (2020).
+  Comparison of transcriptomes from two chemosensory organs in four decapod 
+    crustaceans reveals hundreds of candidate chemoreceptor proteins. 
+  PLoS ONE 15(3): e0230266. doi: 10.1371/journal.pone.0230266
+
+  Zeis B. (2020).
+  Hemoglobin in Arthropods-Daphnia as a Model. 
+  In: Hoeger U., Harris J. (eds) Vertebrate and Invertebrate Respiratory Proteins,
+    Lipoproteins and other Body Fluid Proteins. Subcellular Biochemistry, vol 94. 
+    Springer, Cham. doi: 10.1007/978-3-030-41769-7_6
+
+  Tobias P A , B Schwessinger, C H Deng, C Wu, C M Dong, J Sperschneider, A Jones, 
+    G R Smith, J Tibbits, D Chagne, R Park (2020).
+  Long read assembly of the pandemic strain of Austropuccinia psidii (myrtle rust) 
+    reveals an unusually large (gigabase sized) and repetitive fungal genome.
+  bioRxiv 2020.03.18.996108; doi: 10.1101/2020.03.18.996108 
+
+  Biscotti, M.A., Carducci, F., Barucca, M., Gerdol M., Pallavicini, A.,
+    Schartl, M., Canapa, A., Adolfi, M.C.(2020).
+  The transcriptome of the newt Cynops orientalis provides new insights into 
+   evolution and function of sexual gene networks in sarcopterygians. 
+  Sci Rep 10, 5445; doi: 10.1038/s41598-020-62408-x
+
+  Wei F-J , S Ueno, T Ujino-Ihara, M Saito, Y Tsumura, Y Higuchi, S Hirayama, J Iwai, 
+    T Hakamata, Y Moriguchi (2020).
+  Inspecting abundantly expressed genes in male strobili in sugi (Cryptomeria japonica 
+    D. Don) via a highly accurate cDNA assembly.
+  bioRxiv preprint; doi: 10.1101/2020.04.21.054320  
+  PLoS ONE 16(2): e0247180, 2021;  doi:10.1371/journal.pone.0247180
+
+  Sadat-Hosseini M, Bakhtiarizadeh MR, Boroomand N, Tohidfar M, Vahdati K (2020).
+  Combining independent de novo assemblies to optimize leaf transcriptome of 
+   Persian walnut. 
+  PLoS ONE 15(4): e0232005.  doi: 10.1371/journal.pone.0232005
+
+  Dawson HD, Y Sang, JK. Lunney (2020).
+  Porcine cytokines, chemokines and growth factors: 2019 update.
+  Res. Veterinary Science, ISSN 0034-5288; doi: 10.1016/j.rvsc.2020.04.022
+
+  Yang X, L Fors, T Slotte, U Theopold, M Binzer-Panchal, C W Wheat, P A Hamback (2020). 
+  Differential expression of immune genes between two closely related beetle species
+    with different immunocompetence following attack by Asecodes parviclava.
+  Genome Biology and Evolution, evaa075, doi: 10.1093/gbe/evaa075
+
+  Naraine R., P. Abaffy, M. Sidova, S. Tomankova, K. Pocherniaieva, O. Smolik,
+    M. Kubista, M. Psenicka, R. Sindelka  (2020).
+  NormQ: RNASeq normalization based on RT-qPCR derived size factors.
+  Computational and Structural Biotechnology J, doi: 10.1016/j.csbj.2020.05.010
+
+  Shen F, Y Long, F Li, G Ge, G Song, Q Li, Z Qiao, Z Cui (2020).
+  De novo transcriptome assembly and sex-biased gene expression in the gonads of 
+    Amur catfish (Silurus asotus).
+  Genomics 112, 2603-2614; doi: 10.1016/j.ygeno.2020.01.026.
+
+  Davidson P L, H Guo, L Wang, A Berrio, H Zhang, Y Chang, A L Soborowski, 
+    D R McClay, G Fan, G A Wray (2020).
+  Chromosomal-level genome assembly of the sea urchin Lytechinus variegatus 
+    substantially improves functional genomic analyses. 
+  Genome Biology and Evolution, evaa101, doi: 10.1093/gbe/evaa101
+
+  Hearn J, J Clark, PJ Wilson, and TJ Little (2020).
+  Daphnia magna modifies its gene expression extensively in
+   response to caloric restriction revealing a novel effect on
+   haemoglobin isoform preference.
+  bioRxiv preprint  doi: 10.1101/2020.05.24.113381
+  Mol Ecol. 2020;00:1-16. doi: 10.1111/mec.15557
+
+  Verissimo K M, L N Perez, A C Dragalzew, G Senevirathne, S Darnet, W R B Mendes, 
+   C A dos Santos Neves, E M dos Santos, C N de Sousa Moraes, A Elewa, N Shubin, 
+   N B Froebisch, J de Freitas Sousa and I Schneider (2020).
+  Salamander-like tail regeneration in the West African lungfish.
+  bioRxiv preprint; doi: 10.1101/2020.02.12.946319
+  Proc. R. Soc. B. 287:20192939; doi: 10.1098/rspb.2019.2939
+
+  Twomey, E, Johnson, JD, Castroviejo-Fisher, S, Van Bocxlaer, I (2020). 
+  A ketocarotenoid-based colour polymorphism in the Sira poison frog Ranitomeya sirensis
+   indicates novel gene interactions underlying aposematic signal variation. 
+  Mol Ecol. 00: 1-12. doi: 10.1111/mec.15466 
+
+  Yoshido, A, J Sichova, K Pospisilova, P Nguyen, A Volenikova, J Safar, 
+   J Provaznik, R Vila & F Marec (2020).
+  Evolution of multiple sex-chromosomes associated with dynamic genome reshuffling 
+   in Leptidea wood-white butterflies. 
+  Heredity. doi: 10.1038/s41437-020-0325-9
+
+  Gazda M A, P M. Araujo, R J. Lopes, M B. Toomey, P Andrade, S Afonso, C Marques, 
+   L Nunes, P Pereira, S Trigo, G E. Hill, J C. Corbo, M Carneiro (2020).
+  A genetic mechanism for sexual dichromatism in birds.
+  Science, 368(6496), pp. 1270-1274; doi: 10.1126/science.aba0803 
+
+  Voshall A, S Behera, X Li, X-H Yu, K Kapil, J S Deogun, J Shanklin, E B Cahoon, 
+    E N Moriyama (2020).
+  A consensus based ensemble approach to improve transcriptome assembly.
+  bioRxiv preprint doi: 10.1101/2020.06.08.139964
+  BMC Bioinformatics 22:513 (2021); doi: 10.1186/s12859-021-04434-8
+
+  Phan, I Q, C A Rice, J Craig, R E Noorai,  J McDonald, S Subramanian, L Tillery, 
+   L K Barrett, V Shankar, J C Morris, W C Van Voorhis, D E Kyle, P J Myler (2020).
+  The transcriptome of Balamuthia mandrillaris [pathogenic amoeba] trophozoites 
+   for structure-based drug design.
+  bioRxiv 2020.06.29.178905; doi:10.1101/2020.06.29.178905 
+  Sci Rep 11, 21664 (2021).  doi:10.1038/s41598-021-99903-8
+  National Institutes of Health. Dataset. doi: 10.35092/yhjc.12478733.v1
+
+  Hanf, Z. R., & Chavez, A. S. (2020). 
+  A Comprehensive Multi-Omic Approach Reveals a Relatively Simple Venom in a 
+   Diet Generalist, the Northern Short-Tailed Shrew, Blarina brevicauda. 
+  Genome Biology and Evolution. doi: 10.1093/gbe/evaa115
+
+  Bushman, BS, Robbins, MD, Robins, JG, Thorsted, K, Harris, P, Johnson, PG. (2020).
+  Response to salt stress imposed on cultivars of three turfgrass species: 
+   Poa pratensis , Lolium perenne , and Puccinellia distans. 
+  Crop Science. 60: 1648-1659. doi: 10.1002/csc2.20014 
+
+  Glazier A, S Herrera, A Weinnig, M Kurman, C E. Gomez, E Cordes (2020).
+  Regulation of ion transport and energy metabolism enables certain 
+   coral genotypes to maintain calcification under experimental ocean acidification.
+  Molecular Ecology; doi: 10.1111/mec.15439
+
+  Marcin J, M Julita, C Jose, M May, S Marc-Andre, D Etienne (2020).
+  The genomic impact of mycoheterotrophy [in orchids]: targeted gene losses 
+    but extensive expression reprogramming.
+  bioRxiv preprint; doi: 10.1101/2020.06.26.173617
+
+  N Dong, J Bandura, Z Zhang, Y Wang, K Labadie, B Noel, A Davison, J M Koene, 
+    H-S Sun, M-A Coutellec, Z-P Feng (2020).
+  Ion channel profiling of the Lymnaea stagnalis ganglia via transcriptome analysis.
+  Research Square pre-publication
+
+  Mirian T N Tsuchiya, Rebecca B Dikow, Loren Cassin-Sackett (2020).
+  First Genome Sequence of the Gunnison's Prairie Dog (Cynomys gunnisoni), 
+   a Keystone Species and Player in the Transmission of Sylvatic Plague.
+  Genome Biology and Evolution,  12(5):618-625; doi:10.1093/gbe/evaa069
+
+  Upadhyay M, A Hauser, E Kunz, S Krebs, H Blum, A Dotsev, I Okhlopkov, 
+    V Bagirov, G Brem, N Zinovieva, I Medugorac (2020). 
+  The first draft genome assembly of Snow sheep (Ovis nivicola). 
+  Genome Biology and Evolution, evaa124; doi: 10.1093/gbe/evaa124
+
+  Zinkgraf M, S-T Zhao, C Canning, S Gerttula, M-Z Lu, V Filkov, A Groover (2020).
+  Evolutionary network genomics of wood formation in a phylogenetic survey of 
+    angiosperm forest trees.
+  New Phytologist; doi: 10.1111/nph.16819
+
+  Agrawal A, T Venkatesan, G G Ramasamy, R R Syamala, M Muthugounder, A Rai (2020).
+  Transcriptome alterations of field-evolved resistance in Pectinophora gossypiella 
+    against Bt Bollgard II cotton in India.
+  J Applied Entomology; doi: 10.1111/jen.12805
+
+  Clancy MV, G Haberer, W Jud, B Niederbacher, S Niederbacher, M Senft, S Zytynska, 
+    W W. Weisser, J-P Schnitzler (2020).
+  Under Fire: simultaneous Volatilome and Transcriptome Analysis Unravels 
+    Fine-scale Responses of Tansy Chemotypes to Dual Herbivore Attack.
+  Plant Molecular Biology and Genetics, Plant Physiology and Morphology,
+   researchsquare, in review; doi: 10.21203/rs.3.rs-47578/v1
+
+  Ting Yu, Z Mu, Z Fang, X Liu, X Gao, and J Liu (2020).
+  TransBorrow: genome-guided transcriptome assembly by borrowing assemblies from 
+     different assemblers.
+  Genome Res. August 17, 2020; doi:10.1101/gr.257766.119.
+
+  DeLeo, DM, HD Bracken-Grissom (2020).
+  Illuminating the impact of diel vertical migration on visual gene expression 
+   in deep sea shrimp.
+  Molecular Ecology; doi: 10.1111/mec.15570
+
+  Gerdol, M, A Visintin, S Kaleb, F Spazzali, A Pallavicini, A Falace (2020).
+  Gene expression response of the alga Fucus virsoides (Fucales, Ochrophyta) 
+   to glyphosate solution exposure.
+  Environmental Pollution; doi: 10.1016/j.envpol.2020.115483
+
+  Tsers I, V Gorshkov, N Gogoleva, O Parfirova, O Petrova and Y Gogolev (2020).
+  Plant Soft Rot Development and Regulation from the Viewpoint of 
+    Transcriptomic Profiling.
+  Plants 2020, 9, 1176; doi:10.3390/plants9091176
+
+  Kozma, MT, Ngo-Vu H, Rump MT, Bobkov YV, Ache BW, Derby, CD. (2020).
+  Single cell transcriptomes reveal expression patterns of chemoreceptor genes 
+   in olfactory sensory neurons of the Caribbean spiny lobster, Panulirus argus. 
+  BMC Genomics 21, 649. doi:10.1186/s12864-020-07034-7
+
+  Herbert D B , T Gross, O Rupp, A Becker (2020).
+  Transcriptome analysis reveals major transcriptional changes during 
+    regrowth after mowing of red clover (Trifolium pratense).
+  Research Square (in review BMC Plant Biology); doi: 10.21203/rs.3.rs-68380/v1
+  BMC Plant Biol 21, 95 (2021). doi: 10.1186/s12870-021-02867-0
+
+  Vahdati K, M M Arab, and S Sarikhani (2020).
+  Advances in biotechnology and propagation of nut trees in Iran.
+  Bioengineering 2020, BIO Web of Conferences 25, 01003;
+  doi: 10.1051/bioconf/20202501003 
+
+  Adhitama N, Kato Y, Matsuura T, Watanabe H (2020).
+  Roles of and cross-talk between ecdysteroid and sesquiterpenoid pathways 
+   in embryogenesis of branchiopod crustacean Daphnia magna. 
+  PLoS ONE 15(10): e0239893. doi:10.1371/journal.pone.0239893
+
+  Bedulina D , P Drozdova, A Gurkov, M von Bergen, P F. Stadler, 
+    T Luckenbach, M Timofeyev, S Kalkhof (2020).
+  Proteomics reveals sex-specific heat shock response of Baikal 
+    amphipod Eulimnogammarus cyaneus.
+  Science of The Total Environment, 143008, ISSN 0048-9697; 
+    doi: 10.1016/j.scitotenv.2020.143008.
+
+  Nguyen, ND, Matsuura, T, Kato, Y, Watanabe, H. (2020).
+  Caloric restriction upregulates the expression of DNMT3.1, lacking the 
+   conserved catalytic domain, in Daphnia magna. 
+  Genesis. 2020;e23396. doi: 10.1002/dvg.23396
+
+  Das RR, S Pradhan & A Parida, (2020).
+  De-novo transcriptome analysis unveils differentially expressed genes regulating drought and 
+    salt stress response in Panicum sumatrense. [little millet plant]
+  Sci. Rep. 10:21251 doi: 10.1038/s41598-020-78118-3
+
+  T Arao, Y Kato, Q Dang Nong, H Yamamoto, H Watanabe, T Matsuura, N Tatarazako, K Tani, 
+    A Okamoto, T Matsumoto & H Watanabe  (2020).
+  Production of genome-edited Daphnia for heavy metal detection by fluorescence.
+  Sci. Rep. 10:21490 ; doi: 10.1038/s41598-020-78572-z
+
+  M V. Clancy, G Haberer, W Jud, B Niederbacher, S Niederbacher, M Senft, 
+    S E. Zytynska, W W. Weisser and J-P Schnitzler (2020).
+  Under fire-simultaneous volatilome and transcriptome analysis unravels fine-scale 
+    responses of tansy chemotypes to dual herbivore attack.
+  BMC Plant Biology  20:551; doi: 10.1186/s12870-020-02745-1
+
+  Bhattarai K, A Conesa, S Xiao, N A. Peres, D G. Clark, S Parajuli and Z Deng (2020).
+  Sequencing and analysis of gerbera daisy leaf transcriptomes reveal disease resistance and 
+    susceptibility genes differentially expressed and associated with powdery mildew resistance.
+  BMC Plant Biology 20:539; doi: 10.1186/s12870-020-02742-4
+
+  Kruger M, O A. J. Abeyawardana, C Kruger, M Juricek and H Storchova (2020).
+  Differentially expressed genes shared by two distinct cytoplasmic male sterility (CMS) 
+    types of Silene vulgaris suggest the importance of oxidative stress in pollen abortion.
+  Cells, 9, 2700; doi: 10.3390/cells9122700
+
+  P Soni, S N. Nayak, R Kumar, M K. Pandey, N Singh, H K. Sudini, P Bajaj, J C. Fountain, 
+    P Singam, Y Hong, X Chen, W Zhuang, B Liao, B Guo, and R K. Varshney (2021).
+  Transcriptome analysis identified coordinated control of key pathways regulating cellular 
+    physiology and metabolism upon Aspergillus flavus infection resulting in reduced 
+    aflatoxin production in groundnut.
+  J. Fungi, 6, 370; doi: 10.3390/jof6040370.
+
+  Kozma, Mihika T. (2020).
+  Gene expression of candidate chemoreceptor protein families in transcriptomes of two major 
+    chemosensory organs and brain in decapod crustaceans.
+  Dissertation, Georgia State University, https://scholarworks.gsu.edu/neurosci_diss/52
+ 
+  Song J, McDowell JR. (2020).
+  Comparative transcriptomics of spotted seatrout (Cynoscion nebulosus) populations to cold and 
+    heat stress. 
+  Ecol Evol. 00:1-16. doi: 10.1002/ece3.7138
+ 
+  N Dong, J Bandura, Z Zhang, Y Wang, K Labadie, B Noel, A Davison, J M. Koene, H-S Sun, 
+    M-A Coutellec and Z-P Feng  (2021).
+  Ion channel profiling of the Lymnaea stagnalis ganglia via transcriptome analysis.
+  BMC Genomics 22:18; doi: 10.1186/s12864-020-07287-2
+
+  K E. Fisher, R L. Tillett, M Footohi, C Caldwell, J Petereit, K Schlauch, C Tittiger,
+    G J. Blomquist, M MacLean (2021).
+  RNA-Seq used to identify ipsdienone reductase (IDONER): A novel monoterpene carbon-carbon 
+    double bond reductase central to Ips confusus pheromone production.
+  Insect Biochem. and Mol. Bio.,103513, ISSN 0965-1748; doi: 10.1016/j.ibmb.2020.103513
+
+  K Koiwai, T Koyama, S Tsuda, A Toyoda, K Kikuchi, H Suzuki, R Kawano (2021).
+  Single-cell RNA-seq analysis reveals penaeid shrimp hemocyte subpopulations and 
+    cell differentiation process.
+  bioRxiv preprint doi: 10.1101/2021.01.10.426076; 
+  eLife 2021;10:e66954. doi: 10.7554/eLife.66954;
+
+  A Soorni, A M Akrami, R Abolghasemi & M Vahedi (2021).
+  Transcriptome and phytochemical analyses provide insights into the organic sulfur pathway 
+    in Allium hirtifolium [shallot plant].
+  Sci. Rep. 11:768; doi: 10.1038/s41598-020-80837-6
+
+  Kahilainen A, V Oostra, P Somervuo, G Minard, M Saastamoinen (2021).
+  Alternative developmental and transcriptomic responses to host plant water 
+    limitation in a butterfly metapopulation.
+  bioRxiv 2021.02.24.432453;  doi:10.1101/2021.02.24.432453
+  Molecular Ecology, 00, 1-18; doi:10.1111/mec.16178
+
+  Duarte, G T, P Yu. Volkova, S A. Geraskin (2021).
+  A Pipeline for Non-model Organisms for de novo Transcriptome Assembly, Annotation, and Gene 
+    Ontology Analysis Using Open Tools: Case Study with Scots Pine.
+  Bio-Protocol, doi: 10.21769/BioProtoc.3912
+
+  Izraelson, M., Metsger, M., Davydov, A.N. et al. (2021).
+  Distinct organization of adaptive immunity in the long-lived rodent Spalax galili. 
+  Nature Aging; doi: 10.1038/s43587-021-00029-3
+
+  Short S, A Robinson,E Lahive, A Green Etxabe, S Hernadi, M.Gloria Pereira, P Kille, David J. Spurgeon (2021).
+  Off-Target Stoichiometric Binding Identified from Toxicogenomics Explains Why Some Species Are
+    More Sensitive than Others to a Widely Used Neonicotinoid
+  Environ. Sci. Technol. doi: 10.1021/acs.est.0c05125   
+  
+  Religia P , N Duc Nguyen, Q Dang Nong, T Matsuura, Y Kato, H Watanabe (2020).
+  Mutation of the cytochrome P450 CYP360A8 gene increases sensitivity to paraquat in Daphnia magna.
+  Environ. Toxicology, doi: doi.org/10.1002/etc.4970
+
+  Lee J , T Nishiyama, S Shigenobu, K Yamaguchi, Y Suzuki, T Shimada, S Katsuma, T Kiuchi (2021).
+  The genome sequence of Samia ricini, a new model species of lepidopteran insect.
+  Mol Ecol Resour. 2021 Jan;21(1):327-339.  doi: 10.1111/1755-0998.13259.   
+
+  Huerlimann R, Maes GE, Maxwell MJ, Mobli M, Launikonis BS, Jerry DR, Wade NM. (2020).
+  Multi-species transcriptomics reveals evolutionary diversity in the mechanisms regulating 
+    shrimp tail muscle excitation-contraction coupling. 
+  Gene. 2020 Aug 20;752:144765. doi: 10.1016/j.gene.2020.144765. Epub 2020 May 12. PMID: 32413480.
+
+  Schonfeld E , E Vendrow, J Vendrow, E Schonfeld (2020).
+  On the Relation of Gene Essentiality to Intron Structure: A Computational and Deep Learning Approach.
+  bioRxiv preprint doi: 10.1101/2020.03.31.019125; 
+
+  Wei F-J, Ueno S, Ujino-Ihara T, Saito M, Tsumura Y, Higuchi Y, et al. (2021).
+  Construction of a reference transcriptome for the analysis of male sterility in sugi 
+    (Cryptomeria japonica D. Don) focusing on MALE STERILITY 1 (MS1). 
+  PLoS ONE 16(2): e0247180. doi: 10.1371/journal.pone.0247180
+
+  Kahilainen A , V Oostra, P Somervuo, G Minard & M Saastamoinen (2021).
+  Alternative developmental and transcriptomic responses to host plant water 
+    limitation in a butterfly metapopulation.
+  bioRxiv preprint doi:10.1101/2021.02.24.432453; 
+  Molecular Ecology. doi:10.1111/mec.16178
+
+  Furzer O J. , V Cevik, S Fairhead, K Bailey, A Redkar, C Schudoma, D MacLean, 
+   E B. Holub, J D.G. Jones (2021).
+  An improved assembly of the Albugo candida Ac2V genome reveals the expansion of 
+   the "CCG" class of effectors.
+  bioRxiv preprint doi:10.1101/2021.03.29.437041; 
+
+  Sato K , T Uehara, J Holbein, Y Sasaki-Sekimoto, P Gan, T Bino, K Yamaguchi, Y Ichihashi,
+   N Maki, S Shigenobu, H Ohta, R B. Franke, S Siddique, F M. W. Grundler, T Suzuki, Y Kadota, K Shirasu (2021).
+  Transcriptomic analysis of resistant and susceptible responses in a new model root-knot nematode 
+   infection system using Solanum torvum and Meloidogyne arenaria.
+  bioRxiv preprint doi:10.1101/2021.04.02.438176; 
+
+  Hosseini S Z, A Ismaili, F Nazarian-Firouzabadi, H Fallahi, A Rezaei Nejad, S S Sohrabi (2021).
+  Dissecting the molecular responses of lentil to individual and combined drought and 
+   heat stresses by comparative transcriptomic analysis.
+  Genomics, 113(2): 693-705; doi: 10.1016/j.ygeno.2020.12.038
+
+  Punzalan Ma. R , Ma. A Bautista, E Emmanuel, R Rivera, S Rivera, and C Saloma (2021).
+  Transcriptome of the Traditional Coconut Variety Laguna Tall.
+  https://philjournalsci.dost.gov.ph/publication/regular-issues/past-issues/90-148-special-issue/
+    1084-transcriptome-of-the-traditional-coconut-variety-laguna-tall  # no doi
+
+  Testone G , A P Sobolev, G Mele, C Nicolodi, M Gonnella, G Arnesi, T Biancari and D Giannino (2021).
+  Leaf nutrient content and transcriptomic analyses of endive (Cichorium endivia) stressed by 
+   downpour-induced waterlog reveal a gene network regulating kestose and inulin contents.
+  Horticulture Research 8:92 doi: 10.1038/s41438-021-00513-2
+  
+  Schomaker RA, Dudycha JL (2021).
+  De novo transcriptome assembly of the green alga Ankistrodesmus falcatus. 
+  PLoS ONE 16(5): e0251668. doi:10.1371/journal.pone.0251668
+
+  Wu C, V G. Twort, R D. Newcomb, and T R. Buckley (2021).
+  Divergent Gene Expression Following Duplication of Meiotic Genes in the Stick Insect Clitarchus hookeri
+  Genome Biol. Evol. 13(5) doi:10.1093/gbe/evab060
+  
+  Cordoba, J.; Perez, E.; Van Vlierberghe, M.; Bertrand, A.R.; Lupo, V.; Cardol, P.; Baurain, D. (2021).
+  De Novo Transcriptome Meta-Assembly of the Mixotrophic Freshwater Microalga Euglena gracilis. 
+  Genes 2021, 12, 842.  doi:10.3390/genes12060842
+
+  Rump MT, Kozma MT, Pawar SD, Derby CD (2021).
+  G protein-coupled receptors as candidates for modulation and activation of the 
+    chemical senses in decapod crustaceans. 
+  PLoS ONE 16(6): e0252066. doi:10.1371/journal.pone.0252066
+
+  Jakalski M, Minasiewicz J, Caius J, May M, Selosse M-A and Delannoy E (2021). 
+  The Genomic Impact of Mycoheterotrophy in Orchids. 
+  Front. Plant Sci. 12:632033. doi: 10.3389/fpls.2021.632033
+
+  Sinigaglia C , A Almazan, M Semon, B Gillet, S Hughes, E Edsinger, M Averof, and M Paris (2021).
+  Distinct gene expression dynamics in developing and regenerating limbs.
+  bioRxiv preprint doi: 10.1101/2021.06.14.448408;
+
+  Rivera-Vicens, R.E., Garcia-Escudero, C.A., Conci, N, Eitel, M, and Worheide, G (2021).
+  TransPi - a comprehensive TRanscriptome ANalysiS PIpeline for de novo transcriptome assembly.
+  bioRxiv preprint doi: 10.1101/2021.02.18.431773;  
+  
+  Barnard-Kubow K, D Becker, C S. Murray, R Porter, G Gutierrez, P Erickson, J C. B. Nunez, 
+   E Voss, K Suryamohan, A Ratan, A Beckerman, A O. Bergland (2021).
+  Polygenic variation in sexual investment across an ephemerality gradient in Daphnia pulex.
+  bioRxiv preprint doi: 10.1101/2021.06.23.449662;
+
+  Catto,M.A.;Shrestha,A.; Abney, M.R.; Champagne, D.E.; Culbreath, A.K.; Leal-Bertioli, S.C.M.; 
+   Hunt, B.G.; Srinivasan, R. (2021).
+  Defense-Related Gene Expression Following an Orthotospovirus Infection Is Influenced by 
+   Host Resistance in Arachis hypogaea. 
+  Viruses 2021,13,1303. doi:10.3390/v13071303
+
+  Gorshkov, V.; Tsers, I.; Islamov, B.; Ageeva, M.; Gogoleva, N.; Mikshina, P.; Parfirova, O.; 
+   Gogoleva, O.; Petrova, O.; Gorshkova, T.;  Gogolev, Y. (2021).
+  The Modification of Plant Cell Wall Polysaccharides in Potato Plants during 
+    Pectobacterium atrosepticum-Caused Infection. 
+  Plants 2021, 10, 1407. doi: 10.3390/plants10071407
+
+  Safdari P, Hockerstedt L, Brosche M, Salojarvi J and Laine A-L (2021).
+  Genotype-Specific Expression and NLR Repertoire Contribute to Phenotypic Resistance Diversity in 
+    Plantago lanceolata. 
+  Front. Plant Sci. 12:675760. doi: 10.3389/fpls.2021.675760
+
+  K Koiwai, T Koyama, S Tsuda, A Toyoda, K Kikuchi, H Suzuki, R Kawano (2021).
+  Single-cell RNA-seq analysis reveals penaeid shrimp hemocyte subpopulations
+   and cell differentiation process.
+  eLife 2021;10:e66954. doi: 10.7554/eLife.66954 
+
+  Urso I, A Biscontin, D Corso, C Bertolucci, C Romualdi, C De Pitta, B Meyer, G Sales (2021).
+  The most comprehensive annotation of the Krill transcriptome provides new insights for the study of
+   physiological processes and environmental adaptation.
+  bioRxiv preprint; doi: 10.1101/2021.07.15.452476; 
+
+  Russell, A., Borrelli, S., Fontana, R. et al. (2021).
+  Evolutionary transition to XY sex chromosomes associated with Y-linked duplication 
+   of a male hormone gene in a terrestrial isopod. 
+  Heredity. doi: 10.1038/s41437-021-00457-2
+
+  Bista, Basanta; Wu, Zhiqiang; Literman, Robert; Valenzuela, Nicole (2021). 
+  Thermosensitive sex chromosome dosage compensation in ZZ/ZW softshell 
+   turtles, Apalone spinifera. 
+  The Royal Society. doi: 10.1098/rstb.2020.0101
+
+  Perez CAG, Adachi S, Nong QD, Adhitama N, Matsuura T, Natsume T,  Wada T, Kato Y, Watanabe H (2021).
+  Sense-overlapping lncRNA as a decoy of translational repressor protein for dimorphic gene expression. 
+  PLoS Genet 17(7): e1009683. doi: 10.1371/journal.pgen.1009683
+
+  Walter GM, J Clark, D Terranova, S Cozzolino, A Cristaudo, SJ Hiscock, JR Bridle (2021).
+  Hidden genetic variation in plasticity provides the potential for rapid 
+    adaptation to novel environments.
+  bioRxiv 2020.10.26.356451; doi: 10.1101/2020.10.26.356451
+
+  Nguinkal,J.A.;Verleih,M.; De los Rios-Perez, L.; Brunner, R.M.; Sahm, A.; 
+   Bej, S.; Rebl, A.; Goldammer, T. (2021).
+  Comprehensive Characterization of Multitissue Expression Landscape, 
+   Co-Expression Networks and Positive Selection in Pikeperch. 
+  Cells 2021, 10, 2289. doi: 10.3390/cells1009228
+
+  Rodriguez-Caro F, J Fenner, S Bhardwaj, J Cole, C Benson, A M. Colombara, R Papa, 
+   M W. Brown, A Martin, R C. Range, and B A. Counterman (2021). 
+  Novel Doublesex Duplication Associated with Sexually Dimorphic Development of 
+   Dogface Butterfly Wings.
+  Mol. Biol. Evol. doi:10.1093/molbev/msab228 
+
+  Gorshkov V Y, Y Y Toporkova, I D Tsers, E O Smirnova, A V Ogorodnikova, N E Gogoleva, 
+   O I Parfirova, O E Petrova, Y V Gogolev (2021).
+  Differential modulation of the lipoxygenase cascade during typical and latent
+   Pectobacterium atrosepticum infections.
+  Annals of Botany, doi:10.1093/aob/mcab108
+
+  Maeda G P, M Iannello, H J. McConie, F Ghiselli, J C. Havird (2021).
+  Relaxed selection on male mitochondrial genes in DUI bivalves eases the 
+    need for mitonuclear coevolution.
+  J. Evolutionary Biology, doi: 10.1111/jeb.13931
+
+  Sun,D A  and N H Patel (2021).
+  Identification and classification of cis-regulatory elements in the amphipod 
+   crustacean Parhyale hawaiensis.
+  bioRxiv preprint doi: 10.1101/2021.09.16.460328;
+
+  Sharma A , D Bhattacharyya, S Sharma, R S Chauhan (2021).
+  Transcriptome profiling reveal key hub genes in co-expression networks involved 
+    in Iridoid glycosides biosynthetic machinery in Picrorhiza kurroa.
+  Genomics 113(5): 3381-3394; doi: 10.1016/j.ygeno.2021.07.024
+
+  Prasad, M.P., Detchou, D.K.E., Wang, F., L.L. Ledwidge, S.E. Kingston 
+   and H.W. Horch (2021).
+  Transcriptional expression changes during compensatory plasticity in the 
+   terminal ganglion of the adult cricket Gryllus bimaculatus. 
+  BMC Genomics 22, 742; doi:10.1186/s12864-021-08018-x
+
+  Dias M C , C Caldeira, M Gastauer, S Ramos, G Oliveria (2021).
+  Cross-species Transcriptomes Reveal Species-specific and Shared Molecular
+    Adaptations for Plants Development on Iron-rich Rocky Outcrops Soils.
+  PREPRINT, Research Square, 11 October 2021; doi:10.21203/rs.3.rs-929174/v1
+
+  Low Y W, S Rajaraman, C Tomlin et al. (2021).
+  Genomic insights into rapid speciation within the world's largest tree genus.
+  PREPRINT, Research Square, 22 October 2021; doi: 10.21203/rs.3.rs-969304/v1
+
+  Taheri-Dehkordi, A., Naderi, R., Martinelli, F. et al. (2021).
+  Computational screening of miRNAs and their targets in saffron 
+    (Crocus sativus L.) by transcriptome mining. 
+  Planta 254, 117. doi: 10.1007/s00425-021-03761-7
+
+  Schulte, L.M., Martel, A., Cruz-Elizalde, R. et al. (2021).
+  Love bites: male frogs (Plectrohyla, Hylidae) use teeth scratching 
+   to deliver sodefrin precursor-like factors to females during amplexus. 
+  Front Zool 18, 59; doi: 10.1186/s12983-021-00445-6
+
+  Bowman,A., Fitzgerald,C., Pummill, J.F., Rhoads, D.D., Yamashita, T. (2021).
+  Reduced Toxicity of Centruroides vittatus (Say, 1821) May Result from Lowered 
+   Sodium B Toxin Gene Expression and Toxin Protein Production. 
+  Toxins 2021, 13, 828. doi: 10.3390/toxins13110828
+
+  Figueroa-Corona, L, P D Valerio, J Wegrzyn, D Pinero (2021).
+  Transcriptome of weeping pinyon pine, Pinus pinceana, shows differences 
+   across heterogeneous habitats
+  Trees 35:1351-1365; doi: 10.1007/s00468-021-02125-8
+
+  Whetten R, W Kohlway, & M Adonay (2021).
+  The Analysis of Deep Sequencing Data course.
+  Bit815 Documentation, Rel 1.0.0, 59pp.
+
+  Walsh, H.L., Rafferty, S.D., Gordon, S.E. et al. (2022). 
+  Reproductive health and endocrine disruption in smallmouth bass 
+   (Micropterus dolomieu) from the Lake Erie drainage, Pennsylvania, USA. 
+  Environ Monit Assess 194, 3. doi: 10.1007/s10661-021-09654-2
+
+  Furzer, O, V Cevik, S Fairhead, K Bailey, A Redkar, C Schudoma, D MacLean, 
+   EB. Holub, and JDG. Jones (2021).
+  An Improved Assembly of the Albugo candida Ac2V Genome Reveals the Expansion 
+   of the CCG Class of Effectors.
+  MPMI; doi:10.1094/MPMI-04-21-0075-R
+
+  Raghavan V, L Kraft, F Mesny, L Rigerte (2022).
+  A simple guide to de novo transcriptome assembly and annotation.
+  Briefings in Bioinformatics, bbab563, doi: 10.1093/bib/bbab563
+
+  Bailey E, L Field, C Rawlings, R King, F Mohareb, K-H Pak, D Hughes, M Williamson, 
+   E Ganko, B Buer and R Nauen (2022).
+  A scaffold-level genome assembly of a minute pirate bug, Orius laevigatus (Hemiptera:
+   Anthocoridae), and a comparative analysis of insecticide resistance-related 
+   gene families with hemipteran crop pests.
+  BMC Genomics 23:45 doi: 10.1186/s12864-021-08249-y
+
+  Bailey E, L Field, C Rawlings, R King, F Mohareb, K-H Pak, D Hughes, M Williamson, 
+   E Ganko, B Buer and R Nauen (2022).
+  A near-chromosome level genome assembly of the European hoverfly, Sphaerophoria
+   rueppellii (Diptera: Syrphidae), provides comparative insights into insecticide
+   resistance-related gene family evolution
+  BMC Genomics 23:198; doi: 10.1186/s12864-022-08436-5
+
+ Smolander, O-P, D Blande, V Ahola, P Rastas 1, J Tanskanen, J I. Kammonen, V Oostra, 
+   L Pellegrini, [many], MJ. Frilander, P Auvinen, and M Saastamoinen (2022).
+  Improved chromosome-level genome assembly of the Glanville fritillary butterfly
+   (Melitaea cinxia) integrating Pacific Biosciences long reads and a high-density 
+   linkage map.
+  GigaScience, 11, 1-12; doi: 10.1093/gigascience/giab097
+
+  Austin CM, Croft LJ, Grandjean F and Gan HM (2022).
+  The NGS Magic Pudding: A Nanopore-Led Long-Read Genome Assembly for the 
+   Commercial Australian Freshwater Crayfish, Cherax destructor. 
+  Front. Genet. 12:695763. doi: 10.3389/fgene.2021.695763
+
+  Cardona-Medina E, M Santos, R Nodari, D Hornero-Mendez, A Peris, D C. J. Wong,
+   J T Matus, M Rodriguez-Concepcion (2022).
+  Biosynthesis and apoplast accumulation of the apocarotenoid pigment azafrin 
+   in parasitizing roots of Escobedia grandiflora.
+  bioRxiv preprint doi: 10.1101/2022.02.07.479377
+
+  Veglia A. J. , K. Beavers, E. W. Van Buren, S. S. Meiling, E. M. Muller, T. B. Smith,
+    D. M. Holstein, A. Apprill, M. E. Brandt, L. D. Mydlarz, A. M. S. Correa (2022).
+  Alphaflexivirus Genomes in Stony Coral Tissue Loss Disease-Affected, Disease-Exposed,
+   and Disease-Unexposed Coral Colonies in the U.S. Virgin Islands.
+  Microbiology Resource Announcements, 11:2; doi: 10.1128/mra.01199-21
+
+  Yang Y, L Ran, T Pan, F Yuan, D Hu, and P Lu (2022).
+  Degradation of Sulfoxaflor in Water and Soil: Kinetics, Degradation Pathways,
+   Transformation Product Identification, and Toxicity.
+  J. Agric. Food Chem. ; doi: 10.1021/acs.jafc.1c07362
+
+  Gagalova KK, JGA Whitehill, L Culibrk, et al (2022).
+  The genome of the forest insect pest Pissodes strobi reveals genome expansion 
+   and evidence of a Wolbachia endosymbiont.
+  Genes, Genomes, Genetics, jkac038; doi: 10.1093/g3journal/jkac038
+
+  Wong DCJ, Perkins J and Peakall R (2022).
+  Anthocyanin and Flavonol Glycoside Metabolic Pathways Underpin Floral Color Mimicry 
+   and Contrast in a Sexually Deceptive Orchid. 
+  Front. Plant Sci. 13:860997. doi: 10.3389/fpls.2022.860997
+
+  Fritsche S, Rippel Salgado L, Boron AK, Hanning KR, Donaldson LA and Thorlby G (2022).
+  Transcriptional Regulation of Pine Male and Female Cone Initiation and Development: Key 
+   Players Identified Through Comparative Transcriptomics. 
+  Front. Genet. 13:815093. doi: 10.3389/fgene.2022.815093
+
+  Costa Dias M, C Caldeira, M Gastauer, S Ramos and G Oliveira (2022).
+  Cross-species transcriptomes reveal species-specific and shared molecular adaptations 
+   for plants development on iron-rich rocky outcrops soils.
+  BMC Genomics 23:313; doi: 10.1186/s12864-022-08449-0
+
+  Gutierrez-Larruscain D, M Kruger, O.A.J. Abeyawardana, C Belz, PI. Dobrev, R Vankova, 
+    K Eliasova, Z Vondrakova, M Juricek, H Storchova (2022).
+  The high concentrations of abscisic, jasmonic, and salicylic acids produced under 
+    long days do not accelerate flowering in Chenopodium ficifolium.
+  Plant Science, 111279, ISSN 0168-9452; doi: 10.1016/j.plantsci.2022.111279
+
+  Elkrewi M, U Khauratovich, MA Toups, V K Bett, A Mrnjavac, A Macon, C Fraisse, 
+   L Sax, AK Huylmans, F Hontoria, B Vicoso (2002).
+  ZW sex-chromosome evolution and contagious parthenogenesis in Artemia brine shrimp.
+  bioRxiv preprint; doi:10.1101/2022.04.27.489735;
+
+  Foster CSP, JU Van Dyke, MB Thompson, NMA Smith, CA Simpfendorfer, CR Murphy, 
+    CM Whittington (2022). 
+  Different Genes are Recruited During Convergent Evolution of Pregnancy and the Placenta.
+  Molecular Biology and Evolution, 39:4, msac077, doi: 10.1093/molbev/msac077
+
+---------------
+
+  Alabama Supercomputer Authority
+  Installed Software and Tools includes EvidentialGene
+  https://www.asc.edu/supercomputing/software.shtml
+
+  Swedish Bioinformatics Support, Biosupport.se
+  Supported biosoftware includes EvidentialGene
+  doi:  10.1186/2047-217X-2-9, PMCID: PMC3704847
+
+  Oilseeds Biochemical Genomics project, NSF-Award# 1339385
+  http://bioinfolab.unl.edu/oilseeds/pipeline.html
+
+  Purdue University, Bioinformatics Core facility
+  https://wiki.itap.purdue.edu/display/BioCoreFacility/Bioinformatics+software+listing
+
+  National Center for Genome Analysis Support, https://ncgas.org/
+  de novo transcriptome assembly pipeline with EvidentialGene
+  
+  Phytozome genome of Anacardium occidentale (Cashew tree), 2018
+  Cashew gene set reconstruction includes EvidentialGene use
+  https://phytozome.jgi.doe.gov/ 
+
+EvidentialGene has been developed and used in various other gene/genome projects
+by the author in collaborations since 2009, some papers are in print.
+--------------------------------------------------------------------
+
+In_draft: 
+
+  Gilbert, DG. (2019).
+  Longest protein, longest transcript or most expression, 
+    for accurate gene reconstruction of transcriptomes?
+  bioRxiv 829184; doi: 10.1101/829184
+
+In_review: 
+  
+Published:
+
+  Gilbert, DG. 2019. Genes of the Pig, Sus scrofa, reconstructed with EvidentialGene.
+  PeerJ 7:e6374; doi:10.7717/peerj.6374
+  BioRxiv pre-peer-review, Sep 2018. doi: 10.1101/412130
+  Pig gene data set, NCBI TSA accession DQIR00000000, and  
+   doi 10.5967/K8DZ06G3 at scholarworks.iu.edu archive.
+
+  Orsini L, Brown JB, Shams Solari O, et al. [includes DGG] 2017.
+  Early transcriptional response pathways in Daphnia magna are coordinated in networks of
+  crustacean-specific genes. Mol Ecol. 2017;00:1-12. 
+  doi: 10.1111/mec.14261
+
+  Noah M. Reid, Craig E. Jackson, Don Gilbert, Patrick Minx, Michael J.
+  Montague, Thomas H. Hampton, Lily W. Helfrich, Benjamin L. King, Diane E.
+  Nacci, Neel Aluru, Sibel I. Karchner, John K. Colbourne, Mark E. Hahn,
+  Joseph R. Shaw, Marjorie F. Oleksiak, Douglas L. Crawford, Wesley C. Warren,
+  Andrew Whitehead (2017).
+  The Landscape of Extreme Genomic Variation in the Highly Adaptable Atlantic Killifish. 
+  Genome Biol Evol 2017; 9 (3): 659-676. doi: 10.1093/gbe/evx023
+  # EvigeneH hybrid RNA/DNA gene set that NCBI has difficulties accepting, despite their own pipeline 
+  # producing similar genes corrected for chromosome-assembly errors .
+  # NCBI Genbank annotated genome submission still "in progress", but submit set is available and passes most checks.
+
+  Luisa Orsini, Donald Gilbert, Ram Podicheti and others. (2016)  
+  Daphnia magna transcriptome by RNA-Seq across 12 environmental stressors, 
+  Scientific Data. doi:10.1038/sdata.2016.30
+  # reports accurate, high quality gene assemblies from EvigeneR (NCBI TSA, GDIP00000000 and GDIQ00000000 of 2 populations),
+  # and a better EvigeneH hybrid RNA/DNA gene set that NCBI won't accept as a hybrid of gene data dogmas.
+
+  Daphnia magna Genome Consortium (2016).  
+  Daphnia magna genome annotated assembly draft v2.4.
+  NCBI/DDBJ/ENA GenBank accession LRGB01000000, BioProject PRJNA298946
+  # contains the chromosome-modeled genes that contribute to better EvigeneH hybrid RNA/DNA gene set.
+  
+  Alfredo Rago, Donald Gilbert, Jeong-Hyeon Choi, Tim Sackton, Xu Wang, Yogeshwar Kelkar, John H. Werren, John K. Colbourne
+  Genome Re-Annotation of the Jewel Wasp Nasonia vitripennnis
+  BMC Genomics, 2016; 17(1): 678.  doi: 10.1186/s12864-016-2886-9; PMCID: PMC5000498
+  http://www.ncbi.nlm.nih.gov/pmc/articles/PMC5000498/
+  # reports on older methods of EvigeneD gene construction (chromosome-DNA-assembly modelled)
+  
+  Motamayor, J. C., Mockaitis, K., Schmutz, J., et al. [includes DGG]
+  (Cacao Genome Group) 2013. The genome sequence of the most widely
+  cultivated cacao type and its use to identify candidate genes regulating
+  traits: pod color as an example. Genome Biol. Jun 3;14(6):r53. PMID: 23731509.
+  # an accurate, high quality gene set to go with the high qual chromosome assembly, EvigeneD + early EvigeneR methods.
+  
+  Gulia-Nuss M, Nuss AB, Meyer JM, et al. [includes DGG]
+  Genomic insights into the Ixodes scapularis tick vector of Lyme disease.
+  Nat Commun. 2016 Feb 9;7:10507. doi: 10.1038/ncomms10507.  PMID: 26856261 
+  # as with pine, evigene trasm of tick genes much more ortho-complete than genome-gene models
+    
+  Neale DB, Wegrzyn JL, Stevens KA, et al. [includes DGG] 2014. Decoding the massive
+  genome of loblolly pine using haploid DNA and novel assembly strategies.
+  Genome Biol. Mar 20;15(3):R59., PMID: 24647006. doi:10.1186/gb-2014-15-3-r59; 
+  # not much dgg work, but evigene gene assembly is reported, and is much more ortho-complete than MAKER genome-gene set
+
+  # EvidentialGene prelim poster/paper
+  Gilbert, Donald (2010) Perfect(ing) Arthropod Genes with Next Gene Informatics
+  4th annual Arthropod Genomics Symposium. Kansas State U.
+  http://arthropods.eugenes.org/EvidentialGene/about/PerfectGenes2010.pdf 
+
+Gene modeling contributions by DGG as precursor to EvidentialGene
+
+  Colbourne JK, Pfrender ME, Gilbert D, Thomas WK, Tucker A, Oakley TH,
+  Tokishita S, Aerts A, Arnold GJ, Basu MK, Bauer DJ, Caceres CE, Carmel
+  L, Casola C, Choi JH, et al., 2011. The Ecoresponsive genome of Daphnia
+  pulex, Science, 331:555, doi:10.1126/science.1197761
+
+  The Nasonia Genome Working Group, 2010. Functional and Evolutionary
+  Insights from the Genomes of Three Parasitoid Nasonia Species. Science,
+  327: 343-348; doi: 10.1126/science.1178028; PMID: 20075255.
+
+  The International Aphid Genomics Consortium, 2010. Genome Sequence of
+  the Pea Aphid Acyrthosiphon pisum. PLoS Biology, 8(2): e1000313;
+  doi:10.1371/journal.pbio.1000313.
+
+  Gilbert, D.G., 2007. DroSpeGe: Rapid access Drosophila species genomes
+  database. Nucleic Acids Res. D480-D485 doi:10.1093/nar/gkl997.
+
+  Clark, AG; Eisen, MB; Smith, DR; Bergman, CM; et al. 2007. Evolution of
+  genes and genomes on the Drosophila phylogeny. Nature, 450:203-218. PMID: 17994087
+--------
+
+Related software docs that help explain Evigene's success/value:
+
+Haznedaroglu et al.: Optimization of de novo transcriptome assembly from high-throughput short read sequencing data 
+improves functional annotation for non-model organisms. BMC Bioinformatics 2012 13:170.
+doi:10.1186/1471-2105-13-170
+
+Yu Peng et al.: IDBA-tran: a more robust de novo de Bruijn graph assembler for transcriptomes with 
+uneven expression levels. Bioinformatics, Vol. 29 ISMB/ECCB 2013, pages i326-334
+doi:10.1093/bioinformatics/btt219
+
+----
+Comment on Hoang et al, 2017. (above) sugarcane comparison of Pac-Bio RNA versus Illumina RNA
+ * independent comparison of Pac-Bio RNA versus Illumina RNA
+ over-assemblies, with Evigene reduction. I think their assembly methodology
+ for Illumina is overly complex and led to reduced quality of those.  In
+ particular they applied too many filters (cd-hit clustering, velvet/oases
+ -merge) which remove valid alternate transcripts, and which can add errors,
+ based on my work with these.  Their Methods say "To remove the redundancy, all
+ [CLC/Soap] contigs were pooled and clustered using CD-HIT-EST .. with 95%
+ identity, to obtain one representative assembly. "  This will remove valid
+ alternates as they can have >= 95% identity. More important, use of cd-hit-est
+ for longest transcript per cluster selects for errors: indels and joins
+ that lengthen transcripts beyond true size, and break coding sequences. See examples at
+ http://arthropods.eugenes.org/EvidentialGene/evigene/docs/cdhiterr-arabidopsis-example.txt
+
+ Evigene's pipeline handles over-assemblies to reduce to a most representative 
+ coding gene set, based on coding sequence metrics, retaining valid alternates. For
+ Velvet/Oases, use of the option '-merge yes' removes valid transcripts, and
+ creates problem transcripts (false joins). Their table 2 of per assembler
+ results also suggests to me that different options, and less filtering with
+ Velvet/O and Soap would have resulted in much improved assemblies.  I
+ always get better results w/ those two than with Trinity. 
+ This paper is indicative of the difficult task of determining methods for 
+ accurate gene reconstruction.  My results with assembly of Illumina vs Pac-Bio 
+ are opposite, assembly of Illumina RNA with with different methods yeild more
+ accurate, complete gene sets, including more complete alternate transcripts
+ and paralogs, than the PacBio data I've compared these with for Arabidopsis, corn,
+ and pine trees.
+

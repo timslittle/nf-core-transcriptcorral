@@ -1,0 +1,150 @@
+
+
+Gene assembly from RNA-seq pipeline component comments
+Don Gilbert, 2017 Aug.
+
+A. Before RNA-seq assembly
+----------------------------
+RNA-seq Quality filter 
+  yes, various choices.  Remove poor qual and adaptor seq.
+
+Digital normalize, as with Khmer
+  yes, but assemble without as well as with digi-norm,if you want best assemblies.
+  With velvet, soap, idba, other assemblers, there is a subset of complex, well 
+  expressed genes, having many alternates, that are best reconstructed with high-kmer
+  settings.  Khmer uses low-kmer setting to remove some of complexity in reads
+  needed to achieve most accurate assemblies of these.  I find the median kmer size
+  of best gene assemblies is 1/2 read size for non-normalized RNA, that shifts
+  down by 10s of bases for digi-norm RNA data.  You do solve problems of too much
+  data with digi-norm however.
+  
+Contamination filter of reads?
+  Probably not if you mean cross-species contaminants, filtering reads for this is problematic
+  ie short reads are hard to classify by species, detecting species contam is 
+  best done on full transcripts, species reads really do assemble together, 
+  not as cross-species chimera.  After assembly contaminant filtering is  
+  standard and simpler way to do this.
+
+Subset your RNA-samples to reduce heterozygosity.  If you have
+several clones/individuals, etc., separately assemble those to
+reduce hetero-transcripts that add complexity.
+
+
+B. RNA Over-Assembly with several methods, options
+----------------------------
+CLC, Trinity, idba_tran, SOAPdenovo-Trans, Oases, Trans-Abyss, others
+  Over-assemble with several tools and  multi-kmer settings up to read size.  
+  Ok if some steps fail, as others will fill in.  High kmer settings work
+  well for subset of interesting complex genes.  Use both digi-norm and
+  non-norm read sets to get more accuracy.  
+
+Classify & reduce over-assemblies with EvidentialGene
+   Other methods with approach like Evigene are now appearing, some
+   maybe good, some should be avoided (focus on technical not biological measures).
+
+Don't use a "longest-transcript-is-best" approach to reducing over-assemblies,
+as the longest assemblies collect the errors: indels, gene joins (fusions), other
+mis-assemblies.  E.g. CD-HIT-EST is a good tool, it clusters transcripts by
+global alignments, but it doesn't tell you that the longest of each cluster is
+the most accurate gene representation (which it often is not).
+
+
+C. Annotate, Quality checks.
+----------------------------
+
+Quality check with TransRate, or other reads mapped back to transcripts to measure errors.
+  Problematic: TransRate is not doing what the authors (and readers) think; it is confounding
+  properly multi-mapped reads across alternate transcripts (and paralogs I think) with errors.
+
+  It is a simple test to make, one I don't understand how authors missed, one I just did: 
+  take a reference species gene set, e.g. Arabidopsis, pull out only main
+  transcripts subset (eg. 27K for Arath, vs 48K total), and run Transrate with species RNA
+  on both transcript sets.
+  
+  The summary score for all transcripts is much lower, by order of magnitude, for this
+  accurate and more complete gene set.
+  The per-transcript scores for same main transcripts (27K) done both ways, 
+  show large down shift for stats when gene as many alternates, no shift if no alternates.
+
+  I did same with Evigene version of Arabidopsis, which has nearly same main
+  transcripts, but adds 50K alternates to those loci, and Transrate scores dropped
+  again by several fold.
+  
+  The general idea of mapping reads to transcripts is of course sensible, but fraught with problems
+  unless your read-map-back program is very careful about distinguishing valid complexity in read
+  mapping versus errors. I don't  know of any program yet that is fully capable, but some use of
+  tools like TransRate, cautioning you need to ignore its summary scores as flawed, and focus on 
+  basic things like read coverage, maybe proper pair rate (but that is influenced by alternates).
+
+  Recommendation: don't rely on reads-mapped-back measures that mis-identify
+  valid cross-mappings as errors; measure only subset of main transcript/loci;
+  use simplest read-coverage statistics as most reliable.
+  
+ 
+Contamination filter BlastN or MegaBlast
+
+  Use BlastN (or megablast) of your transcript cdna on some sensible broad species genes database,
+  and need only pick out high scoring hits. Don't use protein matching (BlastX/tblastn) as those
+  will often not be contaminants but your species genes.
+  
+  NCBI-NR if you want to be exhaustive, though one has more things to pick thru to decide if
+  hit is contaminant then.  I opt for a subset of model organisms, bacteria, vectors.  
+  In past I've pulled out nearly complete mouse gene set from insects and daphnia RNA experiments
+  (which seq center said couldn't be their mistake :), human genes, human acne bacteria gene,
+  and from honey bee gut, an eukaryote endo parasite/symbiont (the harder case as it wasn't
+  a well-known species).  For this later problem BUSCO comes in very handy, you end up with
+  duplicates of most of the single copy orthologs .. that is a good clue to contamination
+  or else whole gene set duplication.
+ 
+Vector trimming (part of Evigene scripts)
+  Read filters may miss, NCBI/INSD sequence database submissions need
+  this (and contaminant filtering).
+
+Orthology Annotation and Completeness measures
+
+DGG recommends:
+   a. Collect valid gene sets near your species, including model/reference/accurate
+   species, and nearest neighbors.  I opt for 5-10 species depending on effort.
+   b. Reciprocal best blastp of all proteins (yours included)
+   c. OrthoMCL to cluster into gene families, count your hits/misses.
+   d. Pull out BUSCO (or other) conserved subsets by IDs of your reference species,
+      and count hits/misses/partials.
+   Find in Evigene code base, evigene/scripts/omcl/ my tools including modified
+   OrthoMCL perl using MCL, plus summarizing scripts for those outputs.
+  
+   You may also want to do CDS-blastn (or protein tblastn) to near neighbor chromosome
+   assemblies, as this likely will annotate conserved coding genes that have been
+   missed by traditional, older gene finding of neighbor genomes.
+
+using BUSCO software/methods
+   a. Yes, but use the *protein* or gene, variant of BUSCO. 
+      For instance if you run BUSCO software with proteins of your transcripts, you
+   likely see larger diff in comparing gene sets (ie. to just Trinity) than
+   if you use BUSCO's translation testing methods (which end up being like
+   gene finding, hiding transcript errors).
+ 
+   b. Yes, but remember BUSCO is the easiest 10% of species gene set to find .. it is
+   a statistically measured set of 1-copy orthologs, they become members of this set
+   because they are found so easily in most species.   I hold the view one tests all
+   genes for a full set of related/reference species proteins, then pull out of that
+   the conserved BUSCO subset for publications.  Of the other 90% of your genes,
+   maybe 60%-80% have some orthology, depending on nearness of ref species, and these
+   include ones harder to reconstruct properly.
+   
+   a, again. There is a common tendency now
+   in gene/transcript projects to use RNA transcript x protein alignment scoring; this unfortunately
+   hides a large number of transcript errors: indels, gene joins (fusions, etc.) If your transcript
+   matches some ref protein well, but doesn't translate into that protein fully, something is wrong,
+   a mis assembly, and this won't be a publication qualtity gene.  The evigene approach is the
+   cure for such mistakes, as from a large set of gene models, some will be correct,
+   but this needs use of protein x protein quality metrics.  Too many papers I've seen recently
+   are not distinguishing gene errors by using RNA x ref-protein tests.
+
+ Annotate InterProScan, Blastp, OrthoMCL, various tools
+   I use OrthoMCL (modified version in evigene, works fast, as I often have to rerun)
+   find in evigene/scripts/omcl/
+   I use some conserved domain finding (NCBI CDD usually, with their rpsblast) but
+   generally same effect as InterProScan; generally domains don't turn up unless you also
+   have good match to full protein references, but domains are useful info.
+
+---------------------------

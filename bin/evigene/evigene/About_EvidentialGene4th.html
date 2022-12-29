@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>	
+<title>EvidentialGene 2020 march version4</title>
+<!-- uri about/EvidentialGene_update2020march.html -->
+</head>
+<body bgcolor="#f0f8f8" >
+
+<h1>EvidentialGene 2020 March, version4</h1>
+<table bgcolor="white" border=1 cellpadding=12>
+<tr><td>
+There is a major EvidentialGene software update available now, in evigene20mar15.tar
+at 
+<a href="http://eugenes.org/EvidentialGene/other/evigene_old/">EvidentialGene/other/evigene_old/</a>
+and <a href="https://sourceforge.net/projects/evidentialgene/files/">SourceForge</a>.
+<p>
+
+This includes updates described in <a href="https://doi.org/10.1101/829184">this paper</a>, and newer ones.
+
+A brief summary of updates is listed in 
+<a href="http://eugenes.org/EvidentialGene/evigene/docs/evigene20mar04_updates.txt">evigene20mar15_updates.txt</a>. <br>
+The major new script versions are<br>
+  <b>tr2aacds4.pl</b> and <b>evgpipe_sra2genes4v.pl</b>, with updates and additions of associated pipeline components.<br>
+  <b>tr2ncrna.pl</b> : new pipeline to select non-coding RNA subset of input transcripts.<br>
+<p>
+
+If you have interest/time to try it, please provide feedback. I've tested these updates extensively, and revised, debugged them over last several months. However your uses will turn up some new wrinkles to be smoothed out, and I'll appreciate those comments.
+<p>
+
+This well-used portion, tr2aacds4.pl, can be used as prior versions, but has new options, new reduction algorithm parts, and some new outputs. Most of the updates here are folded-in changes that I've tested and used over several years, as separate scripts.
+<p>
+
+If you want to test the full Evigene pipeline that includes reference homology tests, and helps one to see where the tr2aacds component fits into a fuller reconstruction methodology, <br>
+see here for SRA2Genes:
+<a href="http://eugenes.org/EvidentialGene/other/sra2genes_testdrive/sra2genes4v_testdrive/">
+EvidentialGene/other/sra2genes_testdrive/sra2genes4v_testdrive/</a>
+<p>
+
+<b>run_plant1kYYPE.txt</b> is a brief explanation of these steps, including assemblies, tr2aacds reduction, blastp reference.aa and busco tests, and tr2ncrna.
+<p>
+
+Evigene docs with some of this include: 
+<a href="http://eugenes.org/EvidentialGene/evigene/docs/EvigeneR/tr2aacds4_about.txt">docs/EvigeneR/tr2aacds4_about.txt</a>, and 
+<a href="http://eugenes.org/EvidentialGene/evigene/docs/EvigeneR/tr2ncrna_about.txt">docs/EvigeneR/tr2ncrna_about.txt</a>
+<br>
+
+I continue work on documents and examples for this set of updates. In particular, the SRA2Genes omnibus has all the basic parts needed for a good example on how to use and combine each component in a good transcriptome reconstruction pipeline.
+<p>
+
+Most of the updates are in precision improvements, pushing from 95% to 98% accuracy.  You wont find large improvements in conserved unique gene BUSCO scores because those are easiest and are properly kept by prior and new versions.  The improvements focus on alternates, paralogs, coding/non-coding classes, and other complexities for accurate, complete gene set reconstruction.  For instance, there is a new mixed-strand reorient test that recovers occasional conserved proteins shorter than the longest computed ORF. The new tr2ncrna pipeline sometimes picks up 1 or 2 conserved ortholog proteins from poor-quality transcript assemblies, at the edge of accuracy, which other methods tend to miss as well.
+<p>
+
+Effort was spent to ensure that the accuracy of prior versions was not lost by side-effects to "improvements".  One side-effect result is that this new version introduces a <b>-pHeterozygosity</b> option, to balance improved precision for alternate/paralog models with noise from heterozygous samples.  RNA pools of non-isogenic individuals produce many more putative gene loci, alts and paralogs, than from isogenic RNA samples, without such an option. 
+<p>
+</td></tr></table>
+
+<br>
+<cite>Don Gilbert, gilbertd at indiana.edu </cite>
+
+</body>
+</html>

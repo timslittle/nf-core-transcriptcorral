@@ -1,0 +1,411 @@
+
+Error of using cd-hit-est longest-transcript-filter for gene assembly reduction
+  versus using CDS quality filter as by EvidentialGene
+Examples from Arabidopsis, Mouse, Mosquito, PacBio RNA, Illumina with Velvet, Trinity.
+Don Gilbert, gilbertd at indiana.edu, 2017 June
+
+A common mistake among gene/transcript assembly projects is mis-use of
+longest-transcript-is-best approaches to data reduction. Over-assemblies 
+are often reduced by methods that choose the longest transcripts. Those
+longest transcripts tend to have more assembly mistakes, thus making them longer 
+than true gene transcripts.  
+
+	Longest-Transcript-Filter Error example:
+Transcript-Cluster               Protein
+------------------------------   -------
+TrueGene CCCGAGCCCACCATCGACGAG   PEPTIDE   = True transcript, chosen by Evigene
+InsError CCCtGAGCCCACCATCGACGAG  P*ahhrr   = Insert error, chosen by CD-HIT-EST
+DelError CCGAGCCCACCATCGACGAG    PSPPST    = Delete error
+-------------------------------  -------
+   cd-hit-est -c 0.90 -i transcripts.fa -o transcript_cd90.fa
+>InsError transcript_cd90.fa longest transcript has shortest protein (1aa + stop codon)
+CCCtGAGCCCACCATCGACGAG  # P*ahhrr
+>Cluster 0
+0       21nt, >TrueGene... at +/95.24%
+1       22nt, >InsError... *
+2       20nt, >DelError... at +/95.00%
+--------------------------------------
+
+Reasons for this common mistake rest partly on use of "N50" assembly length 
+statistic borrowed from chromosome assembly, partly from reads-mapped-back 
+statistics that find more RNA-seq recovery by longest transcripts, and partly 
+from views that accurate gene sets result from obtaining "proper gene counts", 
+with less regard for whether one is counting proper genes.
+
+Selecting for longer transcripts, with more read recovery, often selects for 
+artifacts, mangled gene sequences, and gene joins or fusions, because those 
+errors make a transcript longer. This is readily measured if you have reference
+genes, either by protein or coding sequence aligment of the full versus
+longest-filtered subset to reference genes.
+
+Program cd-hit-est (CDHIT, see cd-hit.org) is one widely used sequence
+clustering/reduction tool.  Often the longest transcript from cd-hit-est
+clustering has frameshift errors, other mis-assemblies or sequencing errors,
+that make it longer than the accurate coding-sequence transcripts.
+
+Note that PacBio software, their SMRT analysis tools, that produce, or
+assemble, RNA transcripts from raw PacBio RNA reads, use coding sequence
+measures, as does Evigene, to select best transcript; they do not use a
+longest-transcript-is-best approach.  For this test, I applied cd-hit-est to
+those transcripts, and measured discrepancy between full and cd-hit-est subset
+for recovery of AT reference genes measured by coding sequence alignment.
+
+One gets the same long-transcript-error effects for genes assembled from Illumina RNA.
+When  you read a study comparing these RNA technologies, or two assembly methods 
+as Velvet/Oases vs Trinity, check whether authors applied wrong filter to
+one but not other method.
+
+This is an example BIG DATA problem common to biology, esp. genome biology
+where there are often way too many results, and reduction by a
+sensible filter is needed.  In this case a sensible filter for protein coding
+genes is the protein code, as a  biological measure. In this case also, many 
+of the studies that filter over-abundant pc-gene results use the wrong filter: 
+lengths of pseudo-transcripts, where artifacts create longer ones.
+
+In summary for arabidopsis, mouse, and mosquito from recent Evigene gene
+assemblies, are comparison homology results for longest cd-hit-est error
+effects for Velvet/Oases, Trinity and (1) PacBio. Velvet/Oases multi-option
+assemblies contain a subset of more accurate genes, and also contain a subset
+of less accurate ones (same holds for SOAP, idba and other multi-option
+assemblies). By selecting longest transcripts, that error subset of
+Velvet/Oases assemblies is selected. Applying a longest-transcript filter to
+only multi-option over-assemblies, then comparing to unfiltered Trinity or
+PacBio (as various reports do), gives spurious results.
+
+-----------------------------------
+arabidopsis trlongest_error stats
+-----------------------------------
+cd-hit-est -c0.95 transcript reduction to longest:
+  velvet/oases alln=783576, cd95n=197668 (25%)
+  trinity alln=471936, cd95n=289866 (61%)
+  pacbio  alln=353153, cd90n=37833 (11%)
+  
+Homology score effects (blastn cds align to Ara.th 2016 Araport)
+ vReduced/Full>  vel/oases_all   trinity_all      
+ trinity_all     -20% refloci          --
+                -3.5% refalign
+
+ vel/oases_cd    -18% refloci       +4% refloci    
+                -6.0% refalign    -2.3% refalign
+                
+ trinity_cd        --              -12% refloci
+                                  -3.4% refalign
+                 pacbio_all
+ pacbio_cd       -29% refloci
+                 -20% refalign  
+-----------------------------------
+  refloci  = percent of reference loci with reduced homology score versus Full assembly set
+  refalign = percent reduction in overall alignment to reference genes
+  
+mouse trlongest_error stats
+-----------------------------------
+cd-hit-est -c0.95 transcript reduction to longest:
+  velvet/oases alln=393096, cd95n=108900 (28%)
+  trinity alln=80544, cd95n=66012 (82%)
+
+Homology score effects (blastn cds align to Mus 2015 NCBI)
+ vReduced/Full>  vel/oases_all   trinity_all      
+ trinity_all     -23% refloci          --
+                -3.5% refalign
+
+ vel/oases_cd    -19% refloci       +7% refloci    
+                  -3% refalign    +0.7% refalign
+                
+ trinity_cd        --               -3% refloci
+                                  -0.7% refalign
+-----------------------------------
+mosquito trlongest_error stats
+-----------------------------------
+cd-hit-est -c0.95 transcript reduction to longest:
+  velvet/oases alln=525897, cd95n=76905 (15%)
+  trinity alln=53666, cd95n=43682 (81%)
+
+Homology score effects (blastp protein align to Dros mel 2015)
+ vReduced/Full>  vel/oases_all   trinity_all      
+ trinity_all    -25%  refloci          --
+                -4.7% refalign
+
+ vel/oases_cd   -16%  refloci      +11% refloci    
+                -4.2% refalign    +0.6% refalign
+                
+ trinity_cd        --              -7% refloci
+                                  -3.6 refalign
+-----------------------------------
+
+
+Example from Arabidopsis PacBio RNA genes
+-----------------------------------------
+Best hits for AT reference genes, full pacbio RNA set versus cd-hit-est 90%
+filter of pacbio set These results obtain for RNA gene assemblies produced by
+all assemblers, data sources, as all such are a collection of accurate and
+inaccurate gene assemblies.
+
+For this sample, cd-hit-est reduced 353,153 pacbio transcripts to 37,833.
+Alignment to reference Ara.th. reference coding gene sequences of 2016
+is reduced by cd-hit filter for 34% of reference genes (12667/37537), 
+and missing 2% (647) of reference genes in cd-hit subset.
+
+-- examples of PacBio RNA aligned to Arabidopsis reference gene CDS --
+  Ref gene     pacbio assemblies                       Identity%    Aligned
+ AT1G01040.1  SRR3655769hdfpacbm15050811566_31_2156_CCS 99.92 1287  CDS_best_align
+ AT1G01040.1  SRR3655770hdfpacbm15050862504_31_2832_CCS 99.31 577   EST_longest
+
+ AT1G01060.1  SRR3655770hdfpacbm15050838753_30_2655_CCS       99.62   527   EST_longest
+ AT1G01060.1  pbtraweedx761pbh5cpacbm15051543529_2617_58_CCS  100.00  1938  CDS_best_align
+
+ AT1G01090.1  SRR3655768hdfpacbm15050741471_31_1529_CCS       100.00  1287 CDS_best_align
+ AT1G01090.1  pbtraweedr905pbh5cpacbm15050839299_1619_38_CCS  99.81   526  EST_longest
+-----
+
+CASE 1:  AT1G01040.1 reference gene
+  best match  of full set:  SRR3655769hdfpacbm15050811566_31_2156_CCS 1287 aa, 
+  best match of cd-hit 90 set: SRR3655770hdfpacbm15050862504_31_2832_CCS-cd90 577 aa 
+
+EST_longest ==> pbsrr3655770_31_2832_CCS.tr <==
+>SRR3655770hdfpacbm15050862504_31_2832_CCS strand=+;fiveseen=1;polyAseen=1;threeseen=1;fiveend=31;polyAend=2832;threeend=2857;primer=1;chimera=0
+AGTTCGCGATTCTTTTTGGCAATGAGCTGGATGCAGAGGTATTATCGATGTCTATGGATCTTTATGTTGC
+TCGGGCCATGATCACTAAAGCATCTCTTGCTTTCAAGGGATCACTTGATATTACAGAAAACCAGCTATCA
+
+CDS_longest ==> pbsrr3655769_31_2156_CCS.tr <==
+>SRR3655769hdfpacbm15050811566_31_2156_CCS strand=+;fiveseen=1;polyAseen=1;threeseen=1;fiveend=31;polyAend=2156;threeend=2186;primer=1;chimera=0
+TTGTACAAGACCGGCTTTTCTTCTACTTCTTGCACAACCTGAGGTTATTGAGGCTATACAAGTCTTCTTC
+TATAATGTTATTTATTAGGTATGGAGTTGATTTGAACTGTAAGCAACAACCTTTGATTAAAGGACGTGGT
+
+Protein translation quality
+ID                                      aalen gp aaquality              trlen  cds-offset
+SRR3655770hdfpacbm15050862504_31_2832_CCS	191	0	191,20%,complete-utrbad	2801	48-623:+    EST_longest
+SRR3655769hdfpacbm15050811566_31_2156_CCS	428	0	428,60%,complete	      2125	748-2034:+  CDS_longest
+
+cd-hit-est -c 0.90 clustering picks longest tr, with broken CDS
+>Cluster 6554
+CDS_longest > 2	2125nt, >SRR3655769hdfpacbm15050811566_31_2156_CCS... at +/97.51%
+EST_longest > 3	2801nt, >SRR3655770hdfpacbm15050862504_31_2832_CCS... *       
+---------
+
+Blast alignment of EST_longest x CDS_longest for coding span
+
+$nbin/blastn -query pbsrr3655769_31_2156_CCS.tr -subject pbsrr3655770_31_2832_CCS.tr  
+Query= SRR3655769hdfpacbm15050811566_31_2156_CCS strand=+;fiveseen=1;polyAseen=1;threeseen=1;fiveend=31;polyAend=2156;threeend=2186;primer=1;chimera=0
+Length=2125
+
+Subject= SRR3655770hdfpacbm15050862504_31_2832_CCS strand=+;fiveseen=1;polyAseen=1;threeseen=1;fiveend=31;polyAend=2832;threeend=2857;primer=1;chimera=0
+Length=2801
+
+ Score =  3703 bits (2005),  Expect = 0.0
+ Identities = 2031/2042 (99%), Gaps = 8/2042 (0%)
+ Strand=Plus/Plus
+
+Query  89    gtatggagttgatttg-aactgtaagcaacaacctttgattaaaggacgtggtgtttcgt  147
+             |||||||||||||||| |||||||||||||||||||||||||||||||||||||||||||
+Sbjct  762   gtatggagttgatttgaaactgtaagcaacaacctttgattaaaggacgtggtgtttcgt  821
+
+  Query coding span: SRR3655769hdfpacbm15050811566_31_2156_CCS	 428,60%,complete	748-2034:+  longest-cds
+Query  747   gATGGAGGATGGTGAACTAG-AGGGTGATTTGAGTTCGTACCGAGTTTTATCTAGCAAAA  805
+             |||||||||||||||||||| |||||||||||||||||||||||||||||||||||||||
+Sbjct  1421  gATGGAGGATGGTGAACTAGAAGGGTGATTTGAGTTCGTACCGAGTTTTATCTAGCAAAA  1480
+              123..3..3..3..3..3.^frame-shift EST_longest err
+Query  806   CGTTAGCTGATGTTGTTGAGGCTTTGATTGGTGTTTATTACGTCGAAGGGGGTAAGATTG  865
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  1481  CGTTAGCTGATGTTGTTGAGGCTTTGATTGGTGTTTATTACGTCGAAGGGGGTAAGATTG  1540
+
+Query  866   CAGCTAATCATTTGATGAAATGGATTGGGATTCACGTGGAGGATGATCCTGATGAAGTCG  925
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  1541  CAGCTAATCATTTGATGAAATGGATTGGGATTCACGTGGAGGATGATCCTGATGAAGTCG  1600
+
+Query  926   ATGGAACATTGAAAAATGTTAATGTTCCAGAGAGTGTGCTCAAGAGCATCAACTTTGTTG  985
+             |||||||||||||||||||||||||||||||||||||||||||||||||| |||||||||
+Sbjct  1601  ATGGAACATTGAAAAATGTTAATGTTCCAGAGAGTGTGCTCAAGAGCATCGACTTTGTTG  1660
+
+Query  986   GTCTTGAGAGAGCTCTTAAATATGAGTTTAAAGAGAAAGGTCTTCTTGTTGAAGCTATAA  1045
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  1661  GTCTTGAGAGAGCTCTTAAATATGAGTTTAAAGAGAAAGGTCTTCTTGTTGAAGCTATAA  1720
+
+Query  1046  CACATGCTTCAAGACCATCTTCAGGTGTTTCGTGTTACCAGAGATTGGAATTTGTTGGTG  1105
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  1721  CACATGCTTCAAGACCATCTTCAGGTGTTTCGTGTTACCAGAGATTGGAATTTGTTGGTG  1780
+
+Query  1106  ACGCGGTCTTGGATCATCTCATCACAAGACATCTATTTTTCACATACACAAGCCTTCCTC  1165
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  1781  ACGCGGTCTTGGATCATCTCATCACAAGACATCTATTTTTCACATACACAAGCCTTCCTC  1840
+
+Query  1166  CTGGTCGGTTAACAGATCTTCGAGCTGCAGCGGTTAACAACGAGAATTTTGCTCGCGTTG  1225
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  1841  CTGGTCGGTTAACAGATCTTCGAGCTGCAGCGGTTAACAACGAGAATTTTGCTCGCGTTG  1900
+
+Query  1226  CGGTTAAACATAAACTCCACTTGTACCTTCGTCACGGTTCAAGCGCCCTCGAAAAACAGA  1285
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  1901  CGGTTAAACATAAACTCCACTTGTACCTTCGTCACGGTTCAAGCGCCCTCGAAAAACAGA  1960
+
+Query  1286  TTCGGGAATTTGTGAAGGAGGTTCAAACCGAGTCATCGAAACCGGGG-TTTAACTCTTTT  1344
+             ||||||||||||||||||||||||||||||||||||||||||||||| ||||||||||||
+Sbjct  1961  TTCGGGAATTTGTGAAGGAGGTTCAAACCGAGTCATCGAAACCGGGGTTTTAACTCTTTT  2020
+                                                            ^ frame shift EST_longest
+Query  1345  GGTTTGGGAGACTGCAAAGCACCAAAAGTTCTTGGAGACATTGTTGAATCTATTGCAGGT  1404
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  2021  GGTTTGGGAGACTGCAAAGCACCAAAAGTTCTTGGAGACATTGTTGAATCTATTGCAGGT  2080
+                         ^^^ EST_longest inner stop to CDS
+Query  1405  GCTATTTTTCTTGATAGTGGAAAAGATACAACTGCTGCTTGGAAGGTTTTTCAACCTTTG  1464
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  2081  GCTATTTTTCTTGATAGTGGAAAAGATACAACTGCTGCTTGGAAGGTTTTTCAACCTTTG  2140
+
+Query  1465  CTTCAGCCCATGGTGACACCAGAGACACTTCCAATGCATCCGGTGCGAGAGCTACAAGAG  1524
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  2141  CTTCAGCCCATGGTGACACCAGAGACACTTCCAATGCATCCGGTGCGAGAGCTACAAGAG  2200
+
+Query  1525  CGGTGCCAGCAACAAGCAGAAGGGTTAGAATACAAAGCGAGTAGGAGTGGTAACACAGCG  1584
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  2201  CGGTGCCAGCAACAAGCAGAAGGGTTAGAATACAAAGCGAGTAGGAGTGGTAACACAGCG  2260
+
+Query  1585  ACTGTGGAAGTTTTCATCGACGGTGTTCAAGTTGGAGTAGCGCAAAACCCGCAGAAG-AA  1643
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||| ||
+Sbjct  2261  ACTGTGGAAGTTTTCATCGACGGTGTTCAAGTTGGAGTAGCGCAAAACCCGCAGAAGAAA  2320
+                                                                      ^ frame shift EST_longest error
+Query  1644  AATGGCTCAAAAGCTAGCTGCGAGGAACGCACTTGCAGCTTTGAAAGAGAAAGAAATAGC  1703
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  2321  AATGGCTCAAAAGCTAGCTGCGAGGAACGCACTTGCAGCTTTGAAAGAGAAAGAAATAGC  2380
+
+Query  1704  AGAATCAAAGGAGAAGCATATCAACAACGGTAATGCGGGAGAGGATCAAGGCGAGAATGA  1763
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  2381  AGAATCAAAGGAGAAGCATATCAACAACGGTAATGCGGGAGAGGATCAAGGCGAGAATGA  2440
+
+Query  1764  GAATGGGAACAAGAAGAATGGGCATCAGCCGTTTACGAGAC-AAACGTTGAATGATATTT  1822
+             ||||||||||||||||||||||||||||||||||||||||| ||||||||||||||||||
+Sbjct  2441  GAATGGGAACAAGAAGAATGGGCATCAGCCGTTTACGAGACAAAACGTTGAATGATATTT  2500
+                                                      ^ frame shift EST_longest error
+Query  1823  GTTTGAGGAAGAATTGGCCAATGCCTTCTTACAGATGTGTGAAAGAAGGAGGACCGGCTC  1882
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  2501  GTTTGAGGAAGAATTGGCCAATGCCTTCTTACAGATGTGTGAAAGAAGGAGGACCGGCTC  2560
+
+Query  1883  ATGCAAAGAGATTTACGTTTGGGGTAAGAGTTAATACGAGCGATAGAGGATGGACCGATG  1942
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  2561  ATGCAAAGAGATTTACGTTTGGGGTAAGAGTTAATACGAGCGATAGAGGATGGACCGATG  2620
+
+Query  1943  AGTGTATTGGCGAGCCAATGCCGAGTGTTAAGAAAGCTAAGGATTCAGCTGCGGTTCTTC  2002
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  2621  AGTGTATTGGCGAGCCAATGCCGAGTGTTAAGAAAGCTAAGGATTCAGCTGCGGTTCTTC  2680
+
+Query  2003  TACTTGAGCTTTTAAATAAAACTTTTTCTTGA.ttcttttactctcttcaacgagatgtag  2062
+             |||||||||||||||||||||| ||||||||| ||||||||||||||||||||||||||||
+Sbjct  2681  TACTTGAGCTTTTAAATAAAAC-TTTTCTTGA ttcttttactctcttcaacgagatgtag  2739
+                                   ^ frame shift EST_longest error
+
+
+================
+
+CASE 3:  AT1G01090.1 reference gene
+
+cd-hit-est -c 0.90 clustering picks longest tr, with broken CDS
+	1498nt, >SRR3655768hdfpacbm15050741471_31_1529_CCS... at -/95.73% cds-best-align CDS_long
+	  SRR3655768hdfpacbm15050741471_31_1529_CCS 428aa,85%,complete	1498	122-1408:+
+	1581nt, >pbtraweedr905pbh5cpacbm15050839299_1619_38_CCS... *   cd-hit-est EST_long
+          pbtraweedr905pbh5cpacbm15050839299_1619_38_CCS	174aa,33%,complete-utrbad	1581	331-855:+
+
+$nbin/blastn -query pbsrr3655768_31_1529_CCS.tr -subject pbsrr905_1619_38_CCS.tr
+
+CDS_longest
+Query= SRR3655768hdfpacbm15050741471_31_1529_CCS strand=+;fiveseen=1;polyAseen=1;threeseen=1;fiveend=31;polyAend=1529;threeend=1557;primer=1;chimera=0
+Length=1498
+EST_longest, note rev-strand to CDS-longest
+Subject= pbtraweedr905pbh5cpacbm15050839299_1619_38_CCS strand=-;fiveseen=1;polyAseen=1;threeseen=1;fiveend=27;polyAend=1608;threeend=1617;primer=1;chimera=0
+Length=1581
+
+ Score =  2621 bits (1419),  Expect = 0.0
+ Identities = 1431/1436 (99%), Gaps = 4/1436 (0%)
+ Strand=Plus/Minus
+
+Query  63    tttttttttttttttttttccgaattccgttaatctcattggggtttccattgatagca A  122 (start codon)
+             ||||||||||||||||||| ||| ||||||||||||||||||||||||||||||||||| |
+Sbjct  1578  tttttttttttttttttttgcga-ttccgttaatctcattggggtttccattgatagca A  1520
+
+Query  123   TGGCGACGGCTTTCGCTCCCACTAAGCTCACTGCCACGGTTCCTCTGCATGGATCCCATG  182
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  1519  TGGCGACGGCTTTCGCTCCCACTAAGCTCACTGCCACGGTTCCTCTGCATGGATCCCATG  1460
+
+Query  183   AGAATCGTCTCTTGCTCCCGATCCGATTGGCTCCTCCTTCTTCTTTCCTCGGATCCACCC  242
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  1459  AGAATCGTCTCTTGCTCCCGATCCGATTGGCTCCTCCTTCTTCTTTCCTCGGATCCACCC  1400
+
+Query  243   GTTCCCTCTCCCTTCGCAGACTCAATCACTCCAACGCCACCCGTCGATCTCCCGTCGTCT  302
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  1399  GTTCCCTCTCCCTTCGCAGACTCAATCACTCCAACGCCACCCGTCGATCTCCCGTCGTCT  1340
+
+Query  303   CTGTCCAGGAAGTTGTCAAGGAGAAGCAATCCACCAATAATACCAGCCTGTTGATAACCA  362
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  1339  CTGTCCAGGAAGTTGTCAAGGAGAAGCAATCCACCAATAATACCAGCCTGTTGATAACCA  1280
+
+Query  363   AAGAGGAAGGATTGGAGTTGTATGAAGATATGATACTAGGTAGATCTTTCGAAGACATGT  422
+             ||||||||| ||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  1279  AAGAGGAAG-ATTGGAGTTGTATGAAGATATGATACTAGGTAGATCTTTCGAAGACATGT  1221
+                      ^ CDS frameshift in EST_long
+Query  423   GTGCTCAAATGTATTACCGAGGCAAGATGTTTGGTTTTGTTCACTTGTACAATGGCCAAG  482
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  1220  GTGCTCAAATGTATTACCGAGGCAAGATGTTTGGTTTTGTTCACTTGTACAATGGCCAAG  1161
+
+Query  483   AGGCTGTTTCTACTGGCTTTATCAAGCTCCTTACCAAGTCTGACTCTGTCGTTAGTACCT  542
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  1160  AGGCTGTTTCTACTGGCTTTATCAAGCTCCTTACCAAGTCTGACTCTGTCGTTAGTACCT  1101
+
+Query  543   ACCGTGACCATGTCCATGCCCTCAGCAAAGGTGTCTCTGCTCGTGCTGTTATGAGCGAGC  602
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  1100  ACCGTGACCATGTCCATGCCCTCAGCAAAGGTGTCTCTGCTCGTGCTGTTATGAGCGAGC  1041
+
+Query  603   TCTTCGGCAAGGTTACTGGATGCTGCAGAGGCCAAGGTGGATCCATGCACATGTTCTCCA  662
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  1040  TCTTCGGCAAGGTTACTGGATGCTGCAGAGGCCAAGGTGGATCCATGCACATGTTCTCCA  981
+
+Query  663   AAGAACACAACATGCTTGGTGGCTTTGCTTTTATTGGTGAAGGCATTCCTGTCGCCACTG  722
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  980   AAGAACACAACATGCTTGGTGGCTTTGCTTTTATTGGTGAAGGCATTCCTGTCGCCACTG  921
+
+Query  723   GTGCTGCCTTTAGCTCCAAGTACAGGAGGGAAGTCTTGAAACAGGATTGTGATGATGTCA  782
+             |||||||||||||||||||||||||||||||||||||||| |||||||||||||||||||
+Sbjct  920   GTGCTGCCTTTAGCTCCAAGTACAGGAGGGAAGTCTTGAA-CAGGATTGTGATGATGTCA  862
+                                                     ^ CDS frameshift in EST_long
+Query  783   CTGTCGCCTTTTTCGGAGATGGAACTTGTAACAACGGACAGTTCTTCGAGTGTCTCAACA  842
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  861   CTGTCGCCTTTTTCGGAGATGGAACTTGTAACAACGGACAGTTCTTCGAGTGTCTCAACA  802
+
+Query  843   TGGCTGCTCTCTATAAACTGCCTATTATCTTTGTTGTCGAGAATAACTTGTGGGCCATTG  902
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  801   TGGCTGCTCTCTATAAACTGCCTATTATCTTTGTTGTCGAGAATAACTTGTGGGCCATTG  742
+
+Query  903   GGATGTCTCACTTGAGAGCCACTTCTGACCCCGAGATTTGGAAGAAAGGTCCTGCATTTG  962
+             |||||||||||||||||||||||||||||||||||||| |||||||||||||||||||||
+Sbjct  741   GGATGTCTCACTTGAGAGCCACTTCTGACCCCGAGATT-GGAAGAAAGGTCCTGCATTTG  683
+                         ^^^EST_long inner-stop    ^CDS frameshift in EST_long
+Query  963   GGATGCCTGGTGTTCATGTTGACGGTATGGATGTCTTGAAGGTCAGGGAAGTCGCTAAAG  1022
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  682   GGATGCCTGGTGTTCATGTTGACGGTATGGATGTCTTGAAGGTCAGGGAAGTCGCTAAAG  623
+
+Query  1023  AAGCTGTCACTAGAGCTAGAAGAGGAGAAGGTCCAACCTTGGTTGAATGTGAGACTTATA  1082
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  622   AAGCTGTCACTAGAGCTAGAAGAGGAGAAGGTCCAACCTTGGTTGAATGTGAGACTTATA  563
+
+Query  1083  GATTCAGAGGACACTCCTTGGCTGATCCCGATGAGCTCCGTGATGCTGCTGAGAAAGCCA  1142
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  562   GATTCAGAGGACACTCCTTGGCTGATCCCGATGAGCTCCGTGATGCTGCTGAGAAAGCCA  503
+
+Query  1143  AATACGCGGCTAGAGACCCAATCGCAGCATTGAAGAAGTATTTGATAGAGAACAAGCTTG  1202
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  502   AATACGCGGCTAGAGACCCAATCGCAGCATTGAAGAAGTATTTGATAGAGAACAAGCTTG  443
+
+Query  1203  CAAAGGAAGCAGAGCTAAAGTCAATAGAGAAAAAGATAGACGAGTTGGTGGAGGAAGCGG  1262
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  442   CAAAGGAAGCAGAGCTAAAGTCAATAGAGAAAAAGATAGACGAGTTGGTGGAGGAAGCGG  383
+
+Query  1263  TTGAGTTTGCAGACGCTAGTCCACAGCCCGGTCGCAGTCAGTTGCTAGAGAATGTGTTTG  1322
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  382   TTGAGTTTGCAGACGCTAGTCCACAGCCCGGTCGCAGTCAGTTGCTAGAGAATGTGTTTG  323
+
+Query  1323  CTGATCCAAAAGGATTTGGAATTGGACCTGATGGACGGTACAGATGTGAGGACCCCAAGT  1382
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  322   CTGATCCAAAAGGATTTGGAATTGGACCTGATGGACGGTACAGATGTGAGGACCCCAAGT  263
+
+Query  1383  TTACCGAAGGCACAGCTCAAGTCTGA.gaagacaagtttaaccataagctgtctactgtct  1442
+             |||||||||||||||||||||||||| ||||||||||||||||||||||||||||||||||
+Sbjct  262   TTACCGAAGGCACAGCTCAAGTCTGA.gaagacaagtttaaccataagctgtctactgtct  203
+
+query  1443  cttcgatgtttctatatatcttattaagttaaatgctacagagaatcagtttgaat  1498
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+sbjct  202   cttcgatgtttctatatatcttattaagttaaatgctacagagaatcagtttgaat  147
+

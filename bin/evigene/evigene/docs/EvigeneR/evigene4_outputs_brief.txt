@@ -1,0 +1,102 @@
+
+SRA2Genes, Evigene gene reconstruction steps, data 
+  plYYPE.sra2genes.info   : SRA2Genes info
+  plYYPE.srainfo.csv      : Table of RNA-seq run sets from NCBI SRA
+
+STEPs 1-5. RNA-Seq collection and assemblies 
+  spotfa/      : STEP1,2. RNA-seq data inputs (from srainfo.csv)
+  pairfa/      : STEP1,2. RNA-seq data inputs
+  rnasets/     : STEP3. Pre-assembly RNA-seq, selections of pairfa/        
+  various/     : STEP4. RNA-Seq Assembler, data folders not shown 
+  trsets/      : STEP5. Assembled transcripts, input to Evigene tr2aacds4
+
+STEP7. Coding Transcript redundancy reduction analyses
+  plYYPE.trclass.sum.txt  : STEP7 tr2aacds4 results summary
+  plYYPE.trclass          : transcript classification table 
+
+  okayset/    : STEP7.stage2. tr2aacds4 stage 2 results
+              : Coding gene essential results, equivalent of publicset/, without external evidence
+  okayset/plYYPE.okay.aa      : protein sequences
+  okayset/plYYPE.okay.cds     : coding sequences
+  okayset/plYYPE.okay.mrna    : mRNA sequences, with public IDs
+  okayset/plYYPE.pubids       : table of transcript/gene IDs and qualities
+  okayset/plYYPE.ann.txt      : table of annotations per transcript
+  okayset/plYYPE.genesum.txt  : short summary statistics
+              : STEP7 secondary data files
+  okayset/plYYPE.cull.mrna,cds,aa    : cull subset has 2nd stage removals, mostly excess alternate models/locus
+  okayset/plYYPE.mainalt.tab,... : intermediate data files
+
+  okayset1st/  : STEP7.stage1. tr2aacds4 stage 1 data
+            preliminary, partial results, equivalent of old tr2aacds2 okayset/
+  okayset1st/plYYPE.okay.aa   : subset of longest protein per gene locus
+  okayset1st/plYYPE.okay.cds  : coding sequence of longest prot. per gene
+  okayset1st/plYYPE.okay.tr   : transcripts (unoriented) of longest prot. per gene
+  okayset1st/plYYPE.okalt.aa,cds,tr : subset of alternate proteins per gene
+  okayset1st/plYYPE.okreor.aa,cds,tr : subset of reoriented proteins (-reorient option)
+  okayset1st/plYYPE.okreor.idtab : table of IDs and qualities of reorient set
+   
+  inputset/    : STEP7. tr2aacds input transcript set (aa,cds,tr)
+  dropset/     : STEP7. tr2aacds redundant set (aa,cds,tr)
+ 
+STEP8. Protein analyses
+  aaeval/         : STEP8. Protein Analyses (blastp reference.aa, busco)
+  refset/         : STEP8. Reference data sets
+  plYYPE.names    : STEP8. Protein Results as ref names and stats for transcripts from protein analyses
+  aaeval/refgenes-plYYPE.okay.blastp
+  aaeval/run_busco_replYYPE.okay/ : conserved gene BUSCO analysis, evigene corrected stats
+
+STEP9a. Non-coding gene analyses and selection
+  ncrnaset/  : STEP9. tr2ncrna.pl data set
+             : Non-coding gene essential results 
+  ncrnaset/plYYPE.ncrna_pub.fa  : STEP9 non-coding rna + misc rna final sequences
+  ncrnaset/plYYPE.ncaa_pub.fa   : proteins of misc rna (may belong to coding set, or fragments)
+  ncrnaset/plYYPE.nccds_pub.fa  : CDS of misc rna (ditto)
+  ncrnaset/plYYPE.longnok.dgclass.tab : table of IDs, genes, equivalent to mrna.pubids
+            : ncRNA intermediate analyses data (to be ignored, erased)
+  ncrnaset/plYYPE.longnok.self97.blastn .. etc
+    
+STEP10.  Publication set with evidence annotations   
+  publicset/ :  sequences from mRNA (okayset) and ncRNA sets, annotated with external evidence,
+            similar now to okayset/ but with more evidence, 
+
+  STEP10. IDs, qualities and annotation tables
+  publicset/plYYPE.pubids
+  publicset/plYYPE.ann.txt
+  publicset/plYYPE.genesum.txt
+
+  STEP10. Coding sequences
+  publicset/plYYPE.mrna_pub.fa
+  publicset/plYYPE.aa_pub.fa
+  publicset/plYYPE.cds_pub.fa
+  
+  STEP10. Non-coding sequences
+  publicset/plYYPE.ncrna_pub.fa
+  publicset/plYYPE.ncaa_pub.fa 
+  publicset/plYYPE.nccds_pub.fa
+
+  publicset/plYYPE.aa_cull.fa,cds,mrna : STEP10 cull set (mostly redundant excess) 
+  publicset/plYYPE.mainalt.tab
+
+
+SRA2Genes pipeline shell scripts to run/execute the analyses, created by evg_sra2genes.pl.
+  runscripts/run_s02_diginorm.plYYPE.sh
+  runscripts/run_s04_velo.plYYPE.sh
+  runscripts/run_s04_idba.plYYPE.sh
+  runscripts/run_s04_soap.plYYPE.sh
+  runscripts/run_s04_trin.plYYPE.sh
+  runscripts/run_s07_tr2aacds.plYYPE.sh
+  runscripts/run_s08_evgblastp.plYYPE.sh
+  runscripts/run_s08_buscoscan.plYYPE.sh
+  runscripts/run_s09a_tr2ncrna.plYYPE.sh
+  runscripts/run_s09a_evgtrimvec.plYYPE.sh
+  runscripts/run_s09b_dfamscan.plYYPE.sh
+  runscripts/run_s10_evgpubset.plYYPE.sh
+  runscripts/run_s12_evgclean.plYYPE.sh
+      
+Temporary, intermediate data sets (ignore, erase)
+  tmpsets/     : 
+  tmpfiles/    : 
+  runlogs/     : Various pipeline script log files
+        
+
+

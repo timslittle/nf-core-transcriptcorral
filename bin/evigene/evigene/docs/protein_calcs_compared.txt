@@ -1,0 +1,85 @@
+There are several ways to compute proteins from mRNA transcripts, with differing results.
+Two classes are (a) basic codon lookup scan of RNA sequence for longest open reading
+frames (ORFs), and (b) prediction from statistical models of coding sequences, including
+coding/non-coding metrics, intron/exon models, sequence signals. One should be aware of
+what a protein translator is doing, in particular predictors miss, or mis-model from 20%
+to 35% of standard reference proteins, while codon lookup calculations recover nearly all
+reference proteins.
+
+  Protein ORF computations for Human RefSeq and  Arabidopsis reference genes
+  2019 January, Don Gilbert gilbertd@indiana.edu
+
+                 Equal to Reference
+     ORF_calc   PlantRef  HumanRef    ORF_type
+    -------------------------------------------
+    stdorf_ncbi    98%     97%      codon_lookup
+    stdorf_evg     98%     97%      codon_lookup
+    bestorf_evg    96%     93%      codon_lookup
+    gmark_gmp      77%     62%      CDS_predict
+    gmark_gmst     80%     72%      CDS_predict
+    trindec_pred   83%      na      CDS_predict
+    trindec_long   87%      na      codon_lookup
+upd1907:
+    trindec_pred   83%     72%      CDS_predict
+    trindec_long   87%     75%      codon_lookup
+    -------------------------------------------
+
+This table shows the percentage of matches to reference proteins that ORF computations
+will produce from the mRNA sequences of those same reference genes. The codon-lookup
+translators have few mismatches (3% to 6%) to the reference, while the predictors have
+large degrees of mis-match (20% to 35%) to reference.
+
+For most uses with transcriptomes, the simpler codon lookup for longest ORF is the best
+first step, and will match public gene/protein databases. Various coding/non-coding
+metrics can be applied after basic ORF computations, and homology to reference genes are
+measured, as part of gene set validations. In my experience the non-coding tests make
+mistakes, calling known coding genes as non-coding often enough that you want to defer
+this metric until after measuring for for known protein homology.
+
+Reference proteins and mRNA sets (mRNA input to orf calcs)
+PlantRef=Arabidopsis Araport11_genes.201606.aa
+    arath16ap 48,359 transcripts/proteins of 27,655 gene loci
+HumanRef=NCBI RefSeq  Homo_sapiens/reference/GCF_000001405.38_GRCh38.p12/, 2018
+    human18nc 81051 non-redundant proteins in 113607 mrna transcripts (~22,000 loci)
+
+Three methods (evg,ncbi,trin_long) are standard codon table lookup translation of nucleic triplets
+  to amino acid, tabulating longest ORF, and all ORFs as a first step.
+Three methods (gmark_gmp, gmark_gmst, trin_pred) are predictors based on  statistical models of 
+  coding sequences, including coding/non-coding metrics, intron/exon models, 
+  sequence signal statistical modeling for HMM  prediction of genes on chromosomes.
+  
+ORFs are calculated from the public  mRNA sequences for listed references, then compared
+to reference proteins of same mRNA, for identity (end-to-end), identical substring (one is
+contained in the other), different in some other way, or missing test ORF. 
+Ambiguous code/noncode sequences exist, some are true biology ("NORF" is one term), 
+some artifacts or ncRNA with computable ORF.
+  
+ORF calculation details: 
+ stdorf_ncbi: NCBI  orf calc of ncbi toolkit 
+  See https://www.ncbi.nlm.nih.gov/orffinder/
+  used thru tbl2asn, "ncbibin/tbl2asn  -kc -Mt  -Vb -i human18nc.mrna"
+ See also EMBOSS getorf, others.
+
+ stdorf_evg: evigene/cdna_bestorf.pl -noutrorf -fullorf -cdna human18nc.mrna
+  stdorf_evg choice is always complete protein, if it exists.  This matches well to reference
+  gene sets, but will lose homolog of partial proteins from fragment mRNA assemblies.
+
+ bestorf_evg: evigene/cdna_bestorf.pl -cdna human18nc.mrna   defaults are: -utrorf -bestorf
+  bestorf_evg choice is between longest complete protein, or a longer partial protein,
+  determined by ratio of sizes ( complete >= 85%  of longest is default).
+ 
+ trindec_long: TransDecoder.LongOrfs : all ORFs/mRNA of good size ( ~10 ORF per transcript)
+  this is a near equivalent to evg, ncbi basic ORF codon lookup, but returns most computed
+  orfs per mRNA, rather than longest, and does not chose shorter full orfs over partials.
+
+ trindec_pred: TransDecoder.Predict : uses statistical modeling of mRNA sequence, attempts to
+  discriminate coding vs non-coding ORFs.
+  TransDecoder is found at https://github.com/TransDecoder/TransDecoder/wiki
+  
+ gmark_gmp: genemark_suite/gmsn.pl --euk --faa human18nc.mrna
+  GeneMark statistical modeling of coding-sequence genes on chromosomes, eukaryote variant.
+ gmark_gmst: genemark/gmst for transcripts, gmst.pl --faa human18nc.mrna
+  GeneMark modified for HMM-based modeling of coding-sequence on transcript sequences.
+  Both from http://exon.gatech.edu/GeneMark/
+  
+See also http://eugenes.org/EvidentialGene/evigene/docs/evigene_vs_transdecoder_arabidopsis.txt

@@ -1,0 +1,44 @@
+evigene20jan30/scripts/rnaseq/asmrna_dupfilter4.pl
+
+  about
+        Filter out hi identity duplicate transcripts from transcript assembly,
+        using megablast AFTER identifying best proteins.
+
+        Principle is that over-assembling transcript reads with many assembly options
+        produces a subset of accurate assemblies in a superset of crappy ones.
+
+        Best-protein detection is done on superset (longest orf + cds/utr quality),
+        then clustered (cd-hit) to reduce to "best" subset by protein quality.
+
+        However cd-hit protein filtering retains nearly identical transcripts assembled
+        from same reads, but differ in protein enough to avoid cd-hit cluster.
+
+        This step identifies high identity transcripts from bestcd subset, from megablast align,
+        then marks/removes the hi-id fraction, keeping longest-protein/longest-tr of each
+        hi-id cluster.
+
+  usage
+       pt=myproject
+       $evigene/scripts/rnaseq/asmrna_dupfilter4.pl -aasize $pt.aa.qual  -aconsensus $pt.consensus \
+         -blast $pt.selfcds.blastn  -outeqtab $pt.alntab -outclass $pt.trclass
+
+  inputs
+        inputs: 
+          protein sizes, transcript sizes, as faCount table (id, size); see aacount for gappy proteins
+
+         tr.megablast output from:
+         makeblastdb -in $pt.tr -dbtype nucl -out $pt
+         blastn -db $pt -query $pt.tr -task megablast -evalue 1e-19 -perc_identity 99 -dust no -outfmt 7 -out $pt.mblast
+
+        outputs: 
+          table of same/subset transcripts, rough equiv of cd-hit-est
+          bestset.tr, filtered: 1.bestsetaa.ids only, 2.remove trsame subset (like cd-hit-est, but diff methods)
+
+  UPD1912 
+    -- adds PHETERO, reduces all identity classing params by 1..3 % to account for heterozygous trasm 
+
+ 
+  author
+        don gilbert, gilbertd near indiana edu, 2012
+        part of EvidentialGene, evigene/scripts/
+

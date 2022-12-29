@@ -1,0 +1,20 @@
+evigene20jan30/scripts/genes/trclass2pubset.pl
+
+  about trclass2pubset.pl
+       revision of parts of  evgmrna2tsa2.pl
+       following genes/altbest2pubset.pl (pubset from annot GFF)
+       roughly same as MAIN_pubsetonly() of evgmrna2tsa2
+       updated parts:
+         trclass2maintab() =  public class/id table from trclass, okayset of tr2aacds
+
+  usage (maybe)
+       set pt=pig4321ew; 
+       $evigene/scripts/genes/trclass2pubset.pl -debug -outbase pig4ewc \
+        -keepdrop $pt.keepdrop.tab -keepoldids $pt.keepids -names $pt.names \
+        -mrna tmpfiles/$pt.mrna -trclass $pt.trclass
+
+  UPD1911 altreclass
+        add exontab chain analysis from genes/blasttrset2exons2.pl
+        ** need updated rnaseq/asmrna_altreclass3c.pl
+        asmrna_altreclass3c.pl -debug -nodrops -noclasscut=60 -altrenum \
+          -trclass $trclass -pubids $pubids -exontable $exontab -out $realtids

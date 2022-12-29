@@ -1,0 +1,22 @@
+
+Table G0. No_name draft gene set numbers, version NonamEVm 
+---------------------------------------------------
+28891 gene loci, supported by RNA-seq
+   27329 (95%) are coding loci with regular-sized proteins, 
+   1562 are putative loci with small proteins (smORF < 120 aa),
+   0 are putative non-coding
+
+12244 alternate transcripts are at 5209 (18%) loci, with 2 median, 2.3 ave., transcripts per locus,
+  with 54 alts maximum, 1 loci have 50+ alts, 20 have 10+ alts 
+
+27840 (96%) have complete proteins, 1051 have partial proteins, of 28891 coding genes.
+  46 (0%) have reverse strand proteins, needing further evidence to classify to good/bad.
+
+2645 are culled loci, not in public gene set, but with some unique sequences. 
+0 are culled alternate transcripts, at both public and culled loci, redundant
+  in splicing patterns to public alternates, or lacking in alignment or evidence.
+  
+Gene locus IDs: NonamEVm000001t1 ..NonamEVm0NNNNNt1,
+Alternate transcripts have ID suffix t2 .. t100.
+EVm000001 is the longest protein, larger ID numbers are mostly shorter, but not for all.
+--------------------------------------------------------
