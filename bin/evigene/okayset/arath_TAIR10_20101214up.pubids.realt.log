@@ -1,7 +1,0 @@
-#altreclass: in trclass=arath_TAIR10_20101214up.trclass, pubids=arath_TAIR10_20101214up.pubids, out=arath_TAIR10_20101214up.pubids.realt
-#altreclass: opts pDemoteAaPoor=0.9, pDemoteAntiSense=0.95, pDemoteSplitmap=0.8,
-#  pPromoteAaRef=0.5, pPromoteAaCons=0.1, pDemoteNoncode=0.8, mincov=75, altrenum=1, noclasscut=100
-#readTrClass(arath_TAIR10_20101214up.trclass)= 38571
-#readAaQual(.//inputset/arath_TAIR10_20101214up.aa.qual)= 43235
-#readExontab(tmpfiles/arath_TAIR10_20101214upnrcd1x.exontab)= 38571
-#altreclass: nin/out=38571/38571, ndrop/keep=0/38571, nrenum=1184, ngenediff=381/31536
