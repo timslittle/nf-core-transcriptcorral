@@ -1,6 +1,6 @@
 process TRINITY {
     tag "$meta.id"
-    label 'process_high_memory'
+    label 'process_high'
 
     conda (params.enable_conda ? "bioconda::trinity=2.13.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
