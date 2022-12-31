@@ -334,7 +334,9 @@ workflow TRANSCRIPTCORRAL {
         //
         // Use collect to ensure that downstream processes wait for all assemblies to be done.
         //
-    // TODO: Save the combined assembly file.
+
+        ch_assembly = ch_assembly.collect()
+
         ch_assembly
             .map{ it[1] } // To get the assembly files and not meta
             .collectFile(name: "combined_assemblies.fa.gz", 
