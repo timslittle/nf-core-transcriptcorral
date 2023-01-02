@@ -338,7 +338,6 @@ workflow TRANSCRIPTCORRAL {
         ch_assembly = ch_assembly.collect()
 
         ch_assembly
-            // .map{ it[1] } // To get the assembly files and not meta
             .collectFile(newLine: false, skip: 0,
                 storeDir: params.outdir) { it ->
                     [ "${it[0].id}.fasta.gz", it[1] ]
@@ -367,6 +366,12 @@ workflow TRANSCRIPTCORRAL {
         )
 
         ch_assemblyOrfs = EVIGENE.out.metaassemblyOrfs
+
+        ch_assemblyOrfs
+            .collectFile(newLine: false, skip: 0,
+                storeDir: params.outdir) { it ->
+                    [ "${it[0].id}.evigene.fasta.gz", it[1] ]
+                }
 
     } else {
 
