@@ -342,6 +342,8 @@ workflow TRANSCRIPTCORRAL {
                 storeDir: params.outdir) { it ->
                     [ "${it[0].id}.fasta.gz", it[1] ]
                 }
+        
+        //TODO: Check that this is saving all the assemblies together and not just one.
                 
     } else {
         // Need to provide assembly for meta-assembly as a parameter
@@ -370,7 +372,7 @@ workflow TRANSCRIPTCORRAL {
         ch_assemblyOrfs
             .collectFile(newLine: false, skip: 0,
                 storeDir: params.outdir) { it ->
-                    [ "${it[0].id}.evigene.fasta.gz", it[1] ]
+                    [ "${it[0].id}.evigene.fasta", it[1] ]
                 }
 
     } else {
