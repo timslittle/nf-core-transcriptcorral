@@ -369,11 +369,7 @@ workflow TRANSCRIPTCORRAL {
 
         ch_assemblyOrfs = EVIGENE.out.metaassemblyOrfs
 
-        ch_assemblyOrfs
-            .collectFile(newLine: false, skip: 0,
-                storeDir: params.outdir) { it ->
-                    [ "${it[0].id}.evigene.fasta", it[1] ]
-                }
+                // TODO: versions reporting
 
     } else {
 
