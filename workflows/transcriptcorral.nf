@@ -117,13 +117,13 @@ process EVIGENE {
     
     ${workflow.projectDir}/bin/evigene/evigene/scripts/rnaseq/trformat.pl \\
         $multiassembly \\
-        > formatted_multiassembly.fa
+        > ${prefix}.fa
 
     ${workflow.projectDir}/bin/evigene/evigene/scripts/prot/tr2aacds4.pl \\
         -NCPU=$task.cpus \\
         -MAXMEM=${task.memory.mega} \\
         -logfile \\
-        -cdnaseq formatted_multiassembly.fa \\
+        -cdnaseq ${prefix}.fa \\
         -tidy \\
         $args
     
@@ -337,13 +337,21 @@ workflow TRANSCRIPTCORRAL {
 
         // ch_assembly = ch_assembly.collect()
 
-        ch_assembly
+        ch_multiassembly = ch_assembly
             .collectFile(newLine: false, skip: 0,
                 storeDir: params.outdir) { it ->
                     [ "${it[0].id}.fasta.gz", it[1] ]
                 }
-                .set(ch_multiassembly)
         
+        // Read back in the multi-assembly file and get the prefix from the name - there may be a better way of doing this.
+        // ISSUE: Getting the file isn't working anyway.
+        ch_multiassembly = ch_multiassembly
+            .map {
+                def meta = [:]
+                meta.id = it.getFileName().toString().split('.fasta.gz')[0]
+                [meta, it]
+            }
+
         //TODO: Check that this is saving all the assemblies together and not just one.
                 
     } else {
