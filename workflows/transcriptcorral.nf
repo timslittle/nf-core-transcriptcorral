@@ -335,19 +335,20 @@ workflow TRANSCRIPTCORRAL {
         // Use collect to ensure that downstream processes wait for all assemblies to be done.
         //
 
-        ch_assembly = ch_assembly.collect()
+        // ch_assembly = ch_assembly.collect()
 
         ch_assembly
             .collectFile(newLine: false, skip: 0,
                 storeDir: params.outdir) { it ->
                     [ "${it[0].id}.fasta.gz", it[1] ]
                 }
+                .set(ch_multiassembly)
         
         //TODO: Check that this is saving all the assemblies together and not just one.
                 
     } else {
         // Need to provide assembly for meta-assembly as a parameter
-        ch_assembly = Channel.fromPath(params.input, checkIfExists: true)
+        ch_multiassembly = Channel.fromPath(params.input, checkIfExists: true)
             .map { //Defining meta ID as the file name without the last element in '_' TODO: This only makes sense for paired end files not transcript files.
                 def meta = [:]
                 meta.id = it.getFileName().toString().split('_')[0..-2].join('_')
@@ -364,7 +365,7 @@ workflow TRANSCRIPTCORRAL {
         //
 
         EVIGENE (
-            ch_assembly
+            ch_multiassembly
         )
 
         ch_assemblyOrfs = EVIGENE.out.metaassemblyOrfs
@@ -378,11 +379,11 @@ workflow TRANSCRIPTCORRAL {
         //
 
         TRANSDECODER_LONGORF(
-            ch_assembly
+            ch_multiassembly
         )
 
         ch_assemblyOrfs = TRANSDECODER_PREDICT(
-            ch_assembly,
+            ch_multiassembly,
             TRANSDECODER_LONGORF.out.folder
         )
         .pep
