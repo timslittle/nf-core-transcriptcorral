@@ -360,7 +360,7 @@ workflow TRANSCRIPTCORRAL {
             .map { //Defining meta ID as the file name without the last element in '_' TODO: This only makes sense for paired end files not transcript files.
                 def meta = [:]
                 meta.id = it.getFileName().toString().split('_')[0..-2].join('_')
-                [meta, it] 
+                tuple(meta, it)
                 }
     }
 

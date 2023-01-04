@@ -11,7 +11,7 @@ process TRINITY {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.fasta")       , emit: transcript_fasta
+    tuple val(meta), path("*.fasta.gz")    , emit: transcript_fasta
     path "versions.yml"                    , emit: versions
 
     when:
@@ -50,6 +50,7 @@ process TRINITY {
     $args
 
     mv ${prefix}_trinity.Trinity.fasta ${prefix}.fasta
+    gzip -n ${prefix}.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
