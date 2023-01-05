@@ -137,6 +137,36 @@ process EVIGENE {
     """
 }
 
+process HMMER_2_FASTA {
+    tag "$meta.id"
+    label 'process_low'
+
+    input:
+    tuple val(meta), path(hmmer)
+    tuple val(meta), path(fasta)
+
+    output:
+    tuple val(meta), path("*.txt")   , emit: hmmer_list
+    tuple val(meta), path("*.fasta") , emit: hmmer_fasta
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    gunzip -c $hmmer | awk -F' ' '(\$0~"Nonam" && \$1<1e-3){print \$9} /annotation/ {exit 0}' > ${prefix}_hmmer_matches.txt
+
+    while IFS="" read -r gene || [ -n "\$gene" ]
+    do
+        cat $fasta | \
+        awk -v gene="\$gene" '(\$0~">" && \$0~gene){flag=1;print;next}/>/{flag=0}flag'
+    done \
+    < ${prefix}_hmmer_matches.txt \
+    > ${prefix}_hmmer_matches.fasta
+    """
+}
+
 workflow TRANSCRIPTCORRAL {
 
     ch_versions = Channel.empty()
@@ -376,6 +406,8 @@ workflow TRANSCRIPTCORRAL {
             ch_multiassembly
         )
 
+        // TODO Would be useful to be able to ascribe which program created each sequence.
+
         ch_assemblyOrfs = EVIGENE.out.metaassemblyOrfs
 
                 // TODO: versions reporting
@@ -430,7 +462,15 @@ workflow TRANSCRIPTCORRAL {
 
         ch_versions = ch_versions.mix(HMMER_HMMSEARCH.out.versions)
 
+        // Get the list of HMMer search matches
+
+        HMMER_2_FASTA(
+            HMMER_HMMSEARCH.out.output,
+            ch_assemblyOrfs
+        )
+
     }
+
 
     //
     // MODULE: Pipeline reporting
