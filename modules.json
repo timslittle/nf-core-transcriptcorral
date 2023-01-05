@@ -61,6 +61,20 @@
                             "modules"
                         ]
                     },
+                    "salmon/index": {
+                        "branch": "master",
+                        "git_sha": "94b06f1683ddf893cf06525f6e7f0573ad8fbf83",
+                        "installed_by": [
+                            "modules"
+                        ]
+                    },
+                    "salmon/quant": {
+                        "branch": "master",
+                        "git_sha": "94b06f1683ddf893cf06525f6e7f0573ad8fbf83",
+                        "installed_by": [
+                            "modules"
+                        ]
+                    },
                     "sortmerna": {
                         "branch": "master",
                         "git_sha": "b499faebd5d56c82d20389c814e9d4618ad42571",

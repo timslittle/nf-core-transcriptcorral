@@ -76,7 +76,9 @@ include { HISAT2_BUILD                } from '../modules/nf-core/hisat2/build/ma
 include { HISAT2_ALIGN                } from '../modules/nf-core/hisat2/align/main'
 include { TRANSDECODER_LONGORF        } from '../modules/nf-core/transdecoder/longorf/main'
 include { TRANSDECODER_PREDICT        } from '../modules/nf-core/transdecoder/predict/main' 
-include { HMMER_HMMSEARCH             } from '../modules/nf-core/hmmer/hmmsearch/main' 
+include { HMMER_HMMSEARCH             } from '../modules/nf-core/hmmer/hmmsearch/main'
+include { SALMON_INDEX                } from '../modules/nf-core/salmon/index/main' 
+include { SALMON_QUANT                } from '../modules/nf-core/salmon/quant/main'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -136,6 +138,9 @@ process EVIGENE {
         END_VERSIONS
     """
 }
+
+// HMMER_2_FASTA contains a Bash script which extracts the .fasta sequences of the HMMer matches.
+//  Note that the first awk scripts searches for "Nonam" to find the gene names, and takes those with scores <1e-3.
 
 process HMMER_2_FASTA {
     tag "$meta.id"
