@@ -476,6 +476,21 @@ workflow TRANSCRIPTCORRAL {
 
     }
 
+    //
+    // MODULE: Salmon alignment
+    //
+
+    if(params.salmon_alignment){
+        SALMON_INDEX (
+            ch_multiassembly
+        )
+
+        SALMON_QUANT(
+            
+        )
+    }
+    
+
 
     //
     // MODULE: Pipeline reporting

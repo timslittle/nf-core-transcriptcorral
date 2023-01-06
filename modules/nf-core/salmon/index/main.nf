@@ -20,22 +20,29 @@ process SALMON_INDEX {
 
     script:
     def args = task.ext.args ?: ''
-    def get_decoy_ids = "grep '^>' $genome_fasta | cut -d ' ' -f 1 > decoys.txt"
-    def gentrome      = "gentrome.fa"
-    if (genome_fasta.endsWith('.gz')) {
-        get_decoy_ids = "grep '^>' <(gunzip -c $genome_fasta) | cut -d ' ' -f 1 > decoys.txt"
-        gentrome      = "gentrome.fa.gz"
+    if(genome_fasta && params.salmon_decoy_fasta){
+        def get_decoy_ids = "grep '^>' $genome_fasta | cut -d ' ' -f 1 > decoys.txt"
+        def gentrome      = "gentrome.fa"
+        def make_decoy_txt_and_gentrome = "sed -i.bak -e 's/>//g' decoys.txt; cat $transcript_fasta $genome_fasta > $gentrome"
+        def decoy_arg = "-d decoys.txt"
+        if (genome_fasta.endsWith('.gz')) {
+            get_decoy_ids = "grep '^>' <(gunzip -c $genome_fasta) | cut -d ' ' -f 1 > decoys.txt"
+            gentrome      = "gentrome.fa.gz"
+        }
+    } else {
+        def get_decoy_ids = ""
+        def make_decoy_txt_and_gentrome = "cp $transcript_fasta  > $gentrome"
+        def decoy_arg = ""
     }
     """
     $get_decoy_ids
-    sed -i.bak -e 's/>//g' decoys.txt
-    cat $transcript_fasta $genome_fasta > $gentrome
+    $make_decoy_txt_and_gentrome
 
     salmon \\
         index \\
         --threads $task.cpus \\
         -t $gentrome \\
-        -d decoys.txt \\
+        $decoy_arg \\
         $args \\
         -i salmon
     cat <<-END_VERSIONS > versions.yml
