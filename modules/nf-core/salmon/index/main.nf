@@ -9,7 +9,7 @@ process SALMON_INDEX {
 
     input:
     path genome_fasta
-    path transcript_fasta
+    tuple val(meta), path(transcript_fasta)
 
     output:
     path "salmon"       , emit: index
@@ -20,19 +20,20 @@ process SALMON_INDEX {
 
     script:
     def args = task.ext.args ?: ''
-    if(genome_fasta && params.salmon_decoy_fasta){
-        def get_decoy_ids = "grep '^>' $genome_fasta | cut -d ' ' -f 1 > decoys.txt"
-        def gentrome      = "gentrome.fa"
-        def make_decoy_txt_and_gentrome = "sed -i.bak -e 's/>//g' decoys.txt; cat $transcript_fasta $genome_fasta > $gentrome"
-        def decoy_arg = "-d decoys.txt"
+    def gentrome      = "gentrome.fa"
+    def get_decoy_ids = ''
+    def decoy_arg = ''
+    def make_decoy_txt_and_gentrome = ''
+    if(params.salmon_decoy_fasta){
+        get_decoy_ids = "grep '^>' $genome_fasta | cut -d ' ' -f 1 > decoys.txt"
+        make_decoy_txt_and_gentrome = "sed -i.bak -e 's/>//g' decoys.txt; cat $transcript_fasta $genome_fasta > $gentrome"
+        decoy_arg = "-d decoys.txt"
         if (genome_fasta.endsWith('.gz')) {
             get_decoy_ids = "grep '^>' <(gunzip -c $genome_fasta) | cut -d ' ' -f 1 > decoys.txt"
             gentrome      = "gentrome.fa.gz"
         }
     } else {
-        def get_decoy_ids = ""
-        def make_decoy_txt_and_gentrome = "cp $transcript_fasta  > $gentrome"
-        def decoy_arg = ""
+        make_decoy_txt_and_gentrome = "cp $transcript_fasta $gentrome"
     }
     """
     $get_decoy_ids
@@ -44,7 +45,7 @@ process SALMON_INDEX {
         -t $gentrome \\
         $decoy_arg \\
         $args \\
-        -i salmon
+        -i $prefix
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         salmon: \$(echo \$(salmon --version) | sed -e "s/salmon //g")

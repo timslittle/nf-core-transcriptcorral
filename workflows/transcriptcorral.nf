@@ -482,12 +482,13 @@ workflow TRANSCRIPTCORRAL {
 
     if(params.salmon_alignment){
         SALMON_INDEX (
+            [],
             ch_multiassembly
         )
 
-        SALMON_QUANT(
+        // SALMON_QUANT(
             
-        )
+        // )
     }
     
 
