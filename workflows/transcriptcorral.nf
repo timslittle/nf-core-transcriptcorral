@@ -486,9 +486,14 @@ workflow TRANSCRIPTCORRAL {
             ch_multiassembly
         )
 
-        // SALMON_QUANT(
-            
-        // )
+        SALMON_QUANT(
+            ch_filtered_reads,
+            SALMON_INDEX.out.index,
+            params.salmon_gtf ?: [],
+            ch_multiassembly,
+            false,
+            []
+        )
     }
     
 

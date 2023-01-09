@@ -20,6 +20,7 @@ process SALMON_INDEX {
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def gentrome      = "gentrome.fa"
     def get_decoy_ids = ''
     def decoy_arg = ''
@@ -45,7 +46,7 @@ process SALMON_INDEX {
         -t $gentrome \\
         $decoy_arg \\
         $args \\
-        -i $prefix
+        -i salmon
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         salmon: \$(echo \$(salmon --version) | sed -e "s/salmon //g")
