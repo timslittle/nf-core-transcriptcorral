@@ -11,12 +11,12 @@ process SALMON_QUANT {
     tuple val(meta), path(reads)
     path  index
     path  gtf
-    tuple  val(meta2), path(transcript_fasta)
+    tuple  val(meta_ref), path(transcript_fasta)
     val   alignment_mode
     val   lib_type
 
     output:
-    tuple val(meta), path("${prefix}") , emit: results
+    tuple val(meta), path("${prefix}_${meta_ref.id}") , emit: results
     tuple val(meta), path("*info.json"), emit: json_info, optional: true
     path  "versions.yml"               , emit: versions
 
@@ -67,7 +67,7 @@ process SALMON_QUANT {
         $reference \\
         $input_reads \\
         $args \\
-        -o $prefix
+        -o ${prefix}_${meta_ref.id}
 
     if [ -f $prefix/aux_info/meta_info.json ]; then
         cp $prefix/aux_info/meta_info.json "${prefix}_meta_info.json"
