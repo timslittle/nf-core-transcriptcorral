@@ -411,7 +411,7 @@ workflow TRANSCRIPTCORRAL {
         )
 
         // TODO Would be useful to be able to ascribe which program created each sequence.
-
+        ch_multiassembly = EVIGENE.out.metaassembly
         ch_assemblyOrfs = EVIGENE.out.metaassemblyOrfs
 
                 // TODO: versions reporting
