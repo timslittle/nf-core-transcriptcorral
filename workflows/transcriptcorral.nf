@@ -165,7 +165,7 @@ process HMMER_2_FASTA {
     while IFS="" read -r gene || [ -n "\$gene" ]
     do
         cat $fasta | \
-        awk -v gene="\$gene" '(\$0~">" && \$0~gene){flag=1;print;next}/>/{flag=0}flag'
+        awk -v gene="\${gene} " '(\$0~">" && \$0~gene){flag=1;print;next}/>/{flag=0}flag'
     done \
     < ${prefix}_hmmer_matches.txt \
     > ${prefix}_hmmer_matches.fasta
