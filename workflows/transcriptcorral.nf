@@ -144,7 +144,7 @@ process EVIGENE {
 
 process HMMER_2_FASTA {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_high'
 
     input:
     tuple val(meta), path(hmmer)
@@ -160,15 +160,14 @@ process HMMER_2_FASTA {
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    gunzip -c $hmmer | awk -F' ' '(\$0~"Nonam" && \$1<1e-3){print \$9} /annotation/ {exit 0}' > ${prefix}_hmmer_matches.txt
+    awk -F' ' '(\$0~"Nonam" && \$1<1e-3){print \$9} /annotation/ {exit 0}' <(gunzip -c $hmmer) > ${prefix}_hmmer_matches.txt
 
     while IFS="" read -r gene || [ -n "\$gene" ]
     do
-        cat $fasta | \
-        awk -v gene="\${gene} " '(\$0~">" && \$0~gene){flag=1;print;next}/>/{flag=0}flag'
+        awk -v gene="\${gene} " '(\$0~">" && \$0~gene){flag=1;print;next}/>/{flag=0}flag' $fasta
     done \
     < ${prefix}_hmmer_matches.txt \
-    > ${prefix}_hmmer_matches.fasta
+    > ${prefix}_hmmer_matches.fasta 
     """
 }
 
