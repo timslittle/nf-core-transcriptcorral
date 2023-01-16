@@ -278,11 +278,13 @@ workflow TRANSCRIPTCORRAL {
             if(params.filter_genome_index){
                 ch_hisatIndex = Channel.fromPath(params.filter_genome_index)
             } else {
+                // Use .first() to convert to a variable channel so it is used for each file.
                 HISAT2_BUILD(
                     ch_filter_genome,
                     [],
                     []
                 ).index
+                .first()
                 .set { ch_hisatIndex }
             }
 
@@ -301,7 +303,10 @@ workflow TRANSCRIPTCORRAL {
         //
         ch_sortmerna_multiqc = Channel.empty()
         if (params.remove_ribo_rna) {
-            ch_sortmerna_fastas = Channel.from(ch_ribo_db.readLines()).map { row -> file(row, checkIfExists: true) }.collect()
+            ch_sortmerna_fastas = Channel.from(ch_ribo_db.readLines())
+                .map { row -> file(row, checkIfExists: true) }
+                .collect()
+                .first()
 
             SORTMERNA (
                 ch_filtered_reads,
