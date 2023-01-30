@@ -398,7 +398,7 @@ workflow TRANSCRIPTCORRAL {
         ch_multiassembly = Channel.fromPath(params.input, checkIfExists: true)
             .map { //Defining meta ID as the file name without the last element in '_' TODO: This only makes sense for paired end files not transcript files.
                 def meta = [:]
-                meta.id = it.getFileName().toString().split('_')[0..-2].join('_')
+                meta.id = it.getFileName().toString()
                 tuple(meta, it)
                 }
     }
