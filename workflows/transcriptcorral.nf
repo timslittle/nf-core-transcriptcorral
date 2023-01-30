@@ -176,7 +176,7 @@ workflow TRANSCRIPTCORRAL {
     ch_versions = Channel.empty()
 
     // Option to only perform meta-assembly with evigene and no de novo assembly.
-    if (!params.only_evigene) {
+    if (!params.only_evigene && !params.assembly_provided) {
 
         //
         // SUBWORKFLOW: Read in samplesheet, validate and stage input files
