@@ -176,7 +176,7 @@ workflow TRANSCRIPTCORRAL {
     ch_versions = Channel.empty()
 
     // Option to only perform meta-assembly with evigene and no de novo assembly.
-    if (!params.only_evigene && !params.assembly_provided) {
+    if (!(params.only_evigene || params.assembly_provided || params.orfs_provided)) {
 
         //
         // SUBWORKFLOW: Read in samplesheet, validate and stage input files
@@ -396,9 +396,9 @@ workflow TRANSCRIPTCORRAL {
     } else {
         // Need to provide assembly for meta-assembly as a parameter
         ch_multiassembly = Channel.fromPath(params.input, checkIfExists: true)
-            .map { //Defining meta ID as the file name without the last element in '_' TODO: This only makes sense for paired end files not transcript files.
+            .map { //Defining meta ID as the file name without file extension.
                 def meta = [:]
-                meta.id = it.getFileName().toString()
+                meta.id = it.getFileName().toString().replaceFirst(~/\.[^\.]+$/, '')
                 tuple(meta, it)
                 }
     }
@@ -421,7 +421,7 @@ workflow TRANSCRIPTCORRAL {
 
                 // TODO: versions reporting
 
-    } else {
+    } else if(params.assembly_provided) {
 
         //
         // MODULE: Transdecoder - ORF detection
@@ -438,6 +438,13 @@ workflow TRANSCRIPTCORRAL {
         .pep
 
         ch_versions = ch_versions.mix(TRANSDECODER_LONGORF.out.versions)
+    } else if(params.orfs_provided) {
+        ch_assemblyOrfs = Channel.fromPath(params.input, checkIfExists: true)
+            .map { 
+                def meta = [:]
+                meta.id = it.getFileName().toString().replaceFirst(~/\.[^\.]+$/, '')
+                tuple(meta, it)
+                }
     }
 
     //
@@ -523,7 +530,7 @@ workflow TRANSCRIPTCORRAL {
     ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml'))
     ch_multiqc_files = ch_multiqc_files.mix(CUSTOM_DUMPSOFTWAREVERSIONS.out.mqc_yml.collect())
 
-    if (!params.only_evigene) {
+    if (!(params.only_evigene || params.assembly_provided || params.orfs_provided)) {
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC_UMITOOLS_TRIMGALORE.out.fastqc_zip.collect{it[1]}.ifEmpty([]))
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC_UMITOOLS_TRIMGALORE.out.trim_zip.collect{it[1]}.ifEmpty([]))
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC_UMITOOLS_TRIMGALORE.out.trim_log.collect{it[1]}.ifEmpty([]))
