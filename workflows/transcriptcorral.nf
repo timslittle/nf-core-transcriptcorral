@@ -50,6 +50,7 @@ include { MULTIQC_TSV_FROM_LIST as MULTIQC_TSV_FAIL_TRIMMED } from '../modules/l
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
 include { INPUT_CHECK                } from '../subworkflows/local/input_check'
+include { TRANSDECODER               } from '../subworkflows/local/transdecoder'
 include { FASTQC_UMITOOLS_TRIMGALORE } from '../subworkflows/nf-core/fastqc_umitools_trimgalore'
 
 /*
@@ -427,15 +428,17 @@ workflow TRANSCRIPTCORRAL {
         // MODULE: Transdecoder - ORF detection
         //
 
-        TRANSDECODER_LONGORF(
-            ch_multiassembly
-        )
+        // TRANSDECODER_LONGORF(
+        //     ch_multiassembly
+        // )
 
-        ch_assemblyOrfs = TRANSDECODER_PREDICT(
-            ch_multiassembly,
-            TRANSDECODER_LONGORF.out.folder
-        )
-        .pep
+        // ch_assemblyOrfs = TRANSDECODER_PREDICT(
+        //     ch_multiassembly,
+        //     TRANSDECODER_LONGORF.out.folder
+        // )
+        // .pep
+
+        ch_assemblyOrfs = TRANSDECODER(ch_multiassembly).pep
 
         ch_versions = ch_versions.mix(TRANSDECODER_LONGORF.out.versions)
         
