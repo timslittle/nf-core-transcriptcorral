@@ -421,7 +421,7 @@ workflow TRANSCRIPTCORRAL {
 
                 // TODO: versions reporting
 
-    } else if(params.assembly_provided) {
+    } else if(params.assembly_provided || !params.orfs_provided) {
 
         //
         // MODULE: Transdecoder - ORF detection
@@ -438,7 +438,9 @@ workflow TRANSCRIPTCORRAL {
         .pep
 
         ch_versions = ch_versions.mix(TRANSDECODER_LONGORF.out.versions)
+        
     } else if(params.orfs_provided) {
+        // This doesn't appear to be working in downstream processes and I have no idea why.
         ch_assemblyOrfs = Channel.fromPath(params.input, checkIfExists: true)
             .map { 
                 def meta = [:]
