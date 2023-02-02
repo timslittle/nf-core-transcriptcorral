@@ -399,7 +399,7 @@ workflow TRANSCRIPTCORRAL {
         ch_multiassembly = Channel.fromPath(params.input, checkIfExists: true)
             .map { //Defining meta ID as the file name without file extension.
                 def meta = [:]
-                meta.id = it.getFileName().toString().replaceFirst(~/\.[^\.]+$/, '')
+                meta.id = it.getFileName().toString().replaceFirst(~/\..+$/, '')
                 tuple(meta, it)
                 }
     }
@@ -440,7 +440,7 @@ workflow TRANSCRIPTCORRAL {
 
         ch_assemblyOrfs = TRANSDECODER(ch_multiassembly).pep
 
-        ch_versions = ch_versions.mix(TRANSDECODER_LONGORF.out.versions)
+        // ch_versions = ch_versions.mix(TRANSDECODER_LONGORF.out.versions)
         
     } else if(params.orfs_provided) {
         // This doesn't appear to be working in downstream processes and I have no idea why.
