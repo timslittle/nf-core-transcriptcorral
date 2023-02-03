@@ -143,6 +143,7 @@ process EVIGENE {
 
 // HMMER_2_FASTA contains a Bash script which extracts the .fasta sequences of the HMMer matches.
 //  Note that the first awk scripts searches for "Nonam" to find the gene names, and takes those with scores <1e-3.
+//  Currently this script, due to the above, does not work with anything but Evigene trformat.pl output. 
 
 process HMMER_2_FASTA {
     tag "$meta.id"
@@ -439,7 +440,8 @@ workflow TRANSCRIPTCORRAL {
         // )
         // .pep
 
-        ch_assemblyOrfs = TRANSDECODER(ch_multiassembly).pep
+        // ch_assemblyOrfs = TRANSDECODER(ch_multiassembly).pep
+        ch_assemblyOrfs = PRODIGAL(ch_multiassembly, 'gff').amino_acid_fasta
 
         // ch_versions = ch_versions.mix(TRANSDECODER_LONGORF.out.versions)
         
