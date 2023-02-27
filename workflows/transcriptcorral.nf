@@ -189,53 +189,43 @@ workflow TRANSCRIPTCORRAL {
         INPUT_CHECK (
             ch_input
         )
-        .reads
-        .map {
-            meta, fastq ->
-                def meta_clone = meta.clone()
-                meta_clone.id = meta_clone.id.split('_')[0..-2].join('_')
-                [ meta_clone, fastq ]
-        }
-        .groupTuple(by: [0])
-        .branch {
-            meta, fastq ->
-                single  : fastq.size() == 1
-                    return [ meta, fastq.flatten() ]
-                multiple: fastq.size() > 1
-                    return [ meta, fastq.flatten() ]
-        }
-        .set { ch_fastq }
         ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
+        // .map {
+        //     meta, fastq ->
+        //         def meta_clone = meta.clone()
+        //         meta_clone.id = meta_clone.id.split('_')[0..-2].join('_')
+        //         [ meta_clone, fastq ]
+        // }
+        // .groupTuple(by: [0])
+        // .branch {
+        //     meta, fastq ->
+        //         single  : fastq.size() == 1
+        //             return [ meta, fastq.flatten() ]
+        //         multiple: fastq.size() > 1
+        //             return [ meta, fastq.flatten() ]
+        // }
 
-        //
-        // MODULE: Concatenate FastQ files from same sample if required
-        //
-        CAT_FASTQ (
-            ch_fastq.multiple
-        )
-        .reads
-        .mix(ch_fastq.single)
-        .set { ch_cat_fastq }
-        ch_versions = ch_versions.mix(CAT_FASTQ.out.versions.first().ifEmpty(null))
 
         //
         // SUBWORKFLOW: Read QC, extract UMI and trim adapters
         //
         FASTQC_UMITOOLS_TRIMGALORE (
-            ch_cat_fastq,
+            INPUT_CHECK.out.reads,
             params.skip_fastqc || params.skip_qc,
             params.with_umi,
             params.skip_umi_extract,
             params.skip_trimming,
             params.umi_discard_read
         )
+        .reads
+        .set { ch_filtered_reads }
         ch_versions = ch_versions.mix(FASTQC_UMITOOLS_TRIMGALORE.out.versions)
 
         //
         // Filter channels to get samples that passed minimum trimmed read count
         //
         ch_fail_trimming_multiqc = Channel.empty()
-        ch_filtered_reads = FASTQC_UMITOOLS_TRIMGALORE.out.reads
+        
         if (!params.skip_trimming) {
             ch_filtered_reads
                 .join(FASTQC_UMITOOLS_TRIMGALORE.out.trim_log)
@@ -325,13 +315,39 @@ workflow TRANSCRIPTCORRAL {
         // Create empty assemblies channel which new assemblies will be added to.
         ch_assembly = Channel.empty()
 
+        // CAT bio rep files from the same sample together
+
+        ch_filtered_reads
+            .map {
+                meta, fastq ->
+                    new_id = meta.id - ~/_T\d+/
+                    [ meta + [id: new_id], fastq ]
+            }
+            .groupTuple()
+            .branch {
+                meta, fastq ->
+                    single  : fastq.size() == 1
+                        return [ meta, fastq.flatten() ]
+                    multiple: fastq.size() > 1
+                        return [ meta, fastq.flatten() ]
+            }
+            .set { ch_fastq }
+        
+        CAT_FASTQ (
+        ch_fastq.multiple
+        )
+        .reads
+        .mix(ch_fastq.single)
+        .set { ch_cat_filtered_reads }
+        ch_versions = ch_versions.mix(CAT_FASTQ.out.versions.first().ifEmpty(null))
+
         //
         // MODULE: Spades_SC
         //
 
         if(params.assemble_spades_sc){
             // TODO: Need to add elements for the 'pacbio' and 'nanopore' inputs in the tuple.
-            ch_spades_input=ch_filtered_reads
+            ch_spades_input=ch_cat_filtered_reads
                 .map { [ it[0], it[1], [], [] ] }
 
             SPADES_SC (
@@ -349,7 +365,7 @@ workflow TRANSCRIPTCORRAL {
 
         if(params.assemble_spades_rna){
             // TODO: Need to add elements for the 'pacbio' and 'nanopore' inputs in the tuple.
-            ch_spades_input=ch_filtered_reads
+            ch_spades_input=ch_cat_filtered_reads
                 .map { [ it[0], it[1], [], [] ] }
 
             SPADES_RNA (
@@ -367,7 +383,7 @@ workflow TRANSCRIPTCORRAL {
 
         if(params.assemble_trinity){
             TRINITY(
-                ch_filtered_reads
+                ch_cat_filtered_reads
             )
             ch_versions = ch_versions.mix(TRINITY.out.versions)
             ch_assembly = ch_assembly.mix(TRINITY.out.transcript_fasta)
@@ -505,11 +521,31 @@ workflow TRANSCRIPTCORRAL {
             ch_multiassembly
         )
 
+        // Need to join the channels for the read files and the multi-assembly.
+        //  Just proividing the multi-assembly means Salmon only runs once.
+        //  Creating the key for join using the id.
+
+        ch_multiassembly = ch_multiassembly.map { [it[0].id, it[0], it[1]] }
+
+        ch_filtered_reads_and_multiassembly = ch_filtered_reads
+            .map {
+                meta, fastq ->
+                    new_id = meta.id - ~/_T\d+/
+                    [ new_id, meta, fastq ]
+            }
+            .combine(ch_multiassembly, by: 0)
+        
+        ch_salmon_reads_input = ch_filtered_reads_and_multiassembly
+            .map { [it[1], it[2]] }
+        
+        ch_salmon_assembly_input = ch_filtered_reads_and_multiassembly
+            .map { [it[3], it[4]] }
+
         SALMON_QUANT(
-            ch_filtered_reads,
-            SALMON_INDEX.out.index,
+            ch_salmon_reads_input,
+            SALMON_INDEX.out.index.first(),
             params.salmon_gtf ?: [],
-            ch_multiassembly,
+            ch_salmon_assembly_input,
             false,
             []
         )
