@@ -9,9 +9,9 @@ process SALMON_QUANT {
 
     input:
     tuple val(meta), path(reads)
-    path  index
+    tuple val(meta_index), path(index)
     path  gtf
-    tuple  val(meta_ref), path(transcript_fasta)
+    tuple val(meta_ref), path(transcript_fasta)
     val   alignment_mode
     val   lib_type
 
