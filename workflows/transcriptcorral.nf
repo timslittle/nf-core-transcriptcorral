@@ -526,7 +526,7 @@ workflow TRANSCRIPTCORRAL {
         //  Creating the key for join using the id.
 
         ch_multiassembly = ch_multiassembly.map { [ it[0].id, it[0], it[1] ] }
-        ch_salmon_index = SALMON_INDEX.out.index.map { [ it[0].id, it[1] ] }
+        ch_salmon_index = SALMON_INDEX.out.index.map { [ it[0].id, it[0], it[1] ] }
 
         ch_filtered_reads_and_multiassembly = ch_filtered_reads
             .map {
@@ -544,7 +544,7 @@ workflow TRANSCRIPTCORRAL {
             .map { [it[3], it[4]] }
 
         ch_salmon_index_input = ch_filtered_reads_and_multiassembly
-            .map { it[5] }
+            .map { [ it[5], it[6] ] }
         //    .first()
 
         SALMON_QUANT(
