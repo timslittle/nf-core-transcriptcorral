@@ -12,7 +12,7 @@ process SALMON_INDEX {
     tuple val(meta), path(transcript_fasta)
 
     output:
-    path "salmon"       , emit: index
+    tuple val(meta), path("salmon") , emit: index
     path "versions.yml" , emit: versions
 
     when:
