@@ -178,9 +178,6 @@ workflow TRANSCRIPTCORRAL {
 
     ch_versions = Channel.empty()
 
-    // Option to only perform meta-assembly with evigene and no de novo assembly.
-    if (!(params.only_evigene || params.assembly_provided || params.orfs_provided)) {
-
         //
         // SUBWORKFLOW: Read in samplesheet, validate and stage input files
         //
@@ -205,6 +202,9 @@ workflow TRANSCRIPTCORRAL {
         //             return [ meta, fastq.flatten() ]
         // }
 
+    // Option to only perform meta-assembly with evigene and no de novo assembly (i.e. Evigene and the rest of the pipeline from there), 
+    //  or to skip assembly and provide an existing one.
+    if (!(params.evigene_onwards || params.assembly_provided || params.orfs_provided)) {
 
         //
         // SUBWORKFLOW: Read QC, extract UMI and trim adapters
@@ -413,18 +413,23 @@ workflow TRANSCRIPTCORRAL {
         //TODO: Check that this is saving all the assemblies together and not just one.
                 
     } else {
-        // Need to provide assembly for meta-assembly as a parameter
-        ch_multiassembly = Channel.fromPath(params.input, checkIfExists: true)
+
+        // Read in the read files
+        INPUT_CHECK.out.reads
+        .set { ch_filtered_reads }
+
+        // Meta-ids of the provided read files need to match the assembly files.
+        ch_multiassembly = Channel.fromPath("${params.assembly_path}/*.fasta.gz", checkIfExists: true)
             .map { //Defining meta ID as the file name without file extension.
                 def meta = [:]
-                meta.id = it.getFileName().toString().replaceFirst(~/\..+$/, '')
+                meta.id = it.getFileName().toString().replaceFirst(~/\.fasta.gz$/, '')
                 tuple(meta, it)
                 }
     }
 
     // Process the assemblies. Can use EvidentialGene to filter for best transcripts, find ORFs and translate. Or use Transdecoder to find and translate ORFs.
 
-    if(params.use_evigene || params.only_evigene){
+    if(params.use_evigene || params.evigene_onwards){
 
         //
         // PROCESS: EVIGENE
@@ -580,7 +585,7 @@ workflow TRANSCRIPTCORRAL {
     ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml'))
     ch_multiqc_files = ch_multiqc_files.mix(CUSTOM_DUMPSOFTWAREVERSIONS.out.mqc_yml.collect())
 
-    if (!(params.only_evigene || params.assembly_provided || params.orfs_provided)) {
+    if (!(params.evigene_onwards || params.assembly_provided || params.orfs_provided)) {
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC_UMITOOLS_TRIMGALORE.out.fastqc_zip.collect{it[1]}.ifEmpty([]))
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC_UMITOOLS_TRIMGALORE.out.trim_zip.collect{it[1]}.ifEmpty([]))
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC_UMITOOLS_TRIMGALORE.out.trim_log.collect{it[1]}.ifEmpty([]))
