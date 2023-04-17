@@ -204,7 +204,7 @@ workflow TRANSCRIPTCORRAL {
 
     // Option to only perform meta-assembly with evigene and no de novo assembly (i.e. Evigene and the rest of the pipeline from there), 
     //  or to skip assembly and provide an existing one.
-    if (!(params.evigene_onwards || params.assembly_provided || params.orfs_provided)) {
+    if (!(params.evigene_onwards || params.assembly_path || params.orfs_provided)) {
 
         //
         // SUBWORKFLOW: Read QC, extract UMI and trim adapters
@@ -419,10 +419,10 @@ workflow TRANSCRIPTCORRAL {
         .set { ch_filtered_reads }
 
         // Meta-ids of the provided read files need to match the assembly files.
-        ch_multiassembly = Channel.fromPath("${params.assembly_path}/*.fasta.gz", checkIfExists: true)
+        ch_multiassembly = Channel.fromPath(params.assembly_path, checkIfExists: true, glob: true)
             .map { //Defining meta ID as the file name without file extension.
                 def meta = [:]
-                meta.id = it.getFileName().toString().replaceFirst(~/\.fasta.gz$/, '')
+                meta.id = it.getFileName().toString().replaceFirst(~/\..+$/, '')
                 tuple(meta, it)
                 }
     }
@@ -445,26 +445,9 @@ workflow TRANSCRIPTCORRAL {
 
                 // TODO: versions reporting
 
-    } else if(params.assembly_provided || !params.orfs_provided) {
-
-        //
-        // MODULE: Transdecoder - ORF detection
-        //
-
-        // TRANSDECODER_LONGORF(
-        //     ch_multiassembly
-        // )
-
-        // ch_assemblyOrfs = TRANSDECODER_PREDICT(
-        //     ch_multiassembly,
-        //     TRANSDECODER_LONGORF.out.folder
-        // )
-        // .pep
-
-        // ch_assemblyOrfs = TRANSDECODER(ch_multiassembly).pep
+    } else if((params.assembly_path && (params.busco_lineage || params.hmmsearch_hmmfile)) && !params.orfs_provided) {
+        // Only need the ORFs if user wants to conduct BUSCO or HMMer, otherwise peptide prediction is unnecessary.
         ch_assemblyOrfs = PRODIGAL(ch_multiassembly, 'gff').amino_acid_fasta
-
-        // ch_versions = ch_versions.mix(TRANSDECODER_LONGORF.out.versions)
         
     } else if(params.orfs_provided) {
         // This doesn't appear to be working in downstream processes and I have no idea why.
@@ -476,16 +459,20 @@ workflow TRANSCRIPTCORRAL {
                 }
     }
 
-    //
-    // MODULE: BUSCO
-    // 
-    BUSCO (
-        ch_assemblyOrfs,
-        params.busco_lineage,
-        params.busco_lineages_path,
-        params.busco_config_file
-    )
-    ch_versions = ch_versions.mix(BUSCO.out.versions)
+// Can specify whether one wants to assess the BUSCO scores of the assembly or not.
+    if(params.busco_lineage){
+        //
+        // MODULE: BUSCO
+        // 
+        BUSCO (
+            ch_assemblyOrfs,
+            params.busco_lineage,
+            params.busco_lineages_path,
+            params.busco_config_file
+        )
+        ch_versions = ch_versions.mix(BUSCO.out.versions)
+
+    }
 
     //
     // MODULE: HMMer/hmmsearch
@@ -585,7 +572,7 @@ workflow TRANSCRIPTCORRAL {
     ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml'))
     ch_multiqc_files = ch_multiqc_files.mix(CUSTOM_DUMPSOFTWAREVERSIONS.out.mqc_yml.collect())
 
-    if (!(params.evigene_onwards || params.assembly_provided || params.orfs_provided)) {
+    if (!(params.evigene_onwards || params.assembly_path || params.orfs_provided)) {
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC_UMITOOLS_TRIMGALORE.out.fastqc_zip.collect{it[1]}.ifEmpty([]))
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC_UMITOOLS_TRIMGALORE.out.trim_zip.collect{it[1]}.ifEmpty([]))
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC_UMITOOLS_TRIMGALORE.out.trim_log.collect{it[1]}.ifEmpty([]))
