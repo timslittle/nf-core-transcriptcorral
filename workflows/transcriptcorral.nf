@@ -419,7 +419,7 @@ workflow TRANSCRIPTCORRAL {
         .set { ch_filtered_reads }
 
         // Meta-ids of the provided read files need to match the assembly files.
-        ch_multiassembly = Channel.fromPath(params.assembly_path, checkIfExists: true, glob: true)
+        ch_multiassembly = Channel.fromPath("${params.assembly_path}*.cds", checkIfExists: true, glob: true)
             .map { //Defining meta ID as the file name without file extension.
                 def meta = [:]
                 meta.id = it.getFileName().toString().replaceFirst(~/\..+$/, '')
